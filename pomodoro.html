@@ -87,7 +87,38 @@
             letter-spacing: 0.05em;
             transition: all 0.3s ease;
             user-select: none;
-            font-variant-numeric: tabular-nums;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .countdown .digit {
+            display: inline-block;
+            width: 0.7em;
+            text-align: center;
+        }
+
+        .countdown .colon {
+            display: inline-block;
+            width: 0.3em;
+            text-align: center;
+        }
+
+        /* Breathing animation */
+        @keyframes breathe {
+            0% {
+                transform: scale(1.0);
+            }
+            50% {
+                transform: scale(1.025);
+            }
+            100% {
+                transform: scale(1.0);
+            }
+        }
+
+        .session-label.breathing {
+            animation: breathe 8s ease-in-out infinite;
         }
 
         /* Start button */
@@ -189,6 +220,52 @@
                 right: 1rem;
             }
         }
+
+        /* Session counter at bottom */
+        .session-counter {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .session-counter:hover {
+            opacity: 1;
+        }
+
+        .counter-label {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .counter-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Mobile responsive for session counter */
+        @media (max-width: 768px) {
+            .session-counter {
+                bottom: 1.5rem;
+            }
+
+            .counter-label {
+                font-size: 0.65rem;
+            }
+
+            .counter-value {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -196,7 +273,13 @@
 
     <div class="timer-container">
         <div class="session-label">Work</div>
-        <div class="countdown">25:00</div>
+        <div class="countdown">
+            <span class="digit" id="min-tens">2</span>
+            <span class="digit" id="min-ones">5</span>
+            <span class="colon">:</span>
+            <span class="digit" id="sec-tens">0</span>
+            <span class="digit" id="sec-ones">0</span>
+        </div>
         <button class="start-button">Begin</button>
     </div>
 
@@ -208,9 +291,14 @@
         let remainingSeconds = 25 * 60; // 25 minutes in seconds
         let isWorkSession = true;
         let isRunning = false;
+        let sessionCount = 0;
 
         // DOM elements
-        const countdownEl = document.querySelector('.countdown');
+        const minTensEl = document.getElementById('min-tens');
+        const minOnesEl = document.getElementById('min-ones');
+        const secTensEl = document.getElementById('sec-tens');
+        const secOnesEl = document.getElementById('sec-ones');
+        const sessionCountEl = document.getElementById('session-count');
         const sessionLabelEl = document.querySelector('.session-label');
         const startButton = document.querySelector('.start-button');
         const stopButton = document.querySelector('.stop-button');
@@ -221,16 +309,26 @@
             Notification.requestPermission();
         }
 
-        // Format time as MM:SS
+        // Format time as individual digits
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            return {
+                minTens: Math.floor(mins / 10),
+                minOnes: mins % 10,
+                secTens: Math.floor(secs / 10),
+                secOnes: secs % 10
+            };
         }
 
         // Update display
         function updateDisplay() {
-            countdownEl.textContent = formatTime(remainingSeconds);
+            const time = formatTime(remainingSeconds);
+            minTensEl.textContent = time.minTens;
+            minOnesEl.textContent = time.minOnes;
+            secTensEl.textContent = time.secTens;
+            secOnesEl.textContent = time.secOnes;
         }
 
         // Show notification
@@ -249,14 +347,26 @@
             isWorkSession = !isWorkSession;
 
             if (isWorkSession) {
+                // Completed a full session (work + rest)
+                sessionCount++;
+                sessionCountEl.textContent = sessionCount;
+
                 remainingSeconds = 25 * 60;
                 sessionLabelEl.textContent = 'Work';
                 backgroundEl.className = 'background work';
+
+                // Enable breathing animation for work
+                sessionLabelEl.classList.add('breathing');
+
                 showNotification('Work Session', 'Time to focus! 25 minutes.');
             } else {
                 remainingSeconds = 5 * 60;
                 sessionLabelEl.textContent = 'Rest';
                 backgroundEl.className = 'background rest';
+
+                // Disable breathing animation during rest
+                sessionLabelEl.classList.remove('breathing');
+
                 showNotification('Rest Session', 'Take a break! 5 minutes.');
             }
 
@@ -282,6 +392,11 @@
                 startButton.classList.add('hide');
                 stopButton.classList.add('visible');
 
+                // Add breathing animation during work sessions
+                if (isWorkSession) {
+                    sessionLabelEl.classList.add('breathing');
+                }
+
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -292,9 +407,15 @@
             isRunning = false;
             isWorkSession = true;
             remainingSeconds = 25 * 60;
+            sessionCount = 0;
 
             sessionLabelEl.textContent = 'Work';
             backgroundEl.className = 'background work';
+            sessionCountEl.textContent = sessionCount;
+
+            // Remove breathing animation when stopped
+            sessionLabelEl.classList.remove('breathing');
+
             updateDisplay();
 
             startButton.classList.remove('hide');
@@ -308,5 +429,10 @@
         // Initialize display
         updateDisplay();
     </script>
+
+    <div class="session-counter">
+        <div class="counter-label">Sessions Completed</div>
+        <div class="counter-value" id="session-count">0</div>
+    </div>
 </body>
 </html>
