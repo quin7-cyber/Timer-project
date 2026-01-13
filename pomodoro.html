@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Animated gradient backgrounds */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .background.work {
+            background: linear-gradient(-45deg, #e3d5ff, #b8d4f1, #d4b5f7, #c7ceea);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .background.rest {
+            background: linear-gradient(-45deg, #ffd4c8, #b8e6d5, #f7d5b5, #c8ead3);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Timer container */
+        .timer-container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Session label */
+        .session-label {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            transition: all 0.8s ease;
+        }
+
+        /* Countdown timer */
+        .countdown {
+            font-family: 'Playfair Display', serif;
+            font-size: 140px;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.8);
+            line-height: 1;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            user-select: none;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Start button */
+        .start-button {
+            margin-top: 4rem;
+            padding: 1.2rem 3.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .start-button:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* Stop button (top-right) */
+        .stop-button {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.8rem 2rem;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .stop-button.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .stop-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .countdown {
+                font-size: 100px;
+            }
+
+            .session-label {
+                font-size: 1.2rem;
+                letter-spacing: 0.2em;
+            }
+
+            .start-button {
+                padding: 1rem 2.5rem;
+                font-size: 0.9rem;
+                margin-top: 3rem;
+            }
+
+            .stop-button {
+                top: 1.5rem;
+                right: 1.5rem;
+                padding: 0.6rem 1.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .countdown {
+                font-size: 80px;
+            }
+
+            .session-label {
+                font-size: 1rem;
+            }
+
+            .stop-button {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background work"></div>
+
+    <div class="timer-container">
+        <div class="session-label">Work</div>
+        <div class="countdown">25:00</div>
+        <button class="start-button">Begin</button>
+    </div>
+
+    <button class="stop-button">Reset</button>
+
+    <script>
+        // Timer state
+        let timerInterval = null;
+        let remainingSeconds = 25 * 60; // 25 minutes in seconds
+        let isWorkSession = true;
+        let isRunning = false;
+
+        // DOM elements
+        const countdownEl = document.querySelector('.countdown');
+        const sessionLabelEl = document.querySelector('.session-label');
+        const startButton = document.querySelector('.start-button');
+        const stopButton = document.querySelector('.stop-button');
+        const backgroundEl = document.querySelector('.background');
+
+        // Request notification permission on load
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Format time as MM:SS
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update display
+        function updateDisplay() {
+            countdownEl.textContent = formatTime(remainingSeconds);
+        }
+
+        // Show notification
+        function showNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23b8d4f1"/></svg>',
+                    requireInteraction: false
+                });
+            }
+        }
+
+        // Switch session
+        function switchSession() {
+            isWorkSession = !isWorkSession;
+
+            if (isWorkSession) {
+                remainingSeconds = 25 * 60;
+                sessionLabelEl.textContent = 'Work';
+                backgroundEl.className = 'background work';
+                showNotification('Work Session', 'Time to focus! 25 minutes.');
+            } else {
+                remainingSeconds = 5 * 60;
+                sessionLabelEl.textContent = 'Rest';
+                backgroundEl.className = 'background rest';
+                showNotification('Rest Session', 'Take a break! 5 minutes.');
+            }
+
+            updateDisplay();
+            startTimer();
+        }
+
+        // Timer tick
+        function tick() {
+            remainingSeconds--;
+            updateDisplay();
+
+            if (remainingSeconds <= 0) {
+                clearInterval(timerInterval);
+                switchSession();
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                startButton.classList.add('hide');
+                stopButton.classList.add('visible');
+
+                timerInterval = setInterval(tick, 1000);
+            }
+        }
+
+        // Stop/Reset timer
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isWorkSession = true;
+            remainingSeconds = 25 * 60;
+
+            sessionLabelEl.textContent = 'Work';
+            backgroundEl.className = 'background work';
+            updateDisplay();
+
+            startButton.classList.remove('hide');
+            stopButton.classList.remove('visible');
+        }
+
+        // Event listeners
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>
