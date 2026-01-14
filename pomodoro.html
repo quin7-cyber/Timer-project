@@ -35,14 +35,41 @@
             transition: opacity 2s ease-in-out;
         }
 
-        .background.work {
+        /* Morning palettes (5 AM - 11:59 AM) */
+        .background.work.morning {
             background: linear-gradient(-45deg, #e3d5ff, #b8d4f1, #d4b5f7, #c7ceea);
             background-size: 400% 400%;
             animation: gradientShift 20s ease infinite;
         }
 
-        .background.rest {
-            background: linear-gradient(-45deg, #ffd4c8, #b8e6d5, #f7d5b5, #c8ead3);
+        .background.rest.morning {
+            background: linear-gradient(-45deg, #d4f1f4, #b8e6d5, #c5f5e8, #d0f0e8);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        /* Afternoon palettes (12 PM - 5:59 PM) */
+        .background.work.afternoon {
+            background: linear-gradient(-45deg, #ffd4a3, #ffcba4, #ffe4c4, #ffd9b3);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .background.rest.afternoon {
+            background: linear-gradient(-45deg, #ffd4c8, #ffe0d4, #f7d5b5, #fce5cd);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        /* Evening palettes (6 PM - 4:59 AM) */
+        .background.work.evening {
+            background: linear-gradient(-45deg, #9b9fce, #8b9dc3, #b0a8d1, #9fa8da);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .background.rest.evening {
+            background: linear-gradient(-45deg, #a8c5c5, #9fb8b5, #adc8c1, #b3ccc8);
             background-size: 400% 400%;
             animation: gradientShift 20s ease infinite;
         }
@@ -56,6 +83,161 @@
             }
             100% {
                 background-position: 0% 50%;
+            }
+        }
+
+        /* Particle field */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        /* Individual particle positioning and timing */
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 3s;
+            animation-duration: 30s;
+        }
+
+        .particle:nth-child(3) {
+            top: 40%;
+            left: 30%;
+            animation-delay: 6s;
+            animation-duration: 28s;
+        }
+
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 60%;
+            animation-delay: 9s;
+            animation-duration: 22s;
+        }
+
+        .particle:nth-child(5) {
+            top: 15%;
+            left: 70%;
+            animation-delay: 12s;
+            animation-duration: 35s;
+        }
+
+        .particle:nth-child(6) {
+            top: 70%;
+            left: 20%;
+            animation-delay: 15s;
+            animation-duration: 27s;
+        }
+
+        .particle:nth-child(7) {
+            top: 35%;
+            left: 85%;
+            animation-delay: 18s;
+            animation-duration: 32s;
+        }
+
+        .particle:nth-child(8) {
+            top: 50%;
+            left: 50%;
+            animation-delay: 21s;
+            animation-duration: 29s;
+        }
+
+        .particle:nth-child(9) {
+            top: 10%;
+            left: 50%;
+            animation-delay: 2s;
+            animation-duration: 26s;
+        }
+
+        .particle:nth-child(10) {
+            top: 55%;
+            left: 15%;
+            animation-delay: 5s;
+            animation-duration: 31s;
+        }
+
+        .particle:nth-child(11) {
+            top: 25%;
+            left: 65%;
+            animation-delay: 8s;
+            animation-duration: 24s;
+        }
+
+        .particle:nth-child(12) {
+            top: 75%;
+            left: 45%;
+            animation-delay: 11s;
+            animation-duration: 33s;
+        }
+
+        .particle:nth-child(13) {
+            top: 30%;
+            left: 90%;
+            animation-delay: 14s;
+            animation-duration: 27s;
+        }
+
+        .particle:nth-child(14) {
+            top: 65%;
+            left: 35%;
+            animation-delay: 17s;
+            animation-duration: 29s;
+        }
+
+        .particle:nth-child(15) {
+            top: 45%;
+            left: 75%;
+            animation-delay: 20s;
+            animation-duration: 26s;
+        }
+
+        .particle:nth-child(16) {
+            top: 85%;
+            left: 25%;
+            animation-delay: 23s;
+            animation-duration: 34s;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translate(30px, -30px) scale(1.1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-20px, 20px) scale(0.9);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translate(40px, 10px) scale(1.05);
+                opacity: 0.45;
             }
         }
 
@@ -150,6 +332,35 @@
             pointer-events: none;
         }
 
+        /* Rest button - identical to start button */
+        .rest-button {
+            margin-top: 4rem;
+            padding: 1.2rem 3.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .rest-button:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .rest-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
         /* Stop button (top-right) */
         .stop-button {
             position: fixed;
@@ -193,6 +404,12 @@
             }
 
             .start-button {
+                padding: 1rem 2.5rem;
+                font-size: 0.9rem;
+                margin-top: 3rem;
+            }
+
+            .rest-button {
                 padding: 1rem 2.5rem;
                 font-size: 0.9rem;
                 margin-top: 3rem;
@@ -265,11 +482,36 @@
             .counter-value {
                 font-size: 1.5rem;
             }
+
+            /* Hide extra particles on mobile */
+            .particle:nth-child(n+9) {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="background work"></div>
+
+    <!-- Particle field -->
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
 
     <div class="timer-container">
         <div class="session-label">Work</div>
@@ -281,6 +523,7 @@
             <span class="digit" id="sec-ones">0</span>
         </div>
         <button class="start-button">Begin</button>
+        <button class="rest-button">Start Rest</button>
     </div>
 
     <button class="stop-button">Reset</button>
@@ -301,12 +544,26 @@
         const sessionCountEl = document.getElementById('session-count');
         const sessionLabelEl = document.querySelector('.session-label');
         const startButton = document.querySelector('.start-button');
+        const restButton = document.querySelector('.rest-button');
         const stopButton = document.querySelector('.stop-button');
         const backgroundEl = document.querySelector('.background');
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission();
+        }
+
+        // Get time of day based on current hour
+        function getTimeOfDay() {
+            const hour = new Date().getHours();
+
+            if (hour >= 5 && hour < 12) {
+                return 'morning';
+            } else if (hour >= 12 && hour < 18) {
+                return 'afternoon';
+            } else {
+                return 'evening';
+            }
         }
 
         // Format time as individual digits
@@ -342,38 +599,6 @@
             }
         }
 
-        // Switch session
-        function switchSession() {
-            isWorkSession = !isWorkSession;
-
-            if (isWorkSession) {
-                // Completed a full session (work + rest)
-                sessionCount++;
-                sessionCountEl.textContent = sessionCount;
-
-                remainingSeconds = 25 * 60;
-                sessionLabelEl.textContent = 'Work';
-                backgroundEl.className = 'background work';
-
-                // Enable breathing animation for work
-                sessionLabelEl.classList.add('breathing');
-
-                showNotification('Work Session', 'Time to focus! 25 minutes.');
-            } else {
-                remainingSeconds = 5 * 60;
-                sessionLabelEl.textContent = 'Rest';
-                backgroundEl.className = 'background rest';
-
-                // Disable breathing animation during rest
-                sessionLabelEl.classList.remove('breathing');
-
-                showNotification('Rest Session', 'Take a break! 5 minutes.');
-            }
-
-            updateDisplay();
-            startTimer();
-        }
-
         // Timer tick
         function tick() {
             remainingSeconds--;
@@ -381,7 +606,30 @@
 
             if (remainingSeconds <= 0) {
                 clearInterval(timerInterval);
-                switchSession();
+                isRunning = false;
+
+                if (isWorkSession) {
+                    // Work session completed - show rest button
+                    showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
+                    restButton.classList.remove('hide');
+                    stopButton.classList.remove('visible');
+                } else {
+                    // Rest session completed - prepare for next work session
+                    isWorkSession = true;
+                    sessionCount++;
+                    sessionCountEl.textContent = sessionCount;
+
+                    remainingSeconds = 25 * 60;
+                    const timeOfDay = getTimeOfDay();
+                    sessionLabelEl.textContent = 'Work';
+                    backgroundEl.className = `background work ${timeOfDay}`;
+                    sessionLabelEl.classList.remove('breathing');
+
+                    showNotification('Rest Complete!', 'Ready for another work session?');
+                    startButton.classList.remove('hide');
+                    stopButton.classList.remove('visible');
+                    updateDisplay();
+                }
             }
         }
 
@@ -401,6 +649,27 @@
             }
         }
 
+        // Start rest timer
+        function startRestTimer() {
+            isWorkSession = false;
+            remainingSeconds = 5 * 60;
+
+            const timeOfDay = getTimeOfDay();
+            sessionLabelEl.textContent = 'Rest';
+            backgroundEl.className = `background rest ${timeOfDay}`;
+            sessionLabelEl.classList.remove('breathing');
+
+            updateDisplay();
+
+            // Hide rest button, show stop button
+            restButton.classList.add('hide');
+            stopButton.classList.add('visible');
+
+            // Start the timer
+            isRunning = true;
+            timerInterval = setInterval(tick, 1000);
+        }
+
         // Stop/Reset timer
         function stopTimer() {
             clearInterval(timerInterval);
@@ -409,8 +678,9 @@
             remainingSeconds = 25 * 60;
             sessionCount = 0;
 
+            const timeOfDay = getTimeOfDay();
             sessionLabelEl.textContent = 'Work';
-            backgroundEl.className = 'background work';
+            backgroundEl.className = `background work ${timeOfDay}`;
             sessionCountEl.textContent = sessionCount;
 
             // Remove breathing animation when stopped
@@ -419,15 +689,38 @@
             updateDisplay();
 
             startButton.classList.remove('hide');
+            restButton.classList.add('hide');
             stopButton.classList.remove('visible');
         }
 
         // Event listeners
         startButton.addEventListener('click', startTimer);
+        restButton.addEventListener('click', startRestTimer);
         stopButton.addEventListener('click', stopTimer);
+
+        // Check for time of day changes every minute
+        setInterval(() => {
+            if (isRunning) {
+                const currentTimeOfDay = getTimeOfDay();
+                const backgroundClasses = backgroundEl.className.split(' ');
+                const oldTimeOfDay = backgroundClasses[2];
+
+                if (oldTimeOfDay !== currentTimeOfDay) {
+                    // Time of day changed, update background
+                    const sessionType = isWorkSession ? 'work' : 'rest';
+                    backgroundEl.className = `background ${sessionType} ${currentTimeOfDay}`;
+                }
+            }
+        }, 60000); // Check every minute
 
         // Initialize display
         updateDisplay();
+
+        // Set initial time-of-day palette
+        backgroundEl.className = `background work ${getTimeOfDay()}`;
+
+        // Initialize rest button as hidden
+        restButton.classList.add('hide');
     </script>
 
     <div class="session-counter">
