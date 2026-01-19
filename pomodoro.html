@@ -113,11 +113,11 @@
 
         .particle {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.4);
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.55);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
             animation: float 20s infinite ease-in-out;
         }
 
@@ -238,19 +238,19 @@
         @keyframes float {
             0%, 100% {
                 transform: translate(0, 0) scale(1);
-                opacity: 0.3;
+                opacity: 0.45;
             }
             25% {
                 transform: translate(30px, -30px) scale(1.1);
-                opacity: 0.5;
+                opacity: 0.65;
             }
             50% {
                 transform: translate(-20px, 20px) scale(0.9);
-                opacity: 0.4;
+                opacity: 0.55;
             }
             75% {
                 transform: translate(40px, 10px) scale(1.05);
-                opacity: 0.45;
+                opacity: 0.6;
             }
         }
 
@@ -980,6 +980,8 @@
         .chart-dot {
             cursor: pointer;
             transition: all 0.2s ease;
+            transform-box: fill-box;
+            transform-origin: center;
         }
 
         .chart-dot.pomodoro {
@@ -1077,6 +1079,301 @@
         .clear-data-btn:hover {
             background: rgba(255, 100, 100, 0.3);
             transform: translateY(-1px);
+        }
+
+        /* Project Summary */
+        .project-summary {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .project-summary.hide {
+            display: none;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .project-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-name {
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .project-count {
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .project-list-empty {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.4);
+            font-style: italic;
+        }
+
+        /* ==========================================
+           SESSION SETUP PANEL
+           ========================================== */
+        .session-setup {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            width: auto;
+            min-width: 280px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .session-setup.hide {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            position: absolute;
+            margin: 0;
+        }
+
+        .setup-row {
+            margin-bottom: 1rem;
+        }
+
+        .setup-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .setup-label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Project dropdown */
+        .project-select-wrapper {
+            position: relative;
+        }
+
+        .project-select {
+            width: 100%;
+            padding: 0.7rem 2.5rem 0.7rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .project-select:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .project-select:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .project-select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+        }
+
+        /* Custom project input dropdown */
+        .project-input-wrapper {
+            position: relative;
+        }
+
+        .project-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .project-input:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .project-input:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .project-input::placeholder {
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .project-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .project-dropdown.show {
+            display: block;
+        }
+
+        .project-option {
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .project-option:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .project-option.create-new {
+            color: rgba(0, 0, 0, 0.5);
+            font-style: italic;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Next action input */
+        .next-action-input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            color: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .next-action-input:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .next-action-input:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .next-action-input::placeholder {
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        /* Session context during timer */
+        .session-context {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .session-context.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .context-mode-project {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.35rem;
+        }
+
+        .context-next-action {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.45);
+            font-style: italic;
+        }
+
+        /* Saved intro preview */
+        .saved-intro-preview {
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.8rem;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.5);
+            font-style: italic;
+            display: none;
+        }
+
+        .saved-intro-preview.show {
+            display: block;
+        }
+
+        .saved-intro-label {
+            font-style: normal;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+            margin-right: 0.25rem;
+        }
+
+        /* Mobile responsive for session setup */
+        @media (max-width: 768px) {
+            .session-setup {
+                padding: 1rem 1.25rem;
+            }
         }
 
         /* Dashboard responsive styles */
@@ -1186,9 +1483,35 @@
     <div class="timer-container">
         <div class="mode-switcher">
             <div class="mode-slider"></div>
-            <button class="mode-option selected" data-mode="pomodoro">Pomodoro</button>
-            <button class="mode-option" data-mode="youtube">YouTube Creator</button>
+            <button class="mode-option selected" data-mode="pomodoro">Work</button>
+            <button class="mode-option" data-mode="youtube">Quinlan Travels</button>
         </div>
+
+        <!-- Session Setup Panel -->
+        <div class="session-setup">
+            <div class="setup-row">
+                <label class="setup-label">Project</label>
+                <div class="project-input-wrapper">
+                    <input type="text" class="project-input" placeholder="Select or type project..." autocomplete="off">
+                    <div class="project-dropdown"></div>
+                </div>
+                <div class="saved-intro-preview">
+                    <span class="saved-intro-label">Best intro:</span>
+                    <span class="saved-intro-text"></span>
+                </div>
+            </div>
+            <div class="setup-row">
+                <label class="setup-label">Next action (optional)</label>
+                <input type="text" class="next-action-input" placeholder="What will you do first?">
+            </div>
+        </div>
+
+        <!-- Session context (shown during timer) -->
+        <div class="session-context">
+            <div class="context-mode-project"></div>
+            <div class="context-next-action"></div>
+        </div>
+
         <div class="session-label">Work</div>
         <div class="countdown">
             <span class="digit" id="min-tens">2</span>
@@ -1224,8 +1547,8 @@
             <h2>Your Progress</h2>
             <div class="view-toggle">
                 <button class="view-option selected" data-view="combined">Combined</button>
-                <button class="view-option" data-view="pomodoro">Pomodoro</button>
-                <button class="view-option" data-view="youtube">YouTube</button>
+                <button class="view-option" data-view="pomodoro">Work</button>
+                <button class="view-option" data-view="youtube">Quinlan Travels</button>
             </div>
         </div>
 
@@ -1247,6 +1570,13 @@
         <div class="chart-container">
             <svg id="session-chart"></svg>
             <div class="chart-empty-message hide">No sessions recorded yet</div>
+        </div>
+
+        <div class="project-summary hide" id="project-summary">
+            <h3 class="section-label">Projects</h3>
+            <div class="project-list" id="project-list">
+                <!-- Populated dynamically -->
+            </div>
         </div>
 
         <button class="clear-data-btn">Clear All Data</button>
@@ -1271,9 +1601,16 @@
         let currentMode = 'pomodoro'; // 'pomodoro' or 'youtube'
         let youtubePhase = 'editing'; // 'editing' or 'intro'
 
+        // Session setup state
+        let currentProject = '';
+        let currentNextAction = '';
+
         // YouTube timer durations (in seconds)
         const YOUTUBE_EDITING_DURATION = 20 * 60; // 20 minutes
         const YOUTUBE_INTRO_DURATION = 2 * 60;    // 2 minutes
+
+        // Project storage key
+        const PROJECTS_STORAGE_KEY = 'pomodoro_projects';
 
         // DOM elements
         const minTensEl = document.getElementById('min-tens');
@@ -1295,6 +1632,17 @@
         const modeSlider = document.querySelector('.mode-slider');
         const youtubeEditButton = document.querySelector('.youtube-edit-button');
         const youtubeIntroButton = document.querySelector('.youtube-intro-button');
+
+        // Session setup elements
+        const sessionSetup = document.querySelector('.session-setup');
+        const projectInput = document.querySelector('.project-input');
+        const projectDropdown = document.querySelector('.project-dropdown');
+        const nextActionInput = document.querySelector('.next-action-input');
+        const sessionContext = document.querySelector('.session-context');
+        const contextModeProject = document.querySelector('.context-mode-project');
+        const contextNextAction = document.querySelector('.context-next-action');
+        const savedIntroPreview = document.querySelector('.saved-intro-preview');
+        const savedIntroText = document.querySelector('.saved-intro-text');
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
@@ -1363,38 +1711,56 @@
                         showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
                         restButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
+                        // Keep session context visible during rest
                     } else {
                         // Rest session completed - show work button
                         showNotification('Rest Complete!', 'Ready for another work session?');
+                        // Show session setup again (only for Quinlan mode)
+                        if (currentMode === 'youtube') {
+                            sessionSetup.classList.remove('hide');
+                        }
+                        hideSessionContext();
                         workButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
                     }
                 } else {
                     // YouTube Creator mode
                     if (youtubePhase === 'editing') {
-                        // Editing session completed - show intro button
-                        showNotification('Editing Complete!', 'Great job! Now improve your intro for 2 minutes.');
-                        youtubePhase = 'intro';
-                        sessionLabelEl.textContent = 'Improve Intro';
-                        backgroundEl.className = 'background youtube-intro';
-                        remainingSeconds = YOUTUBE_INTRO_DURATION;
-                        updateDisplay();
-                        youtubeIntroButton.classList.remove('hide');
-                        stopButton.classList.remove('visible');
-                    } else {
-                        // Intro session completed - show editing button for new cycle
-                        showNotification('Intro Complete!', 'Cycle complete! Ready to start editing again?');
+                        // Editing session completed - record session and show buttons
+                        showNotification('Editing Complete!', 'Session recorded! Want to work on your intro?');
+
+                        // Increment session count and record NOW (not after intro)
                         sessionCount++;
                         sessionCountEl.textContent = sessionCount;
-
-                        // Record the completed YouTube session
                         recordSession('youtube');
-                        youtubePhase = 'editing';
+
+                        // Reset to ready state
                         sessionLabelEl.textContent = 'Editing';
+                        sessionLabelEl.classList.remove('breathing');
                         backgroundEl.className = 'background youtube-editing';
                         remainingSeconds = YOUTUBE_EDITING_DURATION;
                         updateDisplay();
+
+                        // Show session setup and both buttons
+                        sessionSetup.classList.remove('hide');
+                        hideSessionContext();
+                        youtubeEditButton.classList.add('hide');
+                        youtubeIntroButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
+                    } else {
+                        // Intro session completed (optional phase) - just reset
+                        showNotification('Intro Complete!', 'Ready for another editing session?');
+
+                        sessionLabelEl.textContent = 'Editing';
+                        sessionLabelEl.classList.remove('breathing');
+                        backgroundEl.className = 'background youtube-editing';
+                        remainingSeconds = YOUTUBE_EDITING_DURATION;
+                        updateDisplay();
+
+                        sessionSetup.classList.remove('hide');
+                        hideSessionContext();
                         youtubeEditButton.classList.remove('hide');
+                        youtubeIntroButton.classList.add('hide');
                         stopButton.classList.remove('visible');
                     }
                 }
@@ -1431,9 +1797,12 @@
 
             updateDisplay();
 
-            // Hide rest button, show stop button
+            // Hide rest button and setup UI, show stop button
             restButton.classList.add('hide');
+            sessionSetup.classList.add('hide');
             stopButton.classList.add('visible');
+
+            // Keep session context visible during rest
 
             // Start the timer
             isRunning = true;
@@ -1461,9 +1830,15 @@
 
             updateDisplay();
 
-            // Hide work button, show stop button
+            // Hide work button and setup UI, show stop button
             workButton.classList.add('hide');
+            sessionSetup.classList.add('hide');
             stopButton.classList.add('visible');
+
+            // Show session context (only for Quinlan mode)
+            if (currentMode === 'youtube') {
+                showSessionContext();
+            }
 
             // Start the timer
             isRunning = true;
@@ -1482,6 +1857,11 @@
 
             // Remove breathing animation when stopped
             sessionLabelEl.classList.remove('breathing');
+
+            // Show session setup (only for Quinlan mode)
+            if (currentMode === 'youtube') {
+                sessionSetup.classList.remove('hide');
+            }
 
             if (currentMode === 'pomodoro') {
                 isWorkSession = true;
@@ -1527,6 +1907,7 @@
                 updateDisplay();
 
                 youtubeEditButton.classList.add('hide');
+                youtubeIntroButton.classList.add('hide');
                 stopButton.classList.add('visible');
 
                 endTime = Date.now() + (remainingSeconds * 1000);
@@ -1547,6 +1928,7 @@
 
                 updateDisplay();
 
+                youtubeEditButton.classList.add('hide');
                 youtubeIntroButton.classList.add('hide');
                 stopButton.classList.add('visible');
 
@@ -1598,6 +1980,7 @@
 
                 durationSelector.classList.remove('hide');
                 startButton.classList.remove('hide');
+                sessionSetup.classList.add('hide');
             } else {
                 // Switch to YouTube Creator mode
                 youtubePhase = 'editing';
@@ -1608,23 +1991,216 @@
 
                 durationSelector.classList.add('hide');
                 youtubeEditButton.classList.remove('hide');
+                youtubeIntroButton.classList.add('hide');
+                sessionSetup.classList.remove('hide');
             }
 
             updateDisplay();
         }
 
+        // ==========================================
+        // PROJECT MANAGEMENT
+        // ==========================================
+
+        // Load projects from localStorage
+        function loadProjects() {
+            try {
+                const stored = localStorage.getItem(PROJECTS_STORAGE_KEY);
+                if (!stored) {
+                    return { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} };
+                }
+                const data = JSON.parse(stored);
+                if (!data.version) data.version = 1;
+                if (!data.projects) data.projects = { work: [], quinlan: [] };
+                if (!data.introLines) data.introLines = {};
+                if (!data.projectSessions) data.projectSessions = {};
+                return data;
+            } catch (e) {
+                console.warn('Failed to load projects:', e);
+                return { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} };
+            }
+        }
+
+        // Save projects to localStorage
+        function saveProjects(data) {
+            try {
+                localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.warn('Failed to save projects:', e);
+            }
+        }
+
+        // Add a project to the list (most recent first)
+        function addProject(projectName) {
+            if (!projectName || projectName.trim() === '') return;
+
+            const data = loadProjects();
+            const modeKey = currentMode === 'pomodoro' ? 'work' : 'quinlan';
+
+            // Remove if already exists (to move to front)
+            const index = data.projects[modeKey].indexOf(projectName);
+            if (index > -1) {
+                data.projects[modeKey].splice(index, 1);
+            }
+
+            // Add to front
+            data.projects[modeKey].unshift(projectName);
+
+            // Keep max 10 projects per mode
+            if (data.projects[modeKey].length > 10) {
+                data.projects[modeKey] = data.projects[modeKey].slice(0, 10);
+            }
+
+            saveProjects(data);
+        }
+
+        // Get projects for current mode
+        function getProjects() {
+            const data = loadProjects();
+            const modeKey = currentMode === 'pomodoro' ? 'work' : 'quinlan';
+            return data.projects[modeKey] || [];
+        }
+
+        // Save intro line for a project
+        function saveIntroLine(projectName, introLine) {
+            if (!projectName) return;
+            const data = loadProjects();
+            data.introLines[projectName] = introLine;
+            saveProjects(data);
+        }
+
+        // Get intro line for a project
+        function getIntroLine(projectName) {
+            if (!projectName) return '';
+            const data = loadProjects();
+            return data.introLines[projectName] || '';
+        }
+
+        // Update project dropdown
+        function updateProjectDropdown(filter = '') {
+            const projects = getProjects();
+            const filterLower = filter.toLowerCase();
+
+            let html = '';
+
+            // Filter projects
+            const filtered = projects.filter(p =>
+                p.toLowerCase().includes(filterLower)
+            );
+
+            // Show filtered projects
+            filtered.forEach(project => {
+                html += `<div class="project-option" data-project="${project}">${project}</div>`;
+            });
+
+            // Show create new option if filter has text and doesn't match existing
+            if (filter.trim() && !projects.includes(filter.trim())) {
+                html += `<div class="project-option create-new" data-project="${filter.trim()}">Create "${filter.trim()}"</div>`;
+            }
+
+            projectDropdown.innerHTML = html;
+
+            // Add click handlers to options
+            projectDropdown.querySelectorAll('.project-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    selectProject(option.dataset.project);
+                });
+            });
+        }
+
+        // Select a project
+        function selectProject(projectName) {
+            currentProject = projectName;
+            projectInput.value = projectName;
+            projectDropdown.classList.remove('show');
+
+            // Show saved intro preview if exists (only for Quinlan mode)
+            if (currentMode === 'youtube') {
+                const savedIntro = getIntroLine(projectName);
+                if (savedIntro) {
+                    savedIntroText.textContent = `"${savedIntro.substring(0, 50)}${savedIntro.length > 50 ? '...' : ''}"`;
+                    savedIntroPreview.classList.add('show');
+                } else {
+                    savedIntroPreview.classList.remove('show');
+                }
+            } else {
+                savedIntroPreview.classList.remove('show');
+            }
+        }
+
+        // Show session context during timer
+        function showSessionContext() {
+            if (currentProject || currentNextAction) {
+                const modeName = currentMode === 'pomodoro' ? 'Work' : 'Quinlan Travels';
+                if (currentProject) {
+                    contextModeProject.textContent = `${modeName} · ${currentProject}`;
+                } else {
+                    contextModeProject.textContent = modeName;
+                }
+
+                if (currentNextAction) {
+                    contextNextAction.textContent = `Next: ${currentNextAction}`;
+                } else {
+                    contextNextAction.textContent = '';
+                }
+
+                sessionContext.classList.add('visible');
+            }
+        }
+
+        // Hide session context
+        function hideSessionContext() {
+            sessionContext.classList.remove('visible');
+        }
+
         // Event listeners
-        startButton.addEventListener('click', startTimer);
+        startButton.addEventListener('click', () => {
+            // Save project if entered (for Work mode, not used but kept for consistency)
+            if (currentProject) {
+                addProject(currentProject);
+            }
+            currentNextAction = nextActionInput.value.trim();
+
+            // Hide setup UI when starting
+            sessionSetup.classList.add('hide');
+
+            startTimer();
+        });
         restButton.addEventListener('click', startRestTimer);
         workButton.addEventListener('click', startWorkTimer);
-        stopButton.addEventListener('click', stopTimer);
-        youtubeEditButton.addEventListener('click', startEditingTimer);
-        youtubeIntroButton.addEventListener('click', startIntroTimer);
+        stopButton.addEventListener('click', () => {
+            hideSessionContext();
+            stopTimer();
+        });
+        youtubeEditButton.addEventListener('click', () => {
+            // Save project if entered
+            if (currentProject) {
+                addProject(currentProject);
+            }
+            currentNextAction = nextActionInput.value.trim();
+
+            // Hide setup UI when starting
+            sessionSetup.classList.add('hide');
+
+            // Show session context
+            showSessionContext();
+
+            startEditingTimer();
+        });
+        youtubeIntroButton.addEventListener('click', () => {
+            showSessionContext();
+            startIntroTimer();
+        });
 
         // Mode switcher click handlers
         modeOptions.forEach(option => {
             option.addEventListener('click', () => {
                 switchMode(option.dataset.mode);
+                // Clear project selection when switching modes
+                currentProject = '';
+                projectInput.value = '';
+                savedIntroPreview.classList.remove('show');
+                updateProjectDropdown('');
             });
         });
 
@@ -1640,6 +2216,42 @@
                 remainingSeconds = workDuration * 60;
                 updateDisplay();
             });
+        });
+
+        // Project input handlers
+        projectInput.addEventListener('focus', () => {
+            updateProjectDropdown(projectInput.value);
+            projectDropdown.classList.add('show');
+        });
+
+        projectInput.addEventListener('input', () => {
+            currentProject = projectInput.value;
+            updateProjectDropdown(projectInput.value);
+            projectDropdown.classList.add('show');
+            savedIntroPreview.classList.remove('show');
+        });
+
+        projectInput.addEventListener('blur', () => {
+            // Delay to allow clicking on dropdown
+            setTimeout(() => {
+                projectDropdown.classList.remove('show');
+            }, 200);
+        });
+
+        projectInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (projectInput.value.trim()) {
+                    selectProject(projectInput.value.trim());
+                }
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.project-input-wrapper')) {
+                projectDropdown.classList.remove('show');
+            }
         });
 
         // Check for time of day changes every minute (only for Pomodoro mode)
@@ -1663,6 +2275,9 @@
         // Set initial time-of-day palette
         backgroundEl.className = `background work ${getTimeOfDay()}`;
 
+        // Hide session setup by default (starts in Work mode)
+        sessionSetup.classList.add('hide');
+
         // ==========================================
         // SESSION TRACKING & STORAGE
         // ==========================================
@@ -1683,6 +2298,8 @@
         const sessionChart = document.getElementById('session-chart');
         const chartEmptyMessage = document.querySelector('.chart-empty-message');
         const clearDataBtn = document.querySelector('.clear-data-btn');
+        const projectSummary = document.getElementById('project-summary');
+        const projectList = document.getElementById('project-list');
 
         let currentViewMode = 'combined'; // 'combined', 'pomodoro', 'youtube'
 
@@ -1732,6 +2349,16 @@
                 data.sessions[today].pomodoro++;
             } else if (mode === 'youtube') {
                 data.sessions[today].youtube++;
+
+                // Track project session counts for Quinlan Travels
+                if (currentProject) {
+                    const projectData = loadProjects();
+                    if (!projectData.projectSessions[currentProject]) {
+                        projectData.projectSessions[currentProject] = 0;
+                    }
+                    projectData.projectSessions[currentProject]++;
+                    saveProjects(projectData);
+                }
             }
 
             saveSessionData(data);
@@ -2028,14 +2655,36 @@
                 legend.innerHTML = `
                     <div class="legend-item">
                         <span class="legend-color pomodoro"></span>
-                        <span>Pomodoro</span>
+                        <span>Work</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color youtube"></span>
-                        <span>YouTube</span>
+                        <span>Quinlan Travels</span>
                     </div>
                 `;
                 container.appendChild(legend);
+            }
+        }
+
+        // Render project summary for Quinlan Travels view
+        function renderProjectSummary() {
+            const projectData = loadProjects();
+            const sessions = projectData.projectSessions || {};
+
+            // Convert to array and sort by session count (descending)
+            const projects = Object.entries(sessions)
+                .map(([name, count]) => ({ name, count }))
+                .sort((a, b) => b.count - a.count);
+
+            if (projects.length === 0) {
+                projectList.innerHTML = '<div class="project-list-empty">No projects tracked yet</div>';
+            } else {
+                projectList.innerHTML = projects.map(p => `
+                    <div class="project-list-item">
+                        <span class="project-name">${p.name}</span>
+                        <span class="project-count">${p.count} session${p.count !== 1 ? 's' : ''}</span>
+                    </div>
+                `).join('');
             }
         }
 
@@ -2048,6 +2697,14 @@
             totalSessionsEl.textContent = stats.totalSessions;
 
             renderChart(currentViewMode);
+
+            // Show project summary only for Quinlan Travels view
+            if (currentViewMode === 'youtube') {
+                renderProjectSummary();
+                projectSummary.classList.remove('hide');
+            } else {
+                projectSummary.classList.add('hide');
+            }
         }
 
         // ==========================================
