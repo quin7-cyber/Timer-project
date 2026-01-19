@@ -746,6 +746,418 @@
                 letter-spacing: 0.05em;
             }
         }
+
+        /* Dashboard Button */
+        .dashboard-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+
+        .dashboard-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-btn.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Dashboard View */
+        .dashboard-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .dashboard-view.hide {
+            display: none;
+        }
+
+        .dashboard-back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .dashboard-back-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stats-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.25rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .view-option {
+            padding: 0.5rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .view-option:hover {
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .view-option.selected {
+            background: rgba(255, 255, 255, 0.6);
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Stats Cards */
+        .stats-cards {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        #session-chart {
+            width: 100%;
+            height: 300px;
+        }
+
+        .chart-empty-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        .chart-empty-message.hide {
+            display: none;
+        }
+
+        /* Chart SVG styles */
+        .chart-line {
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart-line.pomodoro {
+            stroke: #b8a4d4;
+        }
+
+        .chart-line.youtube {
+            stroke: #e8a598;
+        }
+
+        .chart-area {
+            opacity: 0.15;
+        }
+
+        .chart-area.pomodoro {
+            fill: #b8a4d4;
+        }
+
+        .chart-area.youtube {
+            fill: #e8a598;
+        }
+
+        .chart-dot {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chart-dot.pomodoro {
+            fill: #b8a4d4;
+        }
+
+        .chart-dot.youtube {
+            fill: #e8a598;
+        }
+
+        .chart-dot:hover {
+            transform: scale(1.5);
+        }
+
+        .chart-axis {
+            stroke: rgba(0, 0, 0, 0.15);
+            stroke-width: 1;
+        }
+
+        .chart-grid {
+            stroke: rgba(0, 0, 0, 0.05);
+            stroke-width: 1;
+        }
+
+        .chart-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            fill: rgba(0, 0, 0, 0.4);
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-tooltip.visible {
+            opacity: 1;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-color.pomodoro {
+            background: #b8a4d4;
+        }
+
+        .legend-color.youtube {
+            background: #e8a598;
+        }
+
+        /* Clear Data Button */
+        .clear-data-btn {
+            padding: 0.8rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(200, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(150, 0, 0, 0.7);
+        }
+
+        .clear-data-btn:hover {
+            background: rgba(255, 100, 100, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Dashboard responsive styles */
+        @media (max-width: 768px) {
+            .dashboard-view {
+                padding: 1.5rem;
+            }
+
+            .dashboard-btn {
+                top: 1.5rem;
+                left: 1.5rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+            }
+
+            .dashboard-back-btn {
+                top: 1.5rem;
+                left: 1.5rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+            }
+
+            .stats-header h2 {
+                font-size: 2rem;
+            }
+
+            .view-option {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+            }
+
+            .stats-cards {
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem 1.5rem;
+                min-width: 100px;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            #session-chart {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-btn {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .dashboard-back-btn {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .stats-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .view-toggle {
+                flex-wrap: wrap;
+            }
+
+            .stat-card {
+                min-width: 80px;
+                padding: 0.75rem 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            #session-chart {
+                height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -802,6 +1214,44 @@
 
     <button class="stop-button">Reset</button>
 
+    <!-- Dashboard button -->
+    <button class="dashboard-btn">Stats</button>
+
+    <!-- Dashboard view -->
+    <div class="dashboard-view hide">
+        <button class="dashboard-back-btn">Back</button>
+        <div class="stats-header">
+            <h2>Your Progress</h2>
+            <div class="view-toggle">
+                <button class="view-option selected" data-view="combined">Combined</button>
+                <button class="view-option" data-view="pomodoro">Pomodoro</button>
+                <button class="view-option" data-view="youtube">YouTube</button>
+            </div>
+        </div>
+
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-label">Days Active</div>
+                <div class="stat-value" id="days-active">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Sessions</div>
+                <div class="stat-value" id="today-sessions">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Sessions</div>
+                <div class="stat-value" id="total-sessions">0</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <svg id="session-chart"></svg>
+            <div class="chart-empty-message hide">No sessions recorded yet</div>
+        </div>
+
+        <button class="clear-data-btn">Clear All Data</button>
+    </div>
+
     <div class="session-counter">
         <div class="counter-label">Sessions Completed</div>
         <div class="counter-value" id="session-count">0</div>
@@ -815,6 +1265,7 @@
         let isWorkSession = true;
         let isRunning = false;
         let sessionCount = 0;
+        let endTime = null;
 
         // Mode state
         let currentMode = 'pomodoro'; // 'pomodoro' or 'youtube'
@@ -898,7 +1349,8 @@
 
         // Timer tick
         function tick() {
-            remainingSeconds--;
+            const now = Date.now();
+            remainingSeconds = Math.max(0, Math.ceil((endTime - now) / 1000));
             updateDisplay();
 
             if (remainingSeconds <= 0) {
@@ -934,6 +1386,9 @@
                         showNotification('Intro Complete!', 'Cycle complete! Ready to start editing again?');
                         sessionCount++;
                         sessionCountEl.textContent = sessionCount;
+
+                        // Record the completed YouTube session
+                        recordSession('youtube');
                         youtubePhase = 'editing';
                         sessionLabelEl.textContent = 'Editing';
                         backgroundEl.className = 'background youtube-editing';
@@ -959,6 +1414,7 @@
                     sessionLabelEl.classList.add('breathing');
                 }
 
+                endTime = Date.now() + (remainingSeconds * 1000);
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -981,6 +1437,7 @@
 
             // Start the timer
             isRunning = true;
+            endTime = Date.now() + (remainingSeconds * 1000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -989,6 +1446,9 @@
             // Increment session count (work + rest cycle completed)
             sessionCount++;
             sessionCountEl.textContent = sessionCount;
+
+            // Record the completed session
+            recordSession('pomodoro');
 
             // Set up work session
             isWorkSession = true;
@@ -1007,6 +1467,7 @@
 
             // Start the timer
             isRunning = true;
+            endTime = Date.now() + (remainingSeconds * 1000);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -1014,7 +1475,9 @@
         function stopTimer() {
             clearInterval(timerInterval);
             isRunning = false;
-            sessionCount = 0;
+
+            // Load today's session count from storage (don't reset to 0)
+            sessionCount = getTodaySessionCount();
             sessionCountEl.textContent = sessionCount;
 
             // Remove breathing animation when stopped
@@ -1066,6 +1529,7 @@
                 youtubeEditButton.classList.add('hide');
                 stopButton.classList.add('visible');
 
+                endTime = Date.now() + (remainingSeconds * 1000);
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -1086,6 +1550,7 @@
                 youtubeIntroButton.classList.add('hide');
                 stopButton.classList.add('visible');
 
+                endTime = Date.now() + (remainingSeconds * 1000);
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -1097,12 +1562,14 @@
             // Stop any running timer
             clearInterval(timerInterval);
             isRunning = false;
-            sessionCount = 0;
-            sessionCountEl.textContent = sessionCount;
             sessionLabelEl.classList.remove('breathing');
 
             // Update mode state
             currentMode = mode;
+
+            // Load today's session count for the new mode from storage
+            sessionCount = getTodaySessionCount();
+            sessionCountEl.textContent = sessionCount;
 
             // Update mode switcher UI
             modeOptions.forEach(opt => {
@@ -1195,6 +1662,451 @@
 
         // Set initial time-of-day palette
         backgroundEl.className = `background work ${getTimeOfDay()}`;
+
+        // ==========================================
+        // SESSION TRACKING & STORAGE
+        // ==========================================
+
+        const STORAGE_KEY = 'pomodoro_session_data';
+        const DATA_VERSION = 1;
+
+        // Dashboard DOM elements
+        const dashboardBtn = document.querySelector('.dashboard-btn');
+        const dashboardView = document.querySelector('.dashboard-view');
+        const dashboardBackBtn = document.querySelector('.dashboard-back-btn');
+        const timerContainer = document.querySelector('.timer-container');
+        const sessionCounter = document.querySelector('.session-counter');
+        const viewOptions = document.querySelectorAll('.view-option');
+        const daysActiveEl = document.getElementById('days-active');
+        const todaySessionsEl = document.getElementById('today-sessions');
+        const totalSessionsEl = document.getElementById('total-sessions');
+        const sessionChart = document.getElementById('session-chart');
+        const chartEmptyMessage = document.querySelector('.chart-empty-message');
+        const clearDataBtn = document.querySelector('.clear-data-btn');
+
+        let currentViewMode = 'combined'; // 'combined', 'pomodoro', 'youtube'
+
+        // Get today's date key in YYYY-MM-DD format
+        function getTodayDateKey() {
+            return new Date().toLocaleDateString('sv'); // Swedish locale gives ISO format
+        }
+
+        // Load session data from localStorage
+        function loadSessionData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (!stored) {
+                    return { version: DATA_VERSION, sessions: {} };
+                }
+                const data = JSON.parse(stored);
+                // Handle future version migrations here if needed
+                if (!data.version) {
+                    data.version = DATA_VERSION;
+                }
+                return data;
+            } catch (e) {
+                console.warn('Failed to load session data:', e);
+                return { version: DATA_VERSION, sessions: {} };
+            }
+        }
+
+        // Save session data to localStorage
+        function saveSessionData(data) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.warn('Failed to save session data:', e);
+            }
+        }
+
+        // Record a completed session
+        function recordSession(mode) {
+            const data = loadSessionData();
+            const today = getTodayDateKey();
+
+            if (!data.sessions[today]) {
+                data.sessions[today] = { pomodoro: 0, youtube: 0 };
+            }
+
+            if (mode === 'pomodoro') {
+                data.sessions[today].pomodoro++;
+            } else if (mode === 'youtube') {
+                data.sessions[today].youtube++;
+            }
+
+            saveSessionData(data);
+        }
+
+        // Get sessions for a date range (returns array of { date, pomodoro, youtube })
+        function getSessionsForDateRange(startDate, endDate) {
+            const data = loadSessionData();
+            const sessions = [];
+            const current = new Date(startDate);
+            const end = new Date(endDate);
+
+            while (current <= end) {
+                const dateKey = current.toLocaleDateString('sv');
+                const dayData = data.sessions[dateKey] || { pomodoro: 0, youtube: 0 };
+                sessions.push({
+                    date: dateKey,
+                    pomodoro: dayData.pomodoro,
+                    youtube: dayData.youtube
+                });
+                current.setDate(current.getDate() + 1);
+            }
+
+            return sessions;
+        }
+
+        // Calculate stats from session data
+        function calculateStats(viewMode) {
+            const data = loadSessionData();
+            const today = getTodayDateKey();
+
+            let daysActive = 0;
+            let todaySessions = 0;
+            let totalSessions = 0;
+
+            for (const [date, dayData] of Object.entries(data.sessions)) {
+                let dayTotal = 0;
+
+                if (viewMode === 'combined') {
+                    dayTotal = dayData.pomodoro + dayData.youtube;
+                } else if (viewMode === 'pomodoro') {
+                    dayTotal = dayData.pomodoro;
+                } else if (viewMode === 'youtube') {
+                    dayTotal = dayData.youtube;
+                }
+
+                if (dayTotal > 0) {
+                    daysActive++;
+                    totalSessions += dayTotal;
+
+                    if (date === today) {
+                        todaySessions = dayTotal;
+                    }
+                }
+            }
+
+            return { daysActive, todaySessions, totalSessions };
+        }
+
+        // Get today's session count for in-page counter
+        function getTodaySessionCount() {
+            const data = loadSessionData();
+            const today = getTodayDateKey();
+            const dayData = data.sessions[today];
+
+            if (!dayData) return 0;
+
+            if (currentMode === 'pomodoro') {
+                return dayData.pomodoro;
+            } else {
+                return dayData.youtube;
+            }
+        }
+
+        // Clear all session data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all session data? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                sessionCount = 0;
+                sessionCountEl.textContent = sessionCount;
+                renderDashboard();
+            }
+        }
+
+        // ==========================================
+        // CHART RENDERING
+        // ==========================================
+
+        function renderChart(viewMode) {
+            const svg = sessionChart;
+            const container = document.querySelector('.chart-container');
+
+            // Clear existing content
+            svg.innerHTML = '';
+
+            // Get chart dimensions
+            const rect = container.getBoundingClientRect();
+            const width = rect.width - 48; // Account for padding
+            const height = 300;
+            const padding = { top: 20, right: 20, bottom: 40, left: 40 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            // Get data for last 30 days
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 29);
+
+            const sessions = getSessionsForDateRange(startDate, endDate);
+
+            // Check if we have any data
+            const hasData = sessions.some(s => s.pomodoro > 0 || s.youtube > 0);
+
+            if (!hasData) {
+                chartEmptyMessage.classList.remove('hide');
+                return;
+            }
+            chartEmptyMessage.classList.add('hide');
+
+            // Calculate max value for Y-axis
+            let maxValue = 1;
+            sessions.forEach(s => {
+                if (viewMode === 'combined') {
+                    maxValue = Math.max(maxValue, s.pomodoro + s.youtube);
+                } else if (viewMode === 'pomodoro') {
+                    maxValue = Math.max(maxValue, s.pomodoro);
+                } else {
+                    maxValue = Math.max(maxValue, s.youtube);
+                }
+            });
+
+            // Add some headroom
+            maxValue = Math.ceil(maxValue * 1.2) || 1;
+
+            // Create scales
+            const xScale = (index) => padding.left + (index / (sessions.length - 1)) * chartWidth;
+            const yScale = (value) => padding.top + chartHeight - (value / maxValue) * chartHeight;
+
+            // Draw grid lines
+            const gridGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            const gridLines = 5;
+            for (let i = 0; i <= gridLines; i++) {
+                const y = padding.top + (chartHeight / gridLines) * i;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', padding.left);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', width - padding.right);
+                line.setAttribute('y2', y);
+                line.setAttribute('class', 'chart-grid');
+                gridGroup.appendChild(line);
+
+                // Y-axis labels
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const value = Math.round(maxValue - (maxValue / gridLines) * i);
+                label.setAttribute('x', padding.left - 8);
+                label.setAttribute('y', y + 4);
+                label.setAttribute('text-anchor', 'end');
+                label.setAttribute('class', 'chart-label');
+                label.textContent = value;
+                gridGroup.appendChild(label);
+            }
+            svg.appendChild(gridGroup);
+
+            // Draw X-axis labels (show every 5th day)
+            const xLabelGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            sessions.forEach((s, i) => {
+                if (i % 5 === 0 || i === sessions.length - 1) {
+                    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const date = new Date(s.date);
+                    label.setAttribute('x', xScale(i));
+                    label.setAttribute('y', height - padding.bottom + 20);
+                    label.setAttribute('text-anchor', 'middle');
+                    label.setAttribute('class', 'chart-label');
+                    label.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
+                    xLabelGroup.appendChild(label);
+                }
+            });
+            svg.appendChild(xLabelGroup);
+
+            // Draw axes
+            const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            // X-axis
+            const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            xAxis.setAttribute('x1', padding.left);
+            xAxis.setAttribute('y1', height - padding.bottom);
+            xAxis.setAttribute('x2', width - padding.right);
+            xAxis.setAttribute('y2', height - padding.bottom);
+            xAxis.setAttribute('class', 'chart-axis');
+            axisGroup.appendChild(xAxis);
+            // Y-axis
+            const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            yAxis.setAttribute('x1', padding.left);
+            yAxis.setAttribute('y1', padding.top);
+            yAxis.setAttribute('x2', padding.left);
+            yAxis.setAttribute('y2', height - padding.bottom);
+            yAxis.setAttribute('class', 'chart-axis');
+            axisGroup.appendChild(yAxis);
+            svg.appendChild(axisGroup);
+
+            // Helper function to create path
+            function createPath(data, className) {
+                if (data.every(v => v === 0)) return null;
+
+                // Create area path
+                const areaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                let areaD = `M ${xScale(0)} ${yScale(0)}`;
+                data.forEach((value, i) => {
+                    areaD += ` L ${xScale(i)} ${yScale(value)}`;
+                });
+                areaD += ` L ${xScale(data.length - 1)} ${yScale(0)} Z`;
+                areaPath.setAttribute('d', areaD);
+                areaPath.setAttribute('class', `chart-area ${className}`);
+                svg.appendChild(areaPath);
+
+                // Create line path
+                const linePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                let lineD = '';
+                data.forEach((value, i) => {
+                    lineD += i === 0 ? `M ${xScale(i)} ${yScale(value)}` : ` L ${xScale(i)} ${yScale(value)}`;
+                });
+                linePath.setAttribute('d', lineD);
+                linePath.setAttribute('class', `chart-line ${className}`);
+                svg.appendChild(linePath);
+
+                return { areaPath, linePath };
+            }
+
+            // Create tooltip
+            let tooltip = container.querySelector('.chart-tooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.className = 'chart-tooltip';
+                container.appendChild(tooltip);
+            }
+
+            // Helper function to create dots
+            function createDots(data, className, sessions) {
+                data.forEach((value, i) => {
+                    if (value > 0) {
+                        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        dot.setAttribute('cx', xScale(i));
+                        dot.setAttribute('cy', yScale(value));
+                        dot.setAttribute('r', 4);
+                        dot.setAttribute('class', `chart-dot ${className}`);
+
+                        // Tooltip on hover
+                        dot.addEventListener('mouseenter', (e) => {
+                            const date = new Date(sessions[i].date);
+                            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            tooltip.innerHTML = `<strong>${dateStr}</strong><br>${value} session${value !== 1 ? 's' : ''}`;
+                            tooltip.classList.add('visible');
+                        });
+
+                        dot.addEventListener('mousemove', (e) => {
+                            const containerRect = container.getBoundingClientRect();
+                            tooltip.style.left = `${e.clientX - containerRect.left + 10}px`;
+                            tooltip.style.top = `${e.clientY - containerRect.top - 30}px`;
+                        });
+
+                        dot.addEventListener('mouseleave', () => {
+                            tooltip.classList.remove('visible');
+                        });
+
+                        svg.appendChild(dot);
+                    }
+                });
+            }
+
+            // Draw lines based on view mode
+            if (viewMode === 'combined' || viewMode === 'pomodoro') {
+                const pomodoroData = sessions.map(s => s.pomodoro);
+                createPath(pomodoroData, 'pomodoro');
+                createDots(pomodoroData, 'pomodoro', sessions);
+            }
+
+            if (viewMode === 'combined' || viewMode === 'youtube') {
+                const youtubeData = sessions.map(s => s.youtube);
+                createPath(youtubeData, 'youtube');
+                createDots(youtubeData, 'youtube', sessions);
+            }
+
+            // Add legend for combined view
+            const existingLegend = container.querySelector('.chart-legend');
+            if (existingLegend) {
+                existingLegend.remove();
+            }
+
+            if (viewMode === 'combined') {
+                const legend = document.createElement('div');
+                legend.className = 'chart-legend';
+                legend.innerHTML = `
+                    <div class="legend-item">
+                        <span class="legend-color pomodoro"></span>
+                        <span>Pomodoro</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color youtube"></span>
+                        <span>YouTube</span>
+                    </div>
+                `;
+                container.appendChild(legend);
+            }
+        }
+
+        // Render the entire dashboard
+        function renderDashboard() {
+            const stats = calculateStats(currentViewMode);
+
+            daysActiveEl.textContent = stats.daysActive;
+            todaySessionsEl.textContent = stats.todaySessions;
+            totalSessionsEl.textContent = stats.totalSessions;
+
+            renderChart(currentViewMode);
+        }
+
+        // ==========================================
+        // VIEW MANAGEMENT
+        // ==========================================
+
+        function showDashboard() {
+            dashboardView.classList.remove('hide');
+            timerContainer.style.display = 'none';
+            sessionCounter.style.display = 'none';
+            stopButton.style.display = 'none';
+            dashboardBtn.classList.add('hide');
+            renderDashboard();
+        }
+
+        function hideDashboard() {
+            dashboardView.classList.add('hide');
+            timerContainer.style.display = '';
+            sessionCounter.style.display = '';
+            stopButton.style.display = '';
+            dashboardBtn.classList.remove('hide');
+        }
+
+        function updateViewToggle(viewMode) {
+            currentViewMode = viewMode;
+            viewOptions.forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.view === viewMode);
+            });
+            renderDashboard();
+        }
+
+        // ==========================================
+        // DASHBOARD EVENT LISTENERS
+        // ==========================================
+
+        dashboardBtn.addEventListener('click', showDashboard);
+        dashboardBackBtn.addEventListener('click', hideDashboard);
+        clearDataBtn.addEventListener('click', clearAllData);
+
+        viewOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                updateViewToggle(option.dataset.view);
+            });
+        });
+
+        // Re-render chart on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (!dashboardView.classList.contains('hide')) {
+                    renderChart(currentViewMode);
+                }
+            }, 250);
+        });
+
+        // Initialize session count from stored data
+        sessionCount = getTodaySessionCount();
+        sessionCountEl.textContent = sessionCount;
     </script>
 </body>
 </html>
