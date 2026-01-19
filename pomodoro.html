@@ -74,6 +74,19 @@
             animation: gradientShift 20s ease infinite;
         }
 
+        /* YouTube Creator Mode palettes */
+        .background.youtube-editing {
+            background: linear-gradient(-45deg, #ffb3a3, #ffc4b8, #ffd4c8, #ffe0d4);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .background.youtube-intro {
+            background: linear-gradient(-45deg, #ff9b8a, #ffa898, #ffb5a5, #ffc2b3);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
         @keyframes gradientShift {
             0% {
                 background-position: 0% 50%;
@@ -303,10 +316,66 @@
             animation: breathe 8s ease-in-out infinite;
         }
 
+        /* Duration selector */
+        .duration-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .duration-option {
+            padding: 0.5rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .duration-option:hover {
+            color: rgba(0, 0, 0, 0.6);
+            transform: scale(1.05);
+        }
+
+        .duration-option.selected {
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .duration-label {
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: rgba(0, 0, 0, 0.4);
+            margin-left: 0.25rem;
+        }
+
+        .duration-selector.hide {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        /* Action button container - unified positioning */
+        .action-buttons {
+            position: relative;
+            margin-top: 4rem;
+            height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         /* Start button */
         .start-button {
-            display: block;
-            margin: 4rem auto 0;
+            position: absolute;
             padding: 1.2rem 3.5rem;
             font-size: 1rem;
             font-weight: 400;
@@ -323,8 +392,8 @@
 
         .start-button:hover {
             background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .start-button.hide {
@@ -335,8 +404,7 @@
 
         /* Rest button - identical to start button */
         .rest-button {
-            display: block;
-            margin: 4rem auto 0;
+            position: absolute;
             padding: 1.2rem 3.5rem;
             font-size: 1rem;
             font-weight: 400;
@@ -353,11 +421,98 @@
 
         .rest-button:hover {
             background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .rest-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* Work button - appears after rest */
+        .work-button {
+            position: absolute;
+            padding: 1.2rem 3.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .work-button:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .work-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* YouTube Edit button */
+        .youtube-edit-button {
+            position: absolute;
+            padding: 1.2rem 3.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .youtube-edit-button:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .youtube-edit-button.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* YouTube Intro button */
+        .youtube-intro-button {
+            position: absolute;
+            padding: 1.2rem 3.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .youtube-intro-button:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .youtube-intro-button.hide {
             opacity: 0;
             transform: scale(0.8);
             pointer-events: none;
@@ -391,7 +546,8 @@
 
         .stop-button:hover {
             background: rgba(255, 255, 255, 0.5);
-            transform: translateY(-1px);
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Mobile responsive */
@@ -405,16 +561,31 @@
                 letter-spacing: 0.2em;
             }
 
-            .start-button {
-                padding: 1rem 2.5rem;
-                font-size: 0.9rem;
-                margin: 3rem auto 0;
+            .action-buttons {
+                margin-top: 3rem;
+                height: 46px;
             }
 
-            .rest-button {
+            .start-button,
+            .rest-button,
+            .work-button,
+            .youtube-edit-button,
+            .youtube-intro-button {
                 padding: 1rem 2.5rem;
                 font-size: 0.9rem;
-                margin: 3rem auto 0;
+            }
+
+            .duration-selector {
+                margin-top: 1.5rem;
+            }
+
+            .duration-option {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .duration-label {
+                font-size: 0.75rem;
             }
 
             .stop-button {
@@ -490,6 +661,83 @@
                 display: none;
             }
         }
+
+        /* Mode Switcher */
+        .mode-switcher {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.25rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-slider {
+            position: absolute;
+            top: 0.25rem;
+            left: 0.25rem;
+            height: calc(100% - 0.5rem);
+            width: calc(50% - 0.25rem);
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .mode-slider.youtube {
+            transform: translateX(100%);
+        }
+
+        .mode-option {
+            position: relative;
+            z-index: 1;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .mode-option:hover {
+            color: rgba(0, 0, 0, 0.7);
+            transform: scale(1.02);
+        }
+
+        .mode-option.selected {
+            background: transparent;
+            color: rgba(0, 0, 0, 0.8);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .mode-switcher {
+                margin-bottom: 2rem;
+            }
+
+            .mode-option {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mode-option {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+                letter-spacing: 0.05em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -516,6 +764,11 @@
     </div>
 
     <div class="timer-container">
+        <div class="mode-switcher">
+            <div class="mode-slider"></div>
+            <button class="mode-option selected" data-mode="pomodoro">Pomodoro</button>
+            <button class="mode-option" data-mode="youtube">YouTube Creator</button>
+        </div>
         <div class="session-label">Work</div>
         <div class="countdown">
             <span class="digit" id="min-tens">2</span>
@@ -524,19 +777,44 @@
             <span class="digit" id="sec-tens">0</span>
             <span class="digit" id="sec-ones">0</span>
         </div>
-        <button class="start-button">Begin</button>
-        <button class="rest-button">Start Rest</button>
+        <div class="duration-selector">
+            <button class="duration-option" data-duration="15">15</button>
+            <button class="duration-option" data-duration="20">20</button>
+            <button class="duration-option selected" data-duration="25">25</button>
+            <span class="duration-label">min</span>
+        </div>
+        <div class="action-buttons">
+            <button class="start-button">Begin</button>
+            <button class="rest-button hide">Start Rest</button>
+            <button class="work-button hide">Start Work</button>
+            <button class="youtube-edit-button hide">Start Editing</button>
+            <button class="youtube-intro-button hide">Start Intro</button>
+        </div>
     </div>
 
     <button class="stop-button">Reset</button>
 
+    <div class="session-counter">
+        <div class="counter-label">Sessions Completed</div>
+        <div class="counter-value" id="session-count">0</div>
+    </div>
+
     <script>
         // Timer state
         let timerInterval = null;
-        let remainingSeconds = 25 * 60; // 25 minutes in seconds
+        let workDuration = 25; // Selected work duration in minutes
+        let remainingSeconds = workDuration * 60;
         let isWorkSession = true;
         let isRunning = false;
         let sessionCount = 0;
+
+        // Mode state
+        let currentMode = 'pomodoro'; // 'pomodoro' or 'youtube'
+        let youtubePhase = 'editing'; // 'editing' or 'intro'
+
+        // YouTube timer durations (in seconds)
+        const YOUTUBE_EDITING_DURATION = 20 * 60; // 20 minutes
+        const YOUTUBE_INTRO_DURATION = 2 * 60;    // 2 minutes
 
         // DOM elements
         const minTensEl = document.getElementById('min-tens');
@@ -547,8 +825,17 @@
         const sessionLabelEl = document.querySelector('.session-label');
         const startButton = document.querySelector('.start-button');
         const restButton = document.querySelector('.rest-button');
+        const workButton = document.querySelector('.work-button');
         const stopButton = document.querySelector('.stop-button');
         const backgroundEl = document.querySelector('.background');
+        const durationSelector = document.querySelector('.duration-selector');
+        const durationOptions = document.querySelectorAll('.duration-option');
+
+        // Mode switcher elements
+        const modeOptions = document.querySelectorAll('.mode-option');
+        const modeSlider = document.querySelector('.mode-slider');
+        const youtubeEditButton = document.querySelector('.youtube-edit-button');
+        const youtubeIntroButton = document.querySelector('.youtube-intro-button');
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
@@ -610,27 +897,43 @@
                 clearInterval(timerInterval);
                 isRunning = false;
 
-                if (isWorkSession) {
-                    // Work session completed - show rest button
-                    showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
-                    restButton.classList.remove('hide');
-                    stopButton.classList.remove('visible');
+                if (currentMode === 'pomodoro') {
+                    if (isWorkSession) {
+                        // Work session completed - show rest button
+                        showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
+                        restButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
+                    } else {
+                        // Rest session completed - show work button
+                        showNotification('Rest Complete!', 'Ready for another work session?');
+                        workButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
+                    }
                 } else {
-                    // Rest session completed - prepare for next work session
-                    isWorkSession = true;
-                    sessionCount++;
-                    sessionCountEl.textContent = sessionCount;
-
-                    remainingSeconds = 25 * 60;
-                    const timeOfDay = getTimeOfDay();
-                    sessionLabelEl.textContent = 'Work';
-                    backgroundEl.className = `background work ${timeOfDay}`;
-                    sessionLabelEl.classList.remove('breathing');
-
-                    showNotification('Rest Complete!', 'Ready for another work session?');
-                    startButton.classList.remove('hide');
-                    stopButton.classList.remove('visible');
-                    updateDisplay();
+                    // YouTube Creator mode
+                    if (youtubePhase === 'editing') {
+                        // Editing session completed - show intro button
+                        showNotification('Editing Complete!', 'Great job! Now improve your intro for 2 minutes.');
+                        youtubePhase = 'intro';
+                        sessionLabelEl.textContent = 'Improve Intro';
+                        backgroundEl.className = 'background youtube-intro';
+                        remainingSeconds = YOUTUBE_INTRO_DURATION;
+                        updateDisplay();
+                        youtubeIntroButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
+                    } else {
+                        // Intro session completed - show editing button for new cycle
+                        showNotification('Intro Complete!', 'Cycle complete! Ready to start editing again?');
+                        sessionCount++;
+                        sessionCountEl.textContent = sessionCount;
+                        youtubePhase = 'editing';
+                        sessionLabelEl.textContent = 'Editing';
+                        backgroundEl.className = 'background youtube-editing';
+                        remainingSeconds = YOUTUBE_EDITING_DURATION;
+                        updateDisplay();
+                        youtubeEditButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
+                    }
                 }
             }
         }
@@ -640,6 +943,7 @@
             if (!isRunning) {
                 isRunning = true;
                 startButton.classList.add('hide');
+                durationSelector.classList.add('hide');
                 stopButton.classList.add('visible');
 
                 // Add breathing animation during work sessions
@@ -672,37 +976,200 @@
             timerInterval = setInterval(tick, 1000);
         }
 
-        // Stop/Reset timer
-        function stopTimer() {
-            clearInterval(timerInterval);
-            isRunning = false;
+        // Start work timer (after rest is complete)
+        function startWorkTimer() {
+            // Increment session count (work + rest cycle completed)
+            sessionCount++;
+            sessionCountEl.textContent = sessionCount;
+
+            // Set up work session
             isWorkSession = true;
-            remainingSeconds = 25 * 60;
-            sessionCount = 0;
+            remainingSeconds = workDuration * 60;
 
             const timeOfDay = getTimeOfDay();
             sessionLabelEl.textContent = 'Work';
             backgroundEl.className = `background work ${timeOfDay}`;
+            sessionLabelEl.classList.add('breathing');
+
+            updateDisplay();
+
+            // Hide work button, show stop button
+            workButton.classList.add('hide');
+            stopButton.classList.add('visible');
+
+            // Start the timer
+            isRunning = true;
+            timerInterval = setInterval(tick, 1000);
+        }
+
+        // Stop/Reset timer
+        function stopTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            sessionCount = 0;
             sessionCountEl.textContent = sessionCount;
 
             // Remove breathing animation when stopped
             sessionLabelEl.classList.remove('breathing');
 
-            updateDisplay();
+            if (currentMode === 'pomodoro') {
+                isWorkSession = true;
+                remainingSeconds = workDuration * 60;
 
-            startButton.classList.remove('hide');
-            restButton.classList.add('hide');
+                const timeOfDay = getTimeOfDay();
+                sessionLabelEl.textContent = 'Work';
+                backgroundEl.className = `background work ${timeOfDay}`;
+
+                updateDisplay();
+
+                startButton.classList.remove('hide');
+                durationSelector.classList.remove('hide');
+                restButton.classList.add('hide');
+                workButton.classList.add('hide');
+            } else {
+                // YouTube Creator mode reset
+                youtubePhase = 'editing';
+                remainingSeconds = YOUTUBE_EDITING_DURATION;
+                sessionLabelEl.textContent = 'Editing';
+                backgroundEl.className = 'background youtube-editing';
+
+                updateDisplay();
+
+                youtubeEditButton.classList.remove('hide');
+                youtubeIntroButton.classList.add('hide');
+            }
+
             stopButton.classList.remove('visible');
+        }
+
+        // YouTube: Start editing timer
+        function startEditingTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                youtubePhase = 'editing';
+                remainingSeconds = YOUTUBE_EDITING_DURATION;
+
+                sessionLabelEl.textContent = 'Editing';
+                backgroundEl.className = 'background youtube-editing';
+                sessionLabelEl.classList.add('breathing');
+
+                updateDisplay();
+
+                youtubeEditButton.classList.add('hide');
+                stopButton.classList.add('visible');
+
+                timerInterval = setInterval(tick, 1000);
+            }
+        }
+
+        // YouTube: Start intro timer
+        function startIntroTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                youtubePhase = 'intro';
+                remainingSeconds = YOUTUBE_INTRO_DURATION;
+
+                sessionLabelEl.textContent = 'Improve Intro';
+                backgroundEl.className = 'background youtube-intro';
+                sessionLabelEl.classList.add('breathing');
+
+                updateDisplay();
+
+                youtubeIntroButton.classList.add('hide');
+                stopButton.classList.add('visible');
+
+                timerInterval = setInterval(tick, 1000);
+            }
+        }
+
+        // Switch between modes
+        function switchMode(mode) {
+            if (mode === currentMode) return;
+
+            // Stop any running timer
+            clearInterval(timerInterval);
+            isRunning = false;
+            sessionCount = 0;
+            sessionCountEl.textContent = sessionCount;
+            sessionLabelEl.classList.remove('breathing');
+
+            // Update mode state
+            currentMode = mode;
+
+            // Update mode switcher UI
+            modeOptions.forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.mode === mode);
+            });
+
+            // Update slider position
+            modeSlider.classList.toggle('youtube', mode === 'youtube');
+
+            // Hide all buttons first
+            startButton.classList.add('hide');
+            restButton.classList.add('hide');
+            workButton.classList.add('hide');
+            youtubeEditButton.classList.add('hide');
+            youtubeIntroButton.classList.add('hide');
+            stopButton.classList.remove('visible');
+
+            if (mode === 'pomodoro') {
+                // Switch to Pomodoro mode
+                isWorkSession = true;
+                remainingSeconds = workDuration * 60;
+
+                const timeOfDay = getTimeOfDay();
+                sessionLabelEl.textContent = 'Work';
+                backgroundEl.className = `background work ${timeOfDay}`;
+
+                durationSelector.classList.remove('hide');
+                startButton.classList.remove('hide');
+            } else {
+                // Switch to YouTube Creator mode
+                youtubePhase = 'editing';
+                remainingSeconds = YOUTUBE_EDITING_DURATION;
+
+                sessionLabelEl.textContent = 'Editing';
+                backgroundEl.className = 'background youtube-editing';
+
+                durationSelector.classList.add('hide');
+                youtubeEditButton.classList.remove('hide');
+            }
+
+            updateDisplay();
         }
 
         // Event listeners
         startButton.addEventListener('click', startTimer);
         restButton.addEventListener('click', startRestTimer);
+        workButton.addEventListener('click', startWorkTimer);
         stopButton.addEventListener('click', stopTimer);
+        youtubeEditButton.addEventListener('click', startEditingTimer);
+        youtubeIntroButton.addEventListener('click', startIntroTimer);
 
-        // Check for time of day changes every minute
+        // Mode switcher click handlers
+        modeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                switchMode(option.dataset.mode);
+            });
+        });
+
+        // Duration selector click handlers
+        durationOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Update selected state
+                durationOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                // Update work duration
+                workDuration = parseInt(option.dataset.duration);
+                remainingSeconds = workDuration * 60;
+                updateDisplay();
+            });
+        });
+
+        // Check for time of day changes every minute (only for Pomodoro mode)
         setInterval(() => {
-            if (isRunning) {
+            if (isRunning && currentMode === 'pomodoro') {
                 const currentTimeOfDay = getTimeOfDay();
                 const backgroundClasses = backgroundEl.className.split(' ');
                 const oldTimeOfDay = backgroundClasses[2];
@@ -720,14 +1187,6 @@
 
         // Set initial time-of-day palette
         backgroundEl.className = `background work ${getTimeOfDay()}`;
-
-        // Initialize rest button as hidden
-        restButton.classList.add('hide');
     </script>
-
-    <div class="session-counter">
-        <div class="counter-label">Sessions Completed</div>
-        <div class="counter-value" id="session-count">0</div>
-    </div>
 </body>
 </html>
