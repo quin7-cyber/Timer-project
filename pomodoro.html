@@ -1595,6 +1595,7 @@
         let isWorkSession = true;
         let isRunning = false;
         let sessionCount = 0;
+        let sessionRecorded = false;  // Prevents duplicate session recordings
         let endTime = null;
 
         // Mode state
@@ -1727,12 +1728,13 @@
                     // YouTube Creator mode
                     if (youtubePhase === 'editing') {
                         // Editing session completed - record session and show buttons
+                        if (!sessionRecorded) {  // Only record once
+                            sessionRecorded = true;
+                            sessionCount++;
+                            sessionCountEl.textContent = sessionCount;
+                            recordSession('youtube', 'edit');
+                        }
                         showNotification('Editing Complete!', 'Session recorded! Want to work on your intro?');
-
-                        // Increment session count and record NOW (not after intro)
-                        sessionCount++;
-                        sessionCountEl.textContent = sessionCount;
-                        recordSession('youtube');
 
                         // Reset to ready state
                         sessionLabelEl.textContent = 'Editing';
@@ -1744,12 +1746,18 @@
                         // Show session setup and both buttons
                         sessionSetup.classList.remove('hide');
                         hideSessionContext();
-                        youtubeEditButton.classList.add('hide');
+                        youtubeEditButton.classList.remove('hide');
                         youtubeIntroButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
                     } else {
-                        // Intro session completed (optional phase) - just reset
-                        showNotification('Intro Complete!', 'Ready for another editing session?');
+                        // Intro session completed
+                        if (!sessionRecorded) {  // Only record once
+                            sessionRecorded = true;
+                            sessionCount++;
+                            sessionCountEl.textContent = sessionCount;
+                            recordSession('youtube', 'intro');
+                        }
+                        showNotification('Intro Complete!', 'Session recorded! Ready for another editing session?');
 
                         sessionLabelEl.textContent = 'Editing';
                         sessionLabelEl.classList.remove('breathing');
@@ -1760,7 +1768,7 @@
                         sessionSetup.classList.remove('hide');
                         hideSessionContext();
                         youtubeEditButton.classList.remove('hide');
-                        youtubeIntroButton.classList.add('hide');
+                        youtubeIntroButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
                     }
                 }
@@ -1896,6 +1904,7 @@
         // YouTube: Start editing timer
         function startEditingTimer() {
             if (!isRunning) {
+                sessionRecorded = false;  // Reset guard flag
                 isRunning = true;
                 youtubePhase = 'editing';
                 remainingSeconds = YOUTUBE_EDITING_DURATION;
@@ -1918,6 +1927,7 @@
         // YouTube: Start intro timer
         function startIntroTimer() {
             if (!isRunning) {
+                sessionRecorded = false;  // Reset guard flag
                 isRunning = true;
                 youtubePhase = 'intro';
                 remainingSeconds = YOUTUBE_INTRO_DURATION;
@@ -1944,6 +1954,7 @@
             // Stop any running timer
             clearInterval(timerInterval);
             isRunning = false;
+            sessionRecorded = false;  // Reset guard flag
             sessionLabelEl.classList.remove('breathing');
 
             // Update mode state
@@ -2336,29 +2347,86 @@
             }
         }
 
+        // Helper to get youtube session total (handles old and new data formats)
+        // New format: { "projectName": { edit: N, intro: N }, ... }
+        // Old formats: number OR { edit: N, intro: N }
+        function getYoutubeTotal(youtube) {
+            if (typeof youtube !== 'object' || youtube === null) {
+                return youtube || 0; // Old number format
+            }
+            // Check if it's old { edit, intro } format or new { projectName: { edit, intro } } format
+            if ('edit' in youtube || 'intro' in youtube) {
+                return (youtube.edit || 0) + (youtube.intro || 0); // Old object format
+            }
+            // New format: sum across all projects
+            let total = 0;
+            for (const projectData of Object.values(youtube)) {
+                if (typeof projectData === 'object' && projectData !== null) {
+                    total += (projectData.edit || 0) + (projectData.intro || 0);
+                }
+            }
+            return total;
+        }
+
+        // Helper to get project session totals from all session data
+        function getProjectSessionTotals() {
+            const data = loadSessionData();
+            const totals = {};
+
+            for (const dayData of Object.values(data.sessions)) {
+                const youtube = dayData.youtube;
+                if (typeof youtube !== 'object' || youtube === null) continue;
+                // Skip old { edit, intro } format - can't determine project
+                if ('edit' in youtube || 'intro' in youtube) continue;
+
+                // New format: iterate through projects
+                for (const [projectName, projectData] of Object.entries(youtube)) {
+                    if (typeof projectData === 'object' && projectData !== null) {
+                        if (!totals[projectName]) {
+                            totals[projectName] = 0;
+                        }
+                        totals[projectName] += (projectData.edit || 0) + (projectData.intro || 0);
+                    }
+                }
+            }
+            return totals;
+        }
+
         // Record a completed session
-        function recordSession(mode) {
+        function recordSession(mode, sessionType = 'edit') {
             const data = loadSessionData();
             const today = getTodayDateKey();
 
             if (!data.sessions[today]) {
-                data.sessions[today] = { pomodoro: 0, youtube: 0 };
+                data.sessions[today] = { pomodoro: 0, youtube: {} };
             }
 
             if (mode === 'pomodoro') {
                 data.sessions[today].pomodoro++;
             } else if (mode === 'youtube') {
-                data.sessions[today].youtube++;
-
-                // Track project session counts for Quinlan Travels
-                if (currentProject) {
-                    const projectData = loadProjects();
-                    if (!projectData.projectSessions[currentProject]) {
-                        projectData.projectSessions[currentProject] = 0;
-                    }
-                    projectData.projectSessions[currentProject]++;
-                    saveProjects(projectData);
+                // Migrate old formats to new format if needed
+                const yt = data.sessions[today].youtube;
+                if (typeof yt !== 'object' || yt === null) {
+                    // Old number format - migrate to new format (assign to _unassigned)
+                    const oldCount = yt || 0;
+                    data.sessions[today].youtube = oldCount > 0
+                        ? { '_unassigned': { edit: oldCount, intro: 0 } }
+                        : {};
+                } else if ('edit' in yt || 'intro' in yt) {
+                    // Old { edit, intro } format - migrate to new format
+                    const oldEdit = yt.edit || 0;
+                    const oldIntro = yt.intro || 0;
+                    data.sessions[today].youtube = (oldEdit > 0 || oldIntro > 0)
+                        ? { '_unassigned': { edit: oldEdit, intro: oldIntro } }
+                        : {};
                 }
+
+                // Record session under current project (or _unassigned if none)
+                const projectKey = currentProject || '_unassigned';
+                if (!data.sessions[today].youtube[projectKey]) {
+                    data.sessions[today].youtube[projectKey] = { edit: 0, intro: 0 };
+                }
+                data.sessions[today].youtube[projectKey][sessionType]++;
             }
 
             saveSessionData(data);
@@ -2373,11 +2441,11 @@
 
             while (current <= end) {
                 const dateKey = current.toLocaleDateString('sv');
-                const dayData = data.sessions[dateKey] || { pomodoro: 0, youtube: 0 };
+                const dayData = data.sessions[dateKey] || { pomodoro: 0, youtube: { edit: 0, intro: 0 } };
                 sessions.push({
                     date: dateKey,
                     pomodoro: dayData.pomodoro,
-                    youtube: dayData.youtube
+                    youtube: getYoutubeTotal(dayData.youtube)
                 });
                 current.setDate(current.getDate() + 1);
             }
@@ -2396,13 +2464,14 @@
 
             for (const [date, dayData] of Object.entries(data.sessions)) {
                 let dayTotal = 0;
+                const youtubeTotal = getYoutubeTotal(dayData.youtube);
 
                 if (viewMode === 'combined') {
-                    dayTotal = dayData.pomodoro + dayData.youtube;
+                    dayTotal = dayData.pomodoro + youtubeTotal;
                 } else if (viewMode === 'pomodoro') {
                     dayTotal = dayData.pomodoro;
                 } else if (viewMode === 'youtube') {
-                    dayTotal = dayData.youtube;
+                    dayTotal = youtubeTotal;
                 }
 
                 if (dayTotal > 0) {
@@ -2429,7 +2498,7 @@
             if (currentMode === 'pomodoro') {
                 return dayData.pomodoro;
             } else {
-                return dayData.youtube;
+                return getYoutubeTotal(dayData.youtube);
             }
         }
 
@@ -2668,11 +2737,12 @@
 
         // Render project summary for Quinlan Travels view
         function renderProjectSummary() {
-            const projectData = loadProjects();
-            const sessions = projectData.projectSessions || {};
+            // Calculate project totals from session data (single source of truth)
+            const sessions = getProjectSessionTotals();
 
-            // Convert to array and sort by session count (descending)
+            // Convert to array, filter out _unassigned, and sort by session count (descending)
             const projects = Object.entries(sessions)
+                .filter(([name]) => name !== '_unassigned')
                 .map(([name, count]) => ({ name, count }))
                 .sort((a, b) => b.count - a.count);
 
