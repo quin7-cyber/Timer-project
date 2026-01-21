@@ -16,11 +16,13 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-y: auto;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 3rem 1.5rem;
             position: relative;
         }
 
@@ -74,15 +76,9 @@
             animation: gradientShift 20s ease infinite;
         }
 
-        /* YouTube Creator Mode palettes */
+        /* YouTube Creator Mode palette */
         .background.youtube-editing {
             background: linear-gradient(-45deg, #ffb3a3, #ffc4b8, #ffd4c8, #ffe0d4);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
-        }
-
-        .background.youtube-intro {
-            background: linear-gradient(-45deg, #ff9b8a, #ffa898, #ffb5a5, #ffc2b3);
             background-size: 400% 400%;
             animation: gradientShift 20s ease infinite;
         }
@@ -254,7 +250,598 @@
             }
         }
 
-        /* Timer container */
+        /* ==========================================
+           THREE-PANEL LAYOUT
+           ========================================== */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 580px;
+            z-index: 1;
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        /* Section Card Base Styles */
+        .section-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .section-card.expanded {
+            cursor: default;
+        }
+
+        .section-card.expanded:hover {
+            transform: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Section color tints */
+        .priorities-section {
+            background: rgba(184, 164, 212, 0.28);
+            backdrop-filter: blur(12px);
+        }
+
+        .timer-section {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+        }
+
+        .gratitude-section {
+            background: rgba(159, 184, 181, 0.28);
+            backdrop-filter: blur(12px);
+        }
+
+        /* Time-of-day emphasis glow */
+        .section-card.time-emphasis {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Collapsed/Expanded states */
+        .section-collapsed {
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-expanded {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-card.expanded .section-collapsed {
+            display: none;
+        }
+
+        .section-card.expanded .section-expanded {
+            display: block;
+            opacity: 1;
+        }
+
+        /* When a section is expanded, collapse others */
+        .app-container.has-expanded .section-card:not(.expanded) {
+            padding: 0.75rem 1.25rem;
+            opacity: 0.6;
+        }
+
+        .app-container.has-expanded .section-card:not(.expanded):hover {
+            opacity: 0.8;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ==========================================
+           TIMER FOCUS MODE (when timer is running)
+           ========================================== */
+        .app-container.timer-focus-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            gap: 0;
+        }
+
+        /* Priorities at top during focus mode */
+        .app-container.timer-focus-mode .priorities-section {
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            max-width: 400px;
+            min-width: 280px;
+            padding: 0.6rem 1.25rem;
+            opacity: 0.7;
+            z-index: 5;
+            background: rgba(184, 164, 212, 0.2);
+        }
+
+        .app-container.timer-focus-mode .priorities-section:hover {
+            opacity: 1;
+        }
+
+        /* Timer section in focus mode - full screen, no card */
+        .app-container.timer-focus-mode .timer-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            backdrop-filter: none;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
+            margin: 4rem 0;
+        }
+
+        .app-container.timer-focus-mode .timer-section:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .app-container.timer-focus-mode .timer-section .section-collapsed {
+            display: none;
+        }
+
+        .app-container.timer-focus-mode .timer-section .section-expanded {
+            display: block;
+            opacity: 1;
+        }
+
+        .app-container.timer-focus-mode .timer-section .section-close-btn {
+            display: none;
+        }
+
+        .app-container.timer-focus-mode .timer-section .mode-switcher {
+            display: none;
+        }
+
+        .app-container.timer-focus-mode .timer-section .duration-selector {
+            display: none;
+        }
+
+        /* Gratitude at bottom during focus mode */
+        .app-container.timer-focus-mode .gratitude-section {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            max-width: 400px;
+            min-width: 280px;
+            padding: 0.6rem 1.25rem;
+            opacity: 0.7;
+            z-index: 5;
+            background: rgba(159, 184, 181, 0.2);
+        }
+
+        .app-container.timer-focus-mode .gratitude-section:hover {
+            opacity: 1;
+        }
+
+        /* Hide session counter during focus mode */
+        .app-container.timer-focus-mode ~ .session-counter {
+            display: none;
+        }
+
+        /* When priorities/gratitude expanded during focus mode */
+        .app-container.timer-focus-mode.has-expanded .priorities-section.expanded,
+        .app-container.timer-focus-mode.has-expanded .gratitude-section.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 450px;
+            min-width: auto;
+            padding: 2rem;
+            opacity: 1;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-container.timer-focus-mode.has-expanded .timer-section {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Mobile responsive for focus mode */
+        @media (max-width: 480px) {
+            .app-container.timer-focus-mode {
+                padding: 0.5rem 1rem;
+            }
+
+            .app-container.timer-focus-mode .priorities-section,
+            .app-container.timer-focus-mode .gratitude-section {
+                min-width: 200px;
+                max-width: 90%;
+                padding: 0.5rem 1rem;
+            }
+
+            .app-container.timer-focus-mode .timer-section {
+                margin: 3rem 0;
+            }
+        }
+
+        /* Close button for expanded sections */
+        .section-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        .section-close-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Section headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .priorities-section .section-title,
+        .gratitude-section .section-title {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .section-status {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Collapsed section previews */
+        .collapsed-preview {
+            font-size: 0.95rem;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .collapsed-preview-hint {
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.4);
+            font-style: italic;
+        }
+
+        /* Priorities collapsed view (view-only) */
+        .collapsed-priorities-view {
+            margin-top: 0.5rem;
+        }
+
+        .collapsed-priority-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .collapsed-priority-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.15rem 0;
+        }
+
+        .collapsed-priority-bullet {
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.4);
+            width: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .collapsed-priority-item.completed .collapsed-priority-bullet {
+            color: rgba(107, 142, 126, 0.8);
+        }
+
+        .collapsed-priority-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .collapsed-priority-item.completed .collapsed-priority-text {
+            text-decoration: line-through;
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        /* Progress bar */
+        .priorities-progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .priorities-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .priorities-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(107, 142, 126, 0.5), rgba(107, 142, 126, 0.7));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .priorities-progress-label {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+        }
+
+        .priorities-all-done {
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(107, 142, 126, 0.08);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: rgba(107, 142, 126, 0.85);
+            text-align: center;
+        }
+
+        /* Timer collapsed state */
+        .timer-collapsed-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .mini-timer {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .mini-timer-status {
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 0.25rem;
+        }
+
+        .mini-session-count {
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Mode switcher in collapsed timer */
+        .section-collapsed .mode-switcher {
+            transform: scale(0.9);
+            transform-origin: right center;
+        }
+
+        /* Gratitude collapsed state */
+        .gratitude-collapsed-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gratitude-check-icon {
+            color: rgba(100, 150, 100, 0.7);
+        }
+
+        .gratitude-streak-mini {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.4);
+            margin-top: 0.25rem;
+        }
+
+        /* Expanded section interiors */
+        .section-card.expanded {
+            padding: 3rem;
+        }
+
+        .section-card.expanded .priorities-header,
+        .section-card.expanded .gratitude-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: rgba(0, 0, 0, 0.65);
+            margin-bottom: 2.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .section-card.expanded .priority-inputs,
+        .section-card.expanded .gratitude-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-card.expanded .priority-row,
+        .section-card.expanded .gratitude-row {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            animation: softFadeIn 0.3s ease-out forwards;
+        }
+
+        .section-card.expanded .priority-row:nth-child(1),
+        .section-card.expanded .gratitude-row:nth-child(1) { animation-delay: 0s; }
+        .section-card.expanded .priority-row:nth-child(2),
+        .section-card.expanded .gratitude-row:nth-child(2) { animation-delay: 0.05s; }
+        .section-card.expanded .priority-row:nth-child(3),
+        .section-card.expanded .gratitude-row:nth-child(3) { animation-delay: 0.1s; }
+
+        .section-card.expanded .priority-number,
+        .section-card.expanded .gratitude-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.25);
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .section-card.expanded .priority-input,
+        .section-card.expanded .gratitude-input {
+            flex: 1;
+            padding: 0.75rem 0.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            color: rgba(0, 0, 0, 0.7);
+            transition: border-color 0.3s ease;
+        }
+
+        .section-card.expanded .priority-input:focus,
+        .section-card.expanded .gratitude-input:focus {
+            outline: none;
+            border-bottom-color: rgba(0, 0, 0, 0.3);
+            box-shadow: none;
+        }
+
+        .section-card.expanded .priority-input::placeholder,
+        .section-card.expanded .gratitude-input::placeholder {
+            color: rgba(0, 0, 0, 0.25);
+            font-style: italic;
+        }
+
+        .section-card.expanded .set-priorities-btn,
+        .section-card.expanded .save-gratitude-btn {
+            width: 100%;
+            padding: 1.1rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.65);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-card.expanded .set-priorities-btn:hover,
+        .section-card.expanded .save-gratitude-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            color: rgba(0, 0, 0, 0.75);
+        }
+
+        .section-card.expanded .gratitude-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Timer section expanded - give it more space */
+        .timer-section.expanded {
+            min-height: 550px;
+        }
+
+        .timer-section.expanded .timer-container {
+            padding-top: 1rem;
+        }
+
+        /* Hide main dashboard button when a section is expanded */
+        .app-container.has-expanded ~ #main-dashboard-btn {
+            display: none;
+        }
+
+        /* Mobile responsive for three-panel layout */
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.75rem;
+            }
+
+            .app-container {
+                gap: 0.75rem;
+            }
+
+            .section-card {
+                padding: 1rem 1.25rem;
+                border-radius: 16px;
+            }
+
+            .section-card.expanded {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 0;
+                z-index: 50;
+                overflow-y: auto;
+                padding: 1.5rem;
+            }
+
+            .mini-timer {
+                font-size: 2rem;
+            }
+        }
+
+        /* Timer container - now used inside timer section */
         .timer-container {
             text-align: center;
             position: relative;
@@ -460,8 +1047,8 @@
             pointer-events: none;
         }
 
-        /* YouTube Edit button */
-        .youtube-edit-button {
+        /* YouTube Start button */
+        .start-youtube-btn {
             position: absolute;
             padding: 1.2rem 3.5rem;
             font-size: 1rem;
@@ -479,54 +1066,22 @@
             color: rgba(0, 0, 0, 0.7);
         }
 
-        .youtube-edit-button:hover {
+        .start-youtube-btn:hover {
             background: rgba(255, 255, 255, 0.6);
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
-        .youtube-edit-button.hide {
+        .start-youtube-btn.hide {
             opacity: 0;
             transform: scale(0.8);
             pointer-events: none;
         }
 
-        /* YouTube Intro button */
-        .youtube-intro-button {
-            position: absolute;
-            padding: 1.2rem 3.5rem;
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            text-align: center;
-            white-space: nowrap;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.7);
-        }
-
-        .youtube-intro-button:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .youtube-intro-button.hide {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        /* Stop button (top-right) */
+        /* Stop button (inside timer section) */
         .stop-button {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
+            display: none;
+            margin-top: 1.5rem;
             padding: 0.8rem 2rem;
             font-size: 0.85rem;
             font-weight: 400;
@@ -539,13 +1094,10 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             color: rgba(0, 0, 0, 0.6);
-            opacity: 0;
-            pointer-events: none;
         }
 
         .stop-button.visible {
-            opacity: 1;
-            pointer-events: all;
+            display: inline-block;
         }
 
         .stop-button:hover {
@@ -573,8 +1125,7 @@
             .start-button,
             .rest-button,
             .work-button,
-            .youtube-edit-button,
-            .youtube-intro-button {
+            .start-youtube-btn {
                 padding: 1rem 2.5rem;
                 font-size: 0.9rem;
             }
@@ -751,7 +1302,7 @@
         .dashboard-btn {
             position: fixed;
             top: 2rem;
-            left: 2rem;
+            right: 2rem;
             padding: 0.6rem 1.2rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
@@ -929,6 +1480,10 @@
             position: relative;
         }
 
+        .chart-container.hide {
+            display: none;
+        }
+
         #session-chart {
             width: 100%;
             height: 300px;
@@ -1102,6 +1657,10 @@
             text-align: center;
         }
 
+        .project-list-item-wrapper {
+            margin-bottom: 0.5rem;
+        }
+
         .project-list-item {
             display: flex;
             justify-content: space-between;
@@ -1109,7 +1668,16 @@
             background: rgba(255, 255, 255, 0.4);
             border-radius: 12px;
             padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .project-list-item:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .project-list-item.expanded {
+            border-radius: 12px 12px 0 0;
         }
 
         .project-name {
@@ -1127,6 +1695,208 @@
             font-size: 0.9rem;
             color: rgba(0, 0, 0, 0.4);
             font-style: italic;
+        }
+
+        .phase-breakdown {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 0 0 12px 12px;
+            padding: 0.5rem 1rem 0.75rem 1rem;
+        }
+
+        .phase-breakdown.hide {
+            display: none;
+        }
+
+        .phase-breakdown-item {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.55);
+            padding: 0.2rem 0;
+            padding-left: 0.75rem;
+            border-left: 2px solid rgba(0, 0, 0, 0.15);
+            margin-left: 0.25rem;
+        }
+
+        /* ==========================================
+           PRIORITIES DASHBOARD
+           ========================================== */
+        .priorities-dashboard {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .priorities-dashboard.hide {
+            display: none;
+        }
+
+        .week-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .week-stat-item {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .week-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .week-stat-label {
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .priorities-history {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .priority-day-card {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .priority-day-header {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .priority-day-completion {
+            font-size: 0.75rem;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .priority-history-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0;
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .priority-history-item.completed {
+            color: rgba(0, 0, 0, 0.4);
+            text-decoration: line-through;
+        }
+
+        .priority-history-check {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .priority-history-item.completed .priority-history-check {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .priority-history-item.completed .priority-history-check::after {
+            content: '✓';
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* ==========================================
+           GRATITUDE DASHBOARD
+           ========================================== */
+        .gratitude-dashboard {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .gratitude-dashboard.hide {
+            display: none;
+        }
+
+        .gratitude-streak-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gratitude-streak-badge .streak-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.7);
+            line-height: 1;
+        }
+
+        .gratitude-streak-badge .streak-label {
+            font-size: 0.65rem;
+            color: rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .gratitude-journal {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .gratitude-entry-card {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .gratitude-entry-date {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 0.75rem;
+        }
+
+        .gratitude-entry-item {
+            font-family: 'Playfair Display', serif;
+            padding: 0.35rem 0;
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.6);
+            padding-left: 0.75rem;
+            border-left: 2px solid rgba(159, 184, 181, 0.5);
+        }
+
+        .gratitude-empty-message {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(0, 0, 0, 0.4);
+            font-style: italic;
+            padding: 2rem 0;
         }
 
         /* ==========================================
@@ -1287,33 +2057,50 @@
             border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        /* Next action input */
-        .next-action-input {
+        /* Phase selector */
+        .phase-select-wrapper {
+            position: relative;
+        }
+
+        .phase-select {
             width: 100%;
-            padding: 0.7rem 1rem;
+            padding: 0.7rem 2.5rem 0.7rem 1rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             font-weight: 400;
             background: rgba(255, 255, 255, 0.5);
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 12px;
+            cursor: pointer;
             color: rgba(0, 0, 0, 0.7);
             transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
-        .next-action-input:hover {
+        .phase-select:hover {
             background: rgba(255, 255, 255, 0.7);
             border-color: rgba(0, 0, 0, 0.15);
         }
 
-        .next-action-input:focus {
+        .phase-select:focus {
             outline: none;
             border-color: rgba(0, 0, 0, 0.25);
             box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
         }
 
-        .next-action-input::placeholder {
-            color: rgba(0, 0, 0, 0.35);
+        .phase-select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(0, 0, 0, 0.4);
+            pointer-events: none;
         }
 
         /* Session context during timer */
@@ -1339,11 +2126,11 @@
             margin-bottom: 0.35rem;
         }
 
-        .context-next-action {
+        .context-phase {
             font-size: 0.8rem;
-            font-weight: 300;
-            color: rgba(0, 0, 0, 0.45);
-            font-style: italic;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.55);
+            letter-spacing: 0.05em;
         }
 
         /* Saved intro preview */
@@ -1373,6 +2160,567 @@
         @media (max-width: 768px) {
             .session-setup {
                 padding: 1rem 1.25rem;
+            }
+        }
+
+        /* ==========================================
+           PRIORITIES PANEL
+           ========================================== */
+        .priorities-panel {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            width: auto;
+            min-width: 320px;
+            max-width: 400px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .priorities-panel.hide {
+            opacity: 0;
+            transform: scale(0.95) translateY(-10px);
+            pointer-events: none;
+            position: absolute;
+            margin: 0;
+        }
+
+        .priorities-panel.compact {
+            padding: 0.75rem 1.25rem;
+            min-width: auto;
+            max-width: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .priorities-header {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .priorities-panel.compact .priorities-header {
+            display: none;
+        }
+
+        .priority-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .priority-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .priority-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.4);
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .priority-input {
+            flex: 1;
+            padding: 0.6rem 0.9rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            color: rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .priority-input:hover {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .priority-input:focus {
+            outline: none;
+            border-color: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .priority-input::placeholder {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .set-priorities-btn {
+            margin-top: 1.25rem;
+            padding: 0.9rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+        }
+
+        .set-priorities-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Priorities dual-mode containers */
+        .priorities-edit-mode,
+        .priorities-complete-mode {
+            width: 100%;
+        }
+
+        .priorities-edit-mode.hide,
+        .priorities-complete-mode.hide {
+            display: none;
+        }
+
+        /* Expanded priority complete mode */
+        .expanded-priority-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .expanded-priority-row {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            animation: softFadeIn 0.3s ease-out forwards;
+        }
+
+        .expanded-priority-row:nth-child(1) { animation-delay: 0s; }
+        .expanded-priority-row:nth-child(2) { animation-delay: 0.05s; }
+        .expanded-priority-row:nth-child(3) { animation-delay: 0.1s; }
+
+        .expanded-priority-row:hover {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .expanded-priority-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .expanded-priority-checkmark {
+            width: 22px;
+            height: 22px;
+            border: 1.5px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            background: transparent;
+        }
+
+        .expanded-priority-row:hover .expanded-priority-checkmark {
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .expanded-priority-checkbox:checked ~ .expanded-priority-checkmark {
+            background: transparent;
+            border-color: rgba(107, 142, 126, 0.5);
+        }
+
+        .expanded-priority-checkbox:checked ~ .expanded-priority-checkmark::after {
+            content: '\2713';
+            font-size: 12px;
+            color: rgba(107, 142, 126, 0.9);
+            font-weight: 300;
+        }
+
+        .expanded-priority-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.25);
+            width: 1.25rem;
+        }
+
+        .expanded-priority-text {
+            flex: 1;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: rgba(0, 0, 0, 0.7);
+            position: relative;
+            transition: color 0.4s ease;
+        }
+
+        .expanded-priority-text::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.3);
+            transition: width 0.4s ease;
+        }
+
+        .expanded-priority-row.completed .expanded-priority-text {
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        .expanded-priority-row.completed .expanded-priority-text::after {
+            width: 100%;
+        }
+
+        .edit-priorities-btn {
+            margin-top: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+        }
+
+        .edit-priorities-btn:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Expanded all complete celebration */
+        .expanded-all-complete {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(107, 142, 126, 0.08);
+            border: 1px solid rgba(107, 142, 126, 0.15);
+            border-radius: 12px;
+            text-align: center;
+            color: rgba(107, 142, 126, 0.85);
+            font-size: 1rem;
+        }
+
+        /* Compact priority checklist */
+        .priority-checklist {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.25rem 0;
+        }
+
+        .priority-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .priority-check-item:hover .priority-checkbox {
+            border-color: rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .priority-checkbox.checked {
+            background: rgba(0, 0, 0, 0.15);
+            border-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .priority-checkbox.checked::after {
+            content: '✓';
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .priority-check-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: rgba(0, 0, 0, 0.6);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .priority-check-item.completed .priority-check-text {
+            text-decoration: line-through;
+            color: rgba(0, 0, 0, 0.35);
+        }
+
+        /* ==========================================
+           GRATITUDE PANEL
+           ========================================== */
+        .gratitude-panel {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            width: auto;
+            min-width: 320px;
+            max-width: 400px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideDown 0.4s ease-out;
+            position: relative;
+        }
+
+        .gratitude-panel.hide {
+            opacity: 0;
+            transform: scale(0.95) translateY(-10px);
+            pointer-events: none;
+            position: absolute;
+            margin: 0;
+        }
+
+        .gratitude-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: rgba(0, 0, 0, 0.65);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .gratitude-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .gratitude-row {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            animation: softFadeIn 0.3s ease-out forwards;
+        }
+
+        .gratitude-row:nth-child(1) { animation-delay: 0s; }
+        .gratitude-row:nth-child(2) { animation-delay: 0.05s; }
+        .gratitude-row:nth-child(3) { animation-delay: 0.1s; }
+
+        .gratitude-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.25);
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .gratitude-input {
+            flex: 1;
+            padding: 0.75rem 0.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            color: rgba(0, 0, 0, 0.7);
+            transition: border-color 0.3s ease;
+        }
+
+        .gratitude-input:hover {
+            border-bottom-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .gratitude-input:focus {
+            outline: none;
+            border-bottom-color: rgba(0, 0, 0, 0.3);
+            box-shadow: none;
+        }
+
+        .gratitude-input::placeholder {
+            color: rgba(0, 0, 0, 0.25);
+            font-style: italic;
+        }
+
+        .gratitude-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .save-gratitude-btn {
+            padding: 0.9rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.7);
+            flex: 1;
+        }
+
+        .save-gratitude-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dismiss-gratitude-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(0, 0, 0, 0.4);
+            font-size: 1.1rem;
+        }
+
+        .dismiss-gratitude-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Gratitude recorded indicator */
+        .gratitude-recorded {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .gratitude-recorded.show {
+            display: inline-flex;
+        }
+
+        .gratitude-recorded-icon {
+            color: rgba(100, 150, 100, 0.7);
+        }
+
+        /* Slide down animation */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Soft fade-in animation for rows */
+        @keyframes softFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Timer de-emphasized state */
+        .timer-container.timer-secondary .countdown {
+            opacity: 0.5;
+            transform: scale(0.9);
+        }
+
+        .timer-container.timer-secondary .session-label {
+            opacity: 0.5;
+        }
+
+        .timer-container.timer-secondary .duration-selector {
+            opacity: 0.5;
+        }
+
+        /* Mobile responsive for priorities/gratitude panels */
+        @media (max-width: 768px) {
+            .priorities-panel,
+            .gratitude-panel {
+                min-width: 280px;
+                padding: 1.25rem 1.5rem;
+            }
+
+            .priority-check-text {
+                max-width: 80px;
+            }
+
+            .priority-checklist {
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .priorities-panel,
+            .gratitude-panel {
+                min-width: 260px;
+                padding: 1rem 1.25rem;
+            }
+
+            .priority-checklist {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .priority-check-text {
+                max-width: 200px;
             }
         }
 
@@ -1480,65 +2828,189 @@
         <span class="particle"></span>
     </div>
 
-    <div class="timer-container">
-        <div class="mode-switcher">
-            <div class="mode-slider"></div>
-            <button class="mode-option selected" data-mode="pomodoro">Work</button>
-            <button class="mode-option" data-mode="youtube">Quinlan Travels</button>
-        </div>
-
-        <!-- Session Setup Panel -->
-        <div class="session-setup">
-            <div class="setup-row">
-                <label class="setup-label">Project</label>
-                <div class="project-input-wrapper">
-                    <input type="text" class="project-input" placeholder="Select or type project..." autocomplete="off">
-                    <div class="project-dropdown"></div>
+    <!-- Three-Panel App Container -->
+    <div class="app-container" id="app-container">
+        <!-- ==========================================
+             PRIORITIES SECTION (Top)
+             ========================================== -->
+        <div class="section-card priorities-section" data-section="priorities" id="priorities-section">
+            <!-- Collapsed State -->
+            <div class="section-collapsed" id="priorities-collapsed">
+                <div class="section-header">
+                    <span class="section-title">Top 3 Priorities</span>
+                    <span class="section-status" id="priorities-status"></span>
                 </div>
-                <div class="saved-intro-preview">
-                    <span class="saved-intro-label">Best intro:</span>
-                    <span class="saved-intro-text"></span>
+                <div id="priorities-collapsed-content">
+                    <!-- Populated dynamically: either hint or checklist -->
                 </div>
             </div>
-            <div class="setup-row">
-                <label class="setup-label">Next action (optional)</label>
-                <input type="text" class="next-action-input" placeholder="What will you do first?">
+
+            <!-- Expanded State -->
+            <div class="section-expanded" id="priorities-expanded">
+                <button class="section-close-btn" data-close="priorities">&times;</button>
+
+                <!-- Edit Mode (setting/editing priorities) -->
+                <div class="priorities-edit-mode" id="priorities-edit-mode">
+                    <div class="priorities-header">What are your top 3 priorities today?</div>
+                    <div class="priority-inputs">
+                        <div class="priority-row">
+                            <span class="priority-number">1</span>
+                            <input type="text" class="priority-input" id="priority-1" placeholder="First priority..." maxlength="100">
+                        </div>
+                        <div class="priority-row">
+                            <span class="priority-number">2</span>
+                            <input type="text" class="priority-input" id="priority-2" placeholder="Second priority..." maxlength="100">
+                        </div>
+                        <div class="priority-row">
+                            <span class="priority-number">3</span>
+                            <input type="text" class="priority-input" id="priority-3" placeholder="Third priority..." maxlength="100">
+                        </div>
+                    </div>
+                    <button class="set-priorities-btn">Set Priorities</button>
+                </div>
+
+                <!-- Complete Mode (interactive checkboxes) -->
+                <div class="priorities-complete-mode hide" id="priorities-complete-mode">
+                    <div class="priorities-header">Today's Priorities</div>
+                    <div class="expanded-priority-list" id="expanded-priority-list">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <button class="edit-priorities-btn">Edit Priorities</button>
+                </div>
             </div>
         </div>
 
-        <!-- Session context (shown during timer) -->
-        <div class="session-context">
-            <div class="context-mode-project"></div>
-            <div class="context-next-action"></div>
+        <!-- ==========================================
+             TIMER SECTION (Middle - Hero)
+             ========================================== -->
+        <div class="section-card timer-section" data-section="timer" id="timer-section">
+            <!-- Collapsed State -->
+            <div class="section-collapsed" id="timer-collapsed">
+                <div class="section-header">
+                    <span class="section-title">Focus Timer</span>
+                    <span class="mini-session-count" id="mini-session-count"></span>
+                </div>
+                <div class="timer-collapsed-display">
+                    <div>
+                        <div class="mini-timer" id="mini-timer">25:00</div>
+                        <div class="mini-timer-status" id="mini-timer-status">Ready</div>
+                    </div>
+                    <div class="mode-switcher" style="margin-bottom: 0;">
+                        <div class="mode-slider"></div>
+                        <button class="mode-option selected" data-mode="pomodoro">Work</button>
+                        <button class="mode-option" data-mode="youtube">Quinlan Travels</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expanded State -->
+            <div class="section-expanded" id="timer-expanded">
+                <button class="section-close-btn" data-close="timer">&times;</button>
+                <div class="timer-container">
+                    <div class="mode-switcher">
+                        <div class="mode-slider"></div>
+                        <button class="mode-option selected" data-mode="pomodoro">Work</button>
+                        <button class="mode-option" data-mode="youtube">Quinlan Travels</button>
+                    </div>
+
+                    <!-- Session Setup Panel -->
+                    <div class="session-setup">
+                        <div class="setup-row">
+                            <label class="setup-label">Project</label>
+                            <div class="project-input-wrapper">
+                                <input type="text" class="project-input" placeholder="Select or type project..." autocomplete="off">
+                                <div class="project-dropdown"></div>
+                            </div>
+                            <div class="saved-intro-preview">
+                                <span class="saved-intro-label">Best intro:</span>
+                                <span class="saved-intro-text"></span>
+                            </div>
+                        </div>
+                        <div class="setup-row">
+                            <label class="setup-label">Phase</label>
+                            <div class="phase-select-wrapper">
+                                <select class="phase-select"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Session context (shown during timer) -->
+                    <div class="session-context">
+                        <div class="context-mode-project"></div>
+                        <div class="context-phase"></div>
+                    </div>
+
+                    <div class="session-label">Work</div>
+                    <div class="countdown">
+                        <span class="digit" id="min-tens">2</span>
+                        <span class="digit" id="min-ones">5</span>
+                        <span class="colon">:</span>
+                        <span class="digit" id="sec-tens">0</span>
+                        <span class="digit" id="sec-ones">0</span>
+                    </div>
+                    <div class="duration-selector">
+                        <button class="duration-option" data-duration="15">15</button>
+                        <button class="duration-option" data-duration="20">20</button>
+                        <button class="duration-option selected" data-duration="25">25</button>
+                        <span class="duration-label">min</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="start-button">Begin</button>
+                        <button class="rest-button hide">Start Rest</button>
+                        <button class="work-button hide">Start Work</button>
+                        <button class="start-youtube-btn hide">Start</button>
+                    </div>
+
+                    <button class="stop-button">Reset</button>
+                </div>
+            </div>
         </div>
 
-        <div class="session-label">Work</div>
-        <div class="countdown">
-            <span class="digit" id="min-tens">2</span>
-            <span class="digit" id="min-ones">5</span>
-            <span class="colon">:</span>
-            <span class="digit" id="sec-tens">0</span>
-            <span class="digit" id="sec-ones">0</span>
-        </div>
-        <div class="duration-selector">
-            <button class="duration-option" data-duration="15">15</button>
-            <button class="duration-option" data-duration="20">20</button>
-            <button class="duration-option selected" data-duration="25">25</button>
-            <span class="duration-label">min</span>
-        </div>
-        <div class="action-buttons">
-            <button class="start-button">Begin</button>
-            <button class="rest-button hide">Start Rest</button>
-            <button class="work-button hide">Start Work</button>
-            <button class="youtube-edit-button hide">Start Editing</button>
-            <button class="youtube-intro-button hide">Start Intro</button>
+        <!-- ==========================================
+             GRATITUDE SECTION (Bottom)
+             ========================================== -->
+        <div class="section-card gratitude-section" data-section="gratitude" id="gratitude-section">
+            <!-- Collapsed State -->
+            <div class="section-collapsed" id="gratitude-collapsed">
+                <div class="section-header">
+                    <span class="section-title">Gratitude Journal</span>
+                    <span class="section-status" id="gratitude-status"></span>
+                </div>
+                <div id="gratitude-collapsed-content">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Expanded State -->
+            <div class="section-expanded" id="gratitude-expanded">
+                <button class="section-close-btn" data-close="gratitude">&times;</button>
+                <div class="gratitude-header">What are you grateful for today?</div>
+                <div class="gratitude-inputs">
+                    <div class="gratitude-row">
+                        <span class="gratitude-number">1</span>
+                        <input type="text" class="gratitude-input" id="gratitude-1" placeholder="Something good..." maxlength="150">
+                    </div>
+                    <div class="gratitude-row">
+                        <span class="gratitude-number">2</span>
+                        <input type="text" class="gratitude-input" id="gratitude-2" placeholder="Another moment..." maxlength="150">
+                    </div>
+                    <div class="gratitude-row">
+                        <span class="gratitude-number">3</span>
+                        <input type="text" class="gratitude-input" id="gratitude-3" placeholder="One more thing..." maxlength="150">
+                    </div>
+                </div>
+                <div class="gratitude-actions">
+                    <button class="save-gratitude-btn">Save Gratitude</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <button class="stop-button">Reset</button>
-
-    <!-- Dashboard button -->
-    <button class="dashboard-btn">Stats</button>
+    <!-- Session counter moved to bottom of page -->
+    <div class="session-counter" style="position: relative; bottom: auto; left: auto; transform: none; margin-top: 1rem;">
+        <div class="counter-label">Sessions Today</div>
+        <div class="counter-value" id="session-count">0</div>
+    </div>
 
     <!-- Dashboard view -->
     <div class="dashboard-view hide">
@@ -1549,6 +3021,8 @@
                 <button class="view-option selected" data-view="combined">Combined</button>
                 <button class="view-option" data-view="pomodoro">Work</button>
                 <button class="view-option" data-view="youtube">Quinlan Travels</button>
+                <button class="view-option" data-view="priorities">Priorities</button>
+                <button class="view-option" data-view="gratitude">Gratitude</button>
             </div>
         </div>
 
@@ -1565,6 +3039,14 @@
                 <div class="stat-label">Total Sessions</div>
                 <div class="stat-value" id="total-sessions">0</div>
             </div>
+            <div class="stat-card stat-card-priorities hide" id="stat-priority">
+                <div class="stat-label">Weekly Priority %</div>
+                <div class="stat-value" id="priority-percent">0%</div>
+            </div>
+            <div class="stat-card stat-card-gratitude hide" id="stat-gratitude">
+                <div class="stat-label">Gratitude Streak</div>
+                <div class="stat-value" id="gratitude-streak">0</div>
+            </div>
         </div>
 
         <div class="chart-container">
@@ -1579,13 +3061,34 @@
             </div>
         </div>
 
+        <!-- Priorities Dashboard View -->
+        <div class="priorities-dashboard hide" id="priorities-dashboard">
+            <h3 class="section-label">This Week's Priorities</h3>
+            <div class="week-stats" id="week-priority-stats">
+                <!-- Populated dynamically -->
+            </div>
+            <div class="priorities-history" id="priorities-history">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Gratitude Dashboard View -->
+        <div class="gratitude-dashboard hide" id="gratitude-dashboard">
+            <div class="gratitude-streak-badge" id="gratitude-streak-badge">
+                <span class="streak-number">0</span>
+                <span class="streak-label">day streak</span>
+            </div>
+            <h3 class="section-label">Gratitude Journal</h3>
+            <div class="gratitude-journal" id="gratitude-journal">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
         <button class="clear-data-btn">Clear All Data</button>
     </div>
 
-    <div class="session-counter">
-        <div class="counter-label">Sessions Completed</div>
-        <div class="counter-value" id="session-count">0</div>
-    </div>
+    <!-- Dashboard button (shown in main view) -->
+    <button class="dashboard-btn" id="main-dashboard-btn" style="position: fixed; top: 2rem; right: 2rem; left: auto;">Stats</button>
 
     <script>
         // Timer state
@@ -1600,15 +3103,28 @@
 
         // Mode state
         let currentMode = 'pomodoro'; // 'pomodoro' or 'youtube'
-        let youtubePhase = 'editing'; // 'editing' or 'intro'
+
+        // Three-panel layout state
+        let expandedSection = null; // 'priorities' | 'timer' | 'gratitude' | null
+
+        // Video production phases
+        const VIDEO_PHASES = [
+            { id: 'idea', label: 'Idea / Angle' },
+            { id: 'outline', label: 'Outline / Beat sheet' },
+            { id: 'script', label: 'Script / Voiceover polish' },
+            { id: 'edit', label: 'Edit (assembly)' },
+            { id: 'retention', label: 'Retention pass' },
+            { id: 'intro', label: 'Intro build (clinic)' },
+            { id: 'packaging', label: 'Packaging' },
+            { id: 'upload', label: 'Upload / Description / Chapters' }
+        ];
+        let youtubePhase = 'idea'; // Current phase ID
 
         // Session setup state
         let currentProject = '';
-        let currentNextAction = '';
 
-        // YouTube timer durations (in seconds)
-        const YOUTUBE_EDITING_DURATION = 20 * 60; // 20 minutes
-        const YOUTUBE_INTRO_DURATION = 2 * 60;    // 2 minutes
+        // YouTube timer duration (in seconds) - all phases use 20 minutes
+        const YOUTUBE_SESSION_DURATION = 20 * 60;
 
         // Project storage key
         const PROJECTS_STORAGE_KEY = 'pomodoro_projects';
@@ -1631,19 +3147,36 @@
         // Mode switcher elements
         const modeOptions = document.querySelectorAll('.mode-option');
         const modeSlider = document.querySelector('.mode-slider');
-        const youtubeEditButton = document.querySelector('.youtube-edit-button');
-        const youtubeIntroButton = document.querySelector('.youtube-intro-button');
+        const startYoutubeBtn = document.querySelector('.start-youtube-btn');
 
         // Session setup elements
         const sessionSetup = document.querySelector('.session-setup');
         const projectInput = document.querySelector('.project-input');
         const projectDropdown = document.querySelector('.project-dropdown');
-        const nextActionInput = document.querySelector('.next-action-input');
+        const phaseSelect = document.querySelector('.phase-select');
         const sessionContext = document.querySelector('.session-context');
         const contextModeProject = document.querySelector('.context-mode-project');
-        const contextNextAction = document.querySelector('.context-next-action');
+        const contextPhase = document.querySelector('.context-phase');
         const savedIntroPreview = document.querySelector('.saved-intro-preview');
         const savedIntroText = document.querySelector('.saved-intro-text');
+
+        // Three-panel layout elements
+        const appContainer = document.getElementById('app-container');
+        const prioritiesSection = document.getElementById('priorities-section');
+        const timerSection = document.getElementById('timer-section');
+        const gratitudeSection = document.getElementById('gratitude-section');
+        const prioritiesCollapsedContent = document.getElementById('priorities-collapsed-content');
+        const prioritiesStatus = document.getElementById('priorities-status');
+        const gratitudeCollapsedContent = document.getElementById('gratitude-collapsed-content');
+        const gratitudeStatus = document.getElementById('gratitude-status');
+        const miniTimer = document.getElementById('mini-timer');
+        const miniTimerStatus = document.getElementById('mini-timer-status');
+        const miniSessionCount = document.getElementById('mini-session-count');
+        const mainDashboardBtn = document.getElementById('main-dashboard-btn');
+
+        // Mode switchers (both collapsed and expanded have them)
+        const allModeOptions = document.querySelectorAll('.mode-option');
+        const allModeSliders = document.querySelectorAll('.mode-slider');
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
@@ -1661,6 +3194,280 @@
             } else {
                 return 'evening';
             }
+        }
+
+        // ==========================================
+        // THREE-PANEL EXPAND/COLLAPSE MANAGEMENT
+        // ==========================================
+
+        // Expand a section
+        function expandSection(sectionName) {
+            if (expandedSection === sectionName) return;
+
+            // Collapse any currently expanded section
+            collapseAllSections();
+
+            // Expand the selected section
+            expandedSection = sectionName;
+            appContainer.classList.add('has-expanded');
+
+            const section = document.getElementById(`${sectionName}-section`);
+            if (section) {
+                section.classList.add('expanded');
+            }
+
+            // Update priorities expanded view when opening priorities section
+            if (sectionName === 'priorities') {
+                updateExpandedPrioritiesView();
+            }
+        }
+
+        // Collapse all sections
+        function collapseAllSections() {
+            expandedSection = null;
+            appContainer.classList.remove('has-expanded');
+
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.classList.remove('expanded');
+            });
+
+            // Update all previews
+            updatePrioritiesCollapsedPreview();
+            updateTimerCollapsedPreview();
+            updateGratitudeCollapsedPreview();
+            updateTimeOfDayEmphasis();
+        }
+
+        // Update priorities collapsed preview (view-only with progress bar)
+        function updatePrioritiesCollapsedPreview() {
+            const todayData = getTodayPriorities();
+
+            if (!todayData) {
+                // Not set yet
+                prioritiesStatus.textContent = '';
+                prioritiesCollapsedContent.innerHTML = '<div class="collapsed-preview-hint">Set your top 3 for today</div>';
+            } else {
+                // Show view-only list with progress bar
+                const completed = todayData.priorities.filter(p => p.completed).length;
+                const total = todayData.priorities.length;
+                const percentage = Math.round((completed / total) * 100);
+                prioritiesStatus.textContent = completed === total ? `${total}/${total} ✓` : `${completed}/${total}`;
+
+                let html = `
+                    <div class="collapsed-priorities-view">
+                        <div class="collapsed-priority-list">
+                            ${todayData.priorities.map(p => `
+                                <div class="collapsed-priority-item ${p.completed ? 'completed' : ''}">
+                                    <span class="collapsed-priority-bullet">${p.completed ? '✓' : '•'}</span>
+                                    <span class="collapsed-priority-text">${p.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="priorities-progress-container">
+                            <div class="priorities-progress-bar">
+                                <div class="priorities-progress-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span class="priorities-progress-label">${completed}/${total} complete</span>
+                        </div>
+                `;
+
+                if (completed === total) {
+                    html += `<div class="priorities-all-done">All priorities complete!</div>`;
+                }
+
+                html += `</div>`;
+                prioritiesCollapsedContent.innerHTML = html;
+            }
+        }
+
+        // Update expanded priorities view (show edit mode or complete mode)
+        function updateExpandedPrioritiesView() {
+            const todayData = getTodayPriorities();
+            const editMode = document.getElementById('priorities-edit-mode');
+            const completeMode = document.getElementById('priorities-complete-mode');
+            const expandedList = document.getElementById('expanded-priority-list');
+
+            if (!todayData) {
+                // No priorities set - show edit mode
+                editMode.classList.remove('hide');
+                completeMode.classList.add('hide');
+                // Clear inputs
+                priorityInputs.forEach(input => input.value = '');
+            } else {
+                // Priorities exist - show complete mode with checkboxes
+                editMode.classList.add('hide');
+                completeMode.classList.remove('hide');
+
+                const completed = todayData.priorities.filter(p => p.completed).length;
+                const total = todayData.priorities.length;
+                const allDone = completed === total;
+
+                let html = '';
+
+                if (allDone) {
+                    html += `<div class="expanded-all-complete">All priorities complete! Great work!</div>`;
+                }
+
+                html += todayData.priorities.map((p, i) => `
+                    <label class="expanded-priority-row ${p.completed ? 'completed' : ''}" data-index="${i}">
+                        <input type="checkbox" class="expanded-priority-checkbox" ${p.completed ? 'checked' : ''}>
+                        <span class="expanded-priority-checkmark"></span>
+                        <span class="expanded-priority-number">${i + 1}</span>
+                        <span class="expanded-priority-text">${p.text}</span>
+                    </label>
+                `).join('');
+
+                expandedList.innerHTML = html;
+            }
+        }
+
+        // Use change event on the container (event delegation)
+        document.getElementById('expanded-priority-list').addEventListener('change', (e) => {
+            if (e.target.classList.contains('expanded-priority-checkbox')) {
+                const row = e.target.closest('.expanded-priority-row');
+                if (row) {
+                    togglePriorityCompletion(parseInt(row.dataset.index));
+                    updateExpandedPrioritiesView();
+                    updatePrioritiesCollapsedPreview();
+                }
+            }
+        });
+
+        // Switch to edit mode in expanded view
+        function switchToEditMode() {
+            const todayData = getTodayPriorities();
+            const editMode = document.getElementById('priorities-edit-mode');
+            const completeMode = document.getElementById('priorities-complete-mode');
+
+            // Populate inputs with current priority text
+            if (todayData) {
+                todayData.priorities.forEach((p, i) => {
+                    if (priorityInputs[i]) {
+                        priorityInputs[i].value = p.text;
+                    }
+                });
+            }
+
+            // Switch views
+            editMode.classList.remove('hide');
+            completeMode.classList.add('hide');
+
+            // Focus first input
+            if (priorityInputs[0]) {
+                priorityInputs[0].focus();
+            }
+        }
+
+        // Update timer collapsed preview
+        function updateTimerCollapsedPreview() {
+            const mins = Math.floor(remainingSeconds / 60);
+            const secs = remainingSeconds % 60;
+            miniTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            if (isRunning) {
+                miniTimerStatus.textContent = isWorkSession ? 'Working...' : 'Resting...';
+            } else {
+                miniTimerStatus.textContent = 'Ready';
+            }
+
+            // Update session count
+            miniSessionCount.textContent = `${sessionCount} today`;
+        }
+
+        // Update gratitude collapsed preview
+        function updateGratitudeCollapsedPreview() {
+            const todayData = getTodayGratitude();
+            const gratitudeData = loadGratitude();
+            const streak = gratitudeData.stats.currentStreak || 0;
+
+            if (!todayData) {
+                // Not recorded yet
+                gratitudeStatus.textContent = '';
+                gratitudeCollapsedContent.innerHTML = `
+                    <div class="collapsed-preview-hint">What are you grateful for?</div>
+                    ${streak > 0 ? `<div class="gratitude-streak-mini">${streak} day streak</div>` : ''}
+                `;
+            } else {
+                // Recorded
+                gratitudeStatus.textContent = '✓';
+                gratitudeCollapsedContent.innerHTML = `
+                    <div class="gratitude-collapsed-status">
+                        <span class="gratitude-check-icon">✓</span>
+                        <span>Today's gratitude saved</span>
+                    </div>
+                    ${streak > 0 ? `<div class="gratitude-streak-mini">${streak} day streak</div>` : ''}
+                `;
+            }
+        }
+
+        // Update time-of-day emphasis
+        function updateTimeOfDayEmphasis() {
+            const timeOfDay = getTimeOfDay();
+
+            // Remove all emphasis
+            prioritiesSection.classList.remove('time-emphasis');
+            timerSection.classList.remove('time-emphasis');
+            gratitudeSection.classList.remove('time-emphasis');
+
+            // Add emphasis based on time of day
+            if (timeOfDay === 'morning') {
+                prioritiesSection.classList.add('time-emphasis');
+            } else if (timeOfDay === 'afternoon') {
+                timerSection.classList.add('time-emphasis');
+            } else {
+                gratitudeSection.classList.add('time-emphasis');
+            }
+        }
+
+        // Section click handlers
+        function setupSectionClickHandlers() {
+            // Click on section to expand
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't expand if clicking on close button or input
+                    if (e.target.closest('.section-close-btn') ||
+                        e.target.closest('input') ||
+                        e.target.closest('select') ||
+                        e.target.closest('button:not(.mode-option)') ||
+                        e.target.closest('.expanded-priority-row')) {
+                        return;
+                    }
+
+                    const sectionName = card.dataset.section;
+                    if (!card.classList.contains('expanded')) {
+                        expandSection(sectionName);
+                    }
+                });
+            });
+
+            // Close button handlers
+            document.querySelectorAll('.section-close-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    collapseAllSections();
+                });
+            });
+
+            // Keyboard accessibility
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.setAttribute('tabindex', '0');
+                card.addEventListener('keydown', (e) => {
+                    // Don't intercept keyboard events from input/textarea/select elements
+                    if (e.target.matches('input, textarea, select')) {
+                        return;
+                    }
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const sectionName = card.dataset.section;
+                        if (!card.classList.contains('expanded')) {
+                            expandSection(sectionName);
+                        }
+                    }
+                    if (e.key === 'Escape' && card.classList.contains('expanded')) {
+                        collapseAllSections();
+                    }
+                });
+            });
         }
 
         // Format time as individual digits
@@ -1713,6 +3520,10 @@
                         restButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
                         // Keep session context visible during rest
+                        // Update adaptive UI
+                        if (typeof updateAdaptiveUI === 'function') {
+                            updateAdaptiveUI();
+                        }
                     } else {
                         // Rest session completed - show work button
                         showNotification('Rest Complete!', 'Ready for another work session?');
@@ -1723,53 +3534,43 @@
                         hideSessionContext();
                         workButton.classList.remove('hide');
                         stopButton.classList.remove('visible');
+                        // Update adaptive UI
+                        if (typeof updateAdaptiveUI === 'function') {
+                            updateAdaptiveUI();
+                        }
                     }
                 } else {
-                    // YouTube Creator mode
-                    if (youtubePhase === 'editing') {
-                        // Editing session completed - record session and show buttons
-                        if (!sessionRecorded) {  // Only record once
-                            sessionRecorded = true;
-                            sessionCount++;
-                            sessionCountEl.textContent = sessionCount;
-                            recordSession('youtube', 'edit');
-                        }
-                        showNotification('Editing Complete!', 'Session recorded! Want to work on your intro?');
+                    // YouTube Creator mode - session completed
+                    if (!sessionRecorded) {
+                        sessionRecorded = true;
+                        sessionCount++;
+                        sessionCountEl.textContent = sessionCount;
+                        recordSession('youtube', youtubePhase);
+                    }
 
-                        // Reset to ready state
-                        sessionLabelEl.textContent = 'Editing';
-                        sessionLabelEl.classList.remove('breathing');
-                        backgroundEl.className = 'background youtube-editing';
-                        remainingSeconds = YOUTUBE_EDITING_DURATION;
-                        updateDisplay();
+                    // Get current phase label for notification
+                    const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+                    const phaseLabel = currentPhase ? currentPhase.label : youtubePhase;
+                    showNotification('Session Complete!', `${phaseLabel} session recorded!`);
 
-                        // Show session setup and both buttons
-                        sessionSetup.classList.remove('hide');
-                        hideSessionContext();
-                        youtubeEditButton.classList.remove('hide');
-                        youtubeIntroButton.classList.remove('hide');
-                        stopButton.classList.remove('visible');
-                    } else {
-                        // Intro session completed
-                        if (!sessionRecorded) {  // Only record once
-                            sessionRecorded = true;
-                            sessionCount++;
-                            sessionCountEl.textContent = sessionCount;
-                            recordSession('youtube', 'intro');
-                        }
-                        showNotification('Intro Complete!', 'Session recorded! Ready for another editing session?');
+                    // Reset to ready state
+                    sessionLabelEl.textContent = phaseLabel;
+                    sessionLabelEl.classList.remove('breathing');
+                    backgroundEl.className = 'background youtube-editing';
+                    remainingSeconds = YOUTUBE_SESSION_DURATION;
+                    updateDisplay();
 
-                        sessionLabelEl.textContent = 'Editing';
-                        sessionLabelEl.classList.remove('breathing');
-                        backgroundEl.className = 'background youtube-editing';
-                        remainingSeconds = YOUTUBE_EDITING_DURATION;
-                        updateDisplay();
+                    // Exit focus mode
+                    appContainer.classList.remove('timer-focus-mode');
 
-                        sessionSetup.classList.remove('hide');
-                        hideSessionContext();
-                        youtubeEditButton.classList.remove('hide');
-                        youtubeIntroButton.classList.remove('hide');
-                        stopButton.classList.remove('visible');
+                    // Show session setup and start button
+                    sessionSetup.classList.remove('hide');
+                    hideSessionContext();
+                    startYoutubeBtn.classList.remove('hide');
+                    stopButton.classList.remove('visible');
+                    // Update adaptive UI
+                    if (typeof updateAdaptiveUI === 'function') {
+                        updateAdaptiveUI();
                     }
                 }
             }
@@ -1782,6 +3583,16 @@
                 startButton.classList.add('hide');
                 durationSelector.classList.add('hide');
                 stopButton.classList.add('visible');
+
+                // Enter focus mode
+                appContainer.classList.add('timer-focus-mode');
+                appContainer.classList.remove('has-expanded');
+                expandedSection = null;
+
+                // Hide priorities/gratitude panels during timer
+                if (typeof updateAdaptiveUI === 'function') {
+                    updateAdaptiveUI();
+                }
 
                 // Add breathing animation during work sessions
                 if (isWorkSession) {
@@ -1809,6 +3620,16 @@
             restButton.classList.add('hide');
             sessionSetup.classList.add('hide');
             stopButton.classList.add('visible');
+
+            // Enter/stay in focus mode
+            appContainer.classList.add('timer-focus-mode');
+            appContainer.classList.remove('has-expanded');
+            expandedSection = null;
+
+            // Hide priorities/gratitude panels during timer
+            if (typeof updateAdaptiveUI === 'function') {
+                updateAdaptiveUI();
+            }
 
             // Keep session context visible during rest
 
@@ -1843,6 +3664,16 @@
             sessionSetup.classList.add('hide');
             stopButton.classList.add('visible');
 
+            // Enter/stay in focus mode
+            appContainer.classList.add('timer-focus-mode');
+            appContainer.classList.remove('has-expanded');
+            expandedSection = null;
+
+            // Hide priorities/gratitude panels during timer
+            if (typeof updateAdaptiveUI === 'function') {
+                updateAdaptiveUI();
+            }
+
             // Show session context (only for Quinlan mode)
             if (currentMode === 'youtube') {
                 showSessionContext();
@@ -1858,6 +3689,9 @@
         function stopTimer() {
             clearInterval(timerInterval);
             isRunning = false;
+
+            // Exit focus mode
+            appContainer.classList.remove('timer-focus-mode');
 
             // Load today's session count from storage (don't reset to 0)
             sessionCount = getTodaySessionCount();
@@ -1887,60 +3721,53 @@
                 workButton.classList.add('hide');
             } else {
                 // YouTube Creator mode reset
-                youtubePhase = 'editing';
-                remainingSeconds = YOUTUBE_EDITING_DURATION;
-                sessionLabelEl.textContent = 'Editing';
+                youtubePhase = phaseSelect.value || 'idea';
+                remainingSeconds = YOUTUBE_SESSION_DURATION;
+                const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+                sessionLabelEl.textContent = currentPhase ? currentPhase.label : youtubePhase;
                 backgroundEl.className = 'background youtube-editing';
 
                 updateDisplay();
 
-                youtubeEditButton.classList.remove('hide');
-                youtubeIntroButton.classList.add('hide');
+                startYoutubeBtn.classList.remove('hide');
             }
 
             stopButton.classList.remove('visible');
+
+            // Update adaptive UI for priorities/gratitude panels
+            if (typeof updateAdaptiveUI === 'function') {
+                updateAdaptiveUI();
+            }
         }
 
-        // YouTube: Start editing timer
-        function startEditingTimer() {
+        // YouTube: Start session timer
+        function startYoutubeTimer() {
             if (!isRunning) {
                 sessionRecorded = false;  // Reset guard flag
                 isRunning = true;
-                youtubePhase = 'editing';
-                remainingSeconds = YOUTUBE_EDITING_DURATION;
+                youtubePhase = phaseSelect.value || 'idea';
+                remainingSeconds = YOUTUBE_SESSION_DURATION;
 
-                sessionLabelEl.textContent = 'Editing';
+                const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+                const phaseLabel = currentPhase ? currentPhase.label : youtubePhase;
+                sessionLabelEl.textContent = phaseLabel;
                 backgroundEl.className = 'background youtube-editing';
                 sessionLabelEl.classList.add('breathing');
 
                 updateDisplay();
 
-                youtubeEditButton.classList.add('hide');
-                youtubeIntroButton.classList.add('hide');
+                startYoutubeBtn.classList.add('hide');
                 stopButton.classList.add('visible');
 
-                endTime = Date.now() + (remainingSeconds * 1000);
-                timerInterval = setInterval(tick, 1000);
-            }
-        }
+                // Enter focus mode
+                appContainer.classList.add('timer-focus-mode');
+                appContainer.classList.remove('has-expanded');
+                expandedSection = null;
 
-        // YouTube: Start intro timer
-        function startIntroTimer() {
-            if (!isRunning) {
-                sessionRecorded = false;  // Reset guard flag
-                isRunning = true;
-                youtubePhase = 'intro';
-                remainingSeconds = YOUTUBE_INTRO_DURATION;
-
-                sessionLabelEl.textContent = 'Improve Intro';
-                backgroundEl.className = 'background youtube-intro';
-                sessionLabelEl.classList.add('breathing');
-
-                updateDisplay();
-
-                youtubeEditButton.classList.add('hide');
-                youtubeIntroButton.classList.add('hide');
-                stopButton.classList.add('visible');
+                // Hide priorities/gratitude panels during timer
+                if (typeof updateAdaptiveUI === 'function') {
+                    updateAdaptiveUI();
+                }
 
                 endTime = Date.now() + (remainingSeconds * 1000);
                 timerInterval = setInterval(tick, 1000);
@@ -1957,6 +3784,9 @@
             sessionRecorded = false;  // Reset guard flag
             sessionLabelEl.classList.remove('breathing');
 
+            // Exit focus mode
+            appContainer.classList.remove('timer-focus-mode');
+
             // Update mode state
             currentMode = mode;
 
@@ -1964,20 +3794,21 @@
             sessionCount = getTodaySessionCount();
             sessionCountEl.textContent = sessionCount;
 
-            // Update mode switcher UI
-            modeOptions.forEach(opt => {
+            // Update all mode switcher UIs (collapsed and expanded)
+            allModeOptions.forEach(opt => {
                 opt.classList.toggle('selected', opt.dataset.mode === mode);
             });
 
-            // Update slider position
-            modeSlider.classList.toggle('youtube', mode === 'youtube');
+            // Update all slider positions
+            allModeSliders.forEach(slider => {
+                slider.classList.toggle('youtube', mode === 'youtube');
+            });
 
             // Hide all buttons first
             startButton.classList.add('hide');
             restButton.classList.add('hide');
             workButton.classList.add('hide');
-            youtubeEditButton.classList.add('hide');
-            youtubeIntroButton.classList.add('hide');
+            startYoutubeBtn.classList.add('hide');
             stopButton.classList.remove('visible');
 
             if (mode === 'pomodoro') {
@@ -1994,19 +3825,24 @@
                 sessionSetup.classList.add('hide');
             } else {
                 // Switch to YouTube Creator mode
-                youtubePhase = 'editing';
-                remainingSeconds = YOUTUBE_EDITING_DURATION;
+                youtubePhase = phaseSelect.value || 'idea';
+                remainingSeconds = YOUTUBE_SESSION_DURATION;
 
-                sessionLabelEl.textContent = 'Editing';
+                const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+                sessionLabelEl.textContent = currentPhase ? currentPhase.label : youtubePhase;
                 backgroundEl.className = 'background youtube-editing';
 
                 durationSelector.classList.add('hide');
-                youtubeEditButton.classList.remove('hide');
-                youtubeIntroButton.classList.add('hide');
+                startYoutubeBtn.classList.remove('hide');
                 sessionSetup.classList.remove('hide');
             }
 
             updateDisplay();
+
+            // Update adaptive UI for priorities/gratitude panels
+            if (typeof updateAdaptiveUI === 'function') {
+                updateAdaptiveUI();
+            }
         }
 
         // ==========================================
@@ -2141,18 +3977,18 @@
 
         // Show session context during timer
         function showSessionContext() {
-            if (currentProject || currentNextAction) {
-                const modeName = currentMode === 'pomodoro' ? 'Work' : 'Quinlan Travels';
+            if (currentProject || (currentMode === 'youtube' && youtubePhase)) {
                 if (currentProject) {
-                    contextModeProject.textContent = `${modeName} · ${currentProject}`;
+                    contextModeProject.textContent = currentProject;
                 } else {
-                    contextModeProject.textContent = modeName;
+                    contextModeProject.textContent = '';
                 }
 
-                if (currentNextAction) {
-                    contextNextAction.textContent = `Next: ${currentNextAction}`;
+                if (currentMode === 'youtube' && youtubePhase) {
+                    const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+                    contextPhase.textContent = currentPhase ? currentPhase.label : '';
                 } else {
-                    contextNextAction.textContent = '';
+                    contextPhase.textContent = '';
                 }
 
                 sessionContext.classList.add('visible');
@@ -2170,7 +4006,6 @@
             if (currentProject) {
                 addProject(currentProject);
             }
-            currentNextAction = nextActionInput.value.trim();
 
             // Hide setup UI when starting
             sessionSetup.classList.add('hide');
@@ -2183,12 +4018,11 @@
             hideSessionContext();
             stopTimer();
         });
-        youtubeEditButton.addEventListener('click', () => {
+        startYoutubeBtn.addEventListener('click', () => {
             // Save project if entered
             if (currentProject) {
                 addProject(currentProject);
             }
-            currentNextAction = nextActionInput.value.trim();
 
             // Hide setup UI when starting
             sessionSetup.classList.add('hide');
@@ -2196,16 +4030,13 @@
             // Show session context
             showSessionContext();
 
-            startEditingTimer();
-        });
-        youtubeIntroButton.addEventListener('click', () => {
-            showSessionContext();
-            startIntroTimer();
+            startYoutubeTimer();
         });
 
-        // Mode switcher click handlers
-        modeOptions.forEach(option => {
-            option.addEventListener('click', () => {
+        // Mode switcher click handlers (works on all mode switchers)
+        allModeOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation(); // Don't trigger section expand
                 switchMode(option.dataset.mode);
                 // Clear project selection when switching modes
                 currentProject = '';
@@ -2289,6 +4120,384 @@
         // Hide session setup by default (starts in Work mode)
         sessionSetup.classList.add('hide');
 
+        // Initialize phase selector
+        function initPhaseSelector() {
+            phaseSelect.innerHTML = VIDEO_PHASES.map(phase =>
+                `<option value="${phase.id}">${phase.label}</option>`
+            ).join('');
+            youtubePhase = phaseSelect.value;
+        }
+        initPhaseSelector();
+
+        // Update session label when phase changes
+        phaseSelect.addEventListener('change', () => {
+            youtubePhase = phaseSelect.value;
+            const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
+            if (currentPhase && !isRunning) {
+                sessionLabelEl.textContent = currentPhase.label;
+            }
+        });
+
+        // ==========================================
+        // PRIORITIES & GRATITUDE
+        // ==========================================
+
+        const PRIORITIES_STORAGE_KEY = 'pomodoro_priorities';
+        const GRATITUDE_STORAGE_KEY = 'pomodoro_gratitude';
+
+        // DOM elements for priorities and gratitude (now in section cards)
+        const priorityInputs = [
+            document.getElementById('priority-1'),
+            document.getElementById('priority-2'),
+            document.getElementById('priority-3')
+        ];
+        const setPrioritiesBtn = document.querySelector('.set-priorities-btn');
+
+        const gratitudeInputs = [
+            document.getElementById('gratitude-1'),
+            document.getElementById('gratitude-2'),
+            document.getElementById('gratitude-3')
+        ];
+        const saveGratitudeBtn = document.querySelector('.save-gratitude-btn');
+
+        // Session-level flag for gratitude dismissal
+        let gratitudeDismissedThisSession = false;
+
+        // Load priorities data from localStorage
+        function loadPriorities() {
+            try {
+                const stored = localStorage.getItem(PRIORITIES_STORAGE_KEY);
+                if (!stored) {
+                    return { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } };
+                }
+                const data = JSON.parse(stored);
+                if (!data.version) data.version = 1;
+                if (!data.days) data.days = {};
+                if (!data.stats) data.stats = { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 };
+                return data;
+            } catch (e) {
+                console.warn('Failed to load priorities:', e);
+                return { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } };
+            }
+        }
+
+        // Save priorities data to localStorage
+        function savePriorities(data) {
+            try {
+                localStorage.setItem(PRIORITIES_STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.warn('Failed to save priorities:', e);
+            }
+        }
+
+        // Get today's priorities
+        function getTodayPriorities() {
+            const data = loadPriorities();
+            const today = getTodayDateKey();
+            return data.days[today] || null;
+        }
+
+        // Set today's priorities
+        function setTodayPriorities(priorities) {
+            const data = loadPriorities();
+            const today = getTodayDateKey();
+
+            // Check if this is a new day (for stats)
+            const isNewDay = !data.days[today];
+
+            data.days[today] = {
+                priorities: priorities.map(text => ({
+                    text: text,
+                    completed: false,
+                    completedAt: null
+                })),
+                setAt: new Date().toISOString()
+            };
+
+            // Update stats
+            if (isNewDay) {
+                data.stats.totalDaysSet++;
+                updatePriorityStreak(data);
+            }
+
+            savePriorities(data);
+        }
+
+        // Toggle priority completion
+        function togglePriorityCompletion(index) {
+            const data = loadPriorities();
+            const today = getTodayDateKey();
+
+            if (!data.days[today] || !data.days[today].priorities[index]) return;
+
+            const priority = data.days[today].priorities[index];
+            const wasCompleted = priority.completed;
+            priority.completed = !priority.completed;
+            priority.completedAt = priority.completed ? new Date().toISOString() : null;
+
+            // Update total completed stat
+            if (priority.completed && !wasCompleted) {
+                data.stats.totalCompleted++;
+            } else if (!priority.completed && wasCompleted) {
+                data.stats.totalCompleted--;
+            }
+
+            savePriorities(data);
+            renderCompactPriorities();
+            updatePrioritiesCollapsedPreview();
+        }
+
+        // Update priority streak
+        function updatePriorityStreak(data) {
+            const dates = Object.keys(data.days).sort().reverse();
+            let streak = 0;
+            const today = getTodayDateKey();
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayKey = yesterday.toLocaleDateString('sv');
+
+            // Start checking from today or yesterday
+            let checkDate = data.days[today] ? today : yesterdayKey;
+
+            for (const date of dates) {
+                if (date === checkDate) {
+                    streak++;
+                    const prevDate = new Date(checkDate);
+                    prevDate.setDate(prevDate.getDate() - 1);
+                    checkDate = prevDate.toLocaleDateString('sv');
+                } else if (date < checkDate) {
+                    break;
+                }
+            }
+
+            data.stats.currentStreak = streak;
+        }
+
+        // Calculate priority completion stats for current week
+        function getWeeklyPriorityStats() {
+            const data = loadPriorities();
+            const today = new Date();
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay()); // Start of week (Sunday)
+
+            let completed = 0;
+            let total = 0;
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(weekStart);
+                date.setDate(weekStart.getDate() + i);
+                const dateKey = date.toLocaleDateString('sv');
+
+                if (data.days[dateKey]) {
+                    const dayData = data.days[dateKey];
+                    total += dayData.priorities.length;
+                    completed += dayData.priorities.filter(p => p.completed).length;
+                }
+            }
+
+            return { completed, total, percentage: total > 0 ? Math.round((completed / total) * 100) : 0 };
+        }
+
+        // Load gratitude data from localStorage
+        function loadGratitude() {
+            try {
+                const stored = localStorage.getItem(GRATITUDE_STORAGE_KEY);
+                if (!stored) {
+                    return { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } };
+                }
+                const data = JSON.parse(stored);
+                if (!data.version) data.version = 1;
+                if (!data.entries) data.entries = {};
+                if (!data.stats) data.stats = { totalDaysRecorded: 0, currentStreak: 0 };
+                return data;
+            } catch (e) {
+                console.warn('Failed to load gratitude:', e);
+                return { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } };
+            }
+        }
+
+        // Save gratitude data to localStorage
+        function saveGratitude(data) {
+            try {
+                localStorage.setItem(GRATITUDE_STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                console.warn('Failed to save gratitude:', e);
+            }
+        }
+
+        // Get today's gratitude
+        function getTodayGratitude() {
+            const data = loadGratitude();
+            const today = getTodayDateKey();
+            return data.entries[today] || null;
+        }
+
+        // Save today's gratitude
+        function saveTodayGratitude(items) {
+            const data = loadGratitude();
+            const today = getTodayDateKey();
+
+            // Check if this is a new day (for stats)
+            const isNewDay = !data.entries[today];
+
+            data.entries[today] = {
+                items: items,
+                savedAt: new Date().toISOString()
+            };
+
+            // Update stats
+            if (isNewDay) {
+                data.stats.totalDaysRecorded++;
+                updateGratitudeStreak(data);
+            }
+
+            saveGratitude(data);
+        }
+
+        // Update gratitude streak
+        function updateGratitudeStreak(data) {
+            const dates = Object.keys(data.entries).sort().reverse();
+            let streak = 0;
+            const today = getTodayDateKey();
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayKey = yesterday.toLocaleDateString('sv');
+
+            // Start checking from today or yesterday
+            let checkDate = data.entries[today] ? today : yesterdayKey;
+
+            for (const date of dates) {
+                if (date === checkDate) {
+                    streak++;
+                    const prevDate = new Date(checkDate);
+                    prevDate.setDate(prevDate.getDate() - 1);
+                    checkDate = prevDate.toLocaleDateString('sv');
+                } else if (date < checkDate) {
+                    break;
+                }
+            }
+
+            data.stats.currentStreak = streak;
+        }
+
+        // Render compact priority checklist
+        function renderCompactPriorities() {
+            const todayData = getTodayPriorities();
+            if (!todayData) return;
+
+            priorityChecklist.innerHTML = todayData.priorities.map((p, i) => `
+                <div class="priority-check-item ${p.completed ? 'completed' : ''}" data-index="${i}">
+                    <div class="priority-checkbox ${p.completed ? 'checked' : ''}"></div>
+                    <span class="priority-check-text" title="${p.text}">${p.text}</span>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            priorityChecklist.querySelectorAll('.priority-check-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    togglePriorityCompletion(parseInt(item.dataset.index));
+                });
+            });
+        }
+
+        // Determine and show the appropriate adaptive UI state
+        function updateAdaptiveUI() {
+            // Update all collapsed previews
+            updatePrioritiesCollapsedPreview();
+            updateTimerCollapsedPreview();
+            updateGratitudeCollapsedPreview();
+            updateTimeOfDayEmphasis();
+
+            // Auto-expand logic for prompts
+            if (!expandedSection && !isRunning) {
+                const timeOfDay = getTimeOfDay();
+                const todayPriorities = getTodayPriorities();
+                const todayGratitude = getTodayGratitude();
+
+                // In evening, if gratitude not recorded, auto-expand gratitude
+                if (timeOfDay === 'evening' && !todayGratitude && !gratitudeDismissedThisSession) {
+                    // Don't auto-expand, just let the time-emphasis highlight it
+                }
+
+                // If priorities not set, auto-expand priorities in morning
+                if (!todayPriorities && timeOfDay === 'morning') {
+                    // Don't auto-expand, just let the time-emphasis highlight it
+                }
+            }
+        }
+
+        // Set priorities button handler
+        setPrioritiesBtn.addEventListener('click', () => {
+            const newPriorities = priorityInputs.map(input => input.value.trim());
+
+            if (newPriorities.filter(text => text).length < 3) {
+                // Need all 3 priorities
+                priorityInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = 'rgba(200, 100, 100, 0.5)';
+                        setTimeout(() => {
+                            input.style.borderColor = '';
+                        }, 2000);
+                    }
+                });
+                return;
+            }
+
+            // Check if editing existing priorities - preserve completion status
+            const existingData = getTodayPriorities();
+            if (existingData) {
+                // Update existing priorities, preserving completion if text matches
+                const data = loadPriorities();
+                const today = getTodayDateKey();
+
+                data.days[today].priorities = newPriorities.map((text, i) => {
+                    const existing = existingData.priorities[i];
+                    // Preserve completion only if text is the same
+                    const sameText = existing && existing.text === text;
+                    return {
+                        text: text,
+                        completed: sameText ? existing.completed : false,
+                        completedAt: sameText ? existing.completedAt : null
+                    };
+                });
+
+                savePriorities(data);
+            } else {
+                // Creating new priorities
+                setTodayPriorities(newPriorities);
+            }
+
+            // Switch to complete mode and update collapsed preview
+            updateExpandedPrioritiesView();
+            updatePrioritiesCollapsedPreview();
+        });
+
+        // Edit priorities button handler
+        document.querySelector('.edit-priorities-btn').addEventListener('click', () => {
+            switchToEditMode();
+        });
+
+        // Save gratitude button handler
+        saveGratitudeBtn.addEventListener('click', () => {
+            const items = gratitudeInputs.map(input => input.value.trim()).filter(text => text);
+
+            if (items.length === 0) {
+                // Need at least one item
+                gratitudeInputs[0].style.borderColor = 'rgba(200, 100, 100, 0.5)';
+                setTimeout(() => {
+                    gratitudeInputs[0].style.borderColor = '';
+                }, 2000);
+                return;
+            }
+
+            saveTodayGratitude(items);
+            collapseAllSections();
+        });
+
+        // Initialize three-panel layout
+        setupSectionClickHandlers();
+        updateAdaptiveUI();
+
         // ==========================================
         // SESSION TRACKING & STORAGE
         // ==========================================
@@ -2312,7 +4521,20 @@
         const projectSummary = document.getElementById('project-summary');
         const projectList = document.getElementById('project-list');
 
-        let currentViewMode = 'combined'; // 'combined', 'pomodoro', 'youtube'
+        // New dashboard elements for priorities and gratitude
+        const prioritiesDashboard = document.getElementById('priorities-dashboard');
+        const prioritiesHistory = document.getElementById('priorities-history');
+        const weekPriorityStats = document.getElementById('week-priority-stats');
+        const gratitudeDashboard = document.getElementById('gratitude-dashboard');
+        const gratitudeJournal = document.getElementById('gratitude-journal');
+        const gratitudeStreakBadge = document.getElementById('gratitude-streak-badge');
+        const statPriority = document.getElementById('stat-priority');
+        const statGratitude = document.getElementById('stat-gratitude');
+        const priorityPercentEl = document.getElementById('priority-percent');
+        const gratitudeStreakEl = document.getElementById('gratitude-streak');
+        const chartContainer = document.querySelector('.chart-container');
+
+        let currentViewMode = 'combined'; // 'combined', 'pomodoro', 'youtube', 'priorities', 'gratitude'
 
         // Get today's date key in YYYY-MM-DD format
         function getTodayDateKey() {
@@ -2348,27 +4570,30 @@
         }
 
         // Helper to get youtube session total (handles old and new data formats)
-        // New format: { "projectName": { edit: N, intro: N }, ... }
+        // New format: { "projectName": { phaseId: N, ... }, ... }
         // Old formats: number OR { edit: N, intro: N }
         function getYoutubeTotal(youtube) {
             if (typeof youtube !== 'object' || youtube === null) {
                 return youtube || 0; // Old number format
             }
-            // Check if it's old { edit, intro } format or new { projectName: { edit, intro } } format
+            // Check if it's old { edit, intro } format or new { projectName: { phases } } format
             if ('edit' in youtube || 'intro' in youtube) {
                 return (youtube.edit || 0) + (youtube.intro || 0); // Old object format
             }
-            // New format: sum across all projects
+            // New format: sum across all projects and all phases
             let total = 0;
             for (const projectData of Object.values(youtube)) {
                 if (typeof projectData === 'object' && projectData !== null) {
-                    total += (projectData.edit || 0) + (projectData.intro || 0);
+                    for (const count of Object.values(projectData)) {
+                        total += count || 0;
+                    }
                 }
             }
             return total;
         }
 
-        // Helper to get project session totals from all session data
+        // Helper to get project session totals with phase breakdown from all session data
+        // Returns: { projectName: { total: N, phases: { phaseId: N, ... } }, ... }
         function getProjectSessionTotals() {
             const data = loadSessionData();
             const totals = {};
@@ -2383,9 +4608,17 @@
                 for (const [projectName, projectData] of Object.entries(youtube)) {
                     if (typeof projectData === 'object' && projectData !== null) {
                         if (!totals[projectName]) {
-                            totals[projectName] = 0;
+                            totals[projectName] = { total: 0, phases: {} };
                         }
-                        totals[projectName] += (projectData.edit || 0) + (projectData.intro || 0);
+                        // Sum all phases for this project
+                        for (const [phaseId, count] of Object.entries(projectData)) {
+                            const phaseCount = count || 0;
+                            totals[projectName].total += phaseCount;
+                            if (!totals[projectName].phases[phaseId]) {
+                                totals[projectName].phases[phaseId] = 0;
+                            }
+                            totals[projectName].phases[phaseId] += phaseCount;
+                        }
                     }
                 }
             }
@@ -2393,7 +4626,7 @@
         }
 
         // Record a completed session
-        function recordSession(mode, sessionType = 'edit') {
+        function recordSession(mode, phaseId = 'edit') {
             const data = loadSessionData();
             const today = getTodayDateKey();
 
@@ -2410,23 +4643,29 @@
                     // Old number format - migrate to new format (assign to _unassigned)
                     const oldCount = yt || 0;
                     data.sessions[today].youtube = oldCount > 0
-                        ? { '_unassigned': { edit: oldCount, intro: 0 } }
+                        ? { '_unassigned': { edit: oldCount } }
                         : {};
                 } else if ('edit' in yt || 'intro' in yt) {
                     // Old { edit, intro } format - migrate to new format
                     const oldEdit = yt.edit || 0;
                     const oldIntro = yt.intro || 0;
-                    data.sessions[today].youtube = (oldEdit > 0 || oldIntro > 0)
-                        ? { '_unassigned': { edit: oldEdit, intro: oldIntro } }
+                    const migrated = {};
+                    if (oldEdit > 0) migrated.edit = oldEdit;
+                    if (oldIntro > 0) migrated.intro = oldIntro;
+                    data.sessions[today].youtube = Object.keys(migrated).length > 0
+                        ? { '_unassigned': migrated }
                         : {};
                 }
 
                 // Record session under current project (or _unassigned if none)
                 const projectKey = currentProject || '_unassigned';
                 if (!data.sessions[today].youtube[projectKey]) {
-                    data.sessions[today].youtube[projectKey] = { edit: 0, intro: 0 };
+                    data.sessions[today].youtube[projectKey] = {};
                 }
-                data.sessions[today].youtube[projectKey][sessionType]++;
+                if (!data.sessions[today].youtube[projectKey][phaseId]) {
+                    data.sessions[today].youtube[projectKey][phaseId] = 0;
+                }
+                data.sessions[today].youtube[projectKey][phaseId]++;
             }
 
             saveSessionData(data);
@@ -2738,42 +4977,195 @@
         // Render project summary for Quinlan Travels view
         function renderProjectSummary() {
             // Calculate project totals from session data (single source of truth)
-            const sessions = getProjectSessionTotals();
+            const projectTotals = getProjectSessionTotals();
 
             // Convert to array, filter out _unassigned, and sort by session count (descending)
-            const projects = Object.entries(sessions)
+            const projects = Object.entries(projectTotals)
                 .filter(([name]) => name !== '_unassigned')
-                .map(([name, count]) => ({ name, count }))
-                .sort((a, b) => b.count - a.count);
+                .map(([name, data]) => ({ name, total: data.total, phases: data.phases }))
+                .sort((a, b) => b.total - a.total);
 
             if (projects.length === 0) {
                 projectList.innerHTML = '<div class="project-list-empty">No projects tracked yet</div>';
             } else {
-                projectList.innerHTML = projects.map(p => `
-                    <div class="project-list-item">
-                        <span class="project-name">${p.name}</span>
-                        <span class="project-count">${p.count} session${p.count !== 1 ? 's' : ''}</span>
-                    </div>
-                `).join('');
+                projectList.innerHTML = projects.map(p => {
+                    // Build phase breakdown HTML
+                    const phaseBreakdown = VIDEO_PHASES
+                        .filter(phase => p.phases[phase.id] && p.phases[phase.id] > 0)
+                        .map(phase => `<div class="phase-breakdown-item">${phase.label}: ${p.phases[phase.id]}</div>`)
+                        .join('');
+
+                    return `
+                        <div class="project-list-item-wrapper">
+                            <div class="project-list-item" data-project="${p.name}">
+                                <span class="project-name">${p.name}</span>
+                                <span class="project-count">${p.total} session${p.total !== 1 ? 's' : ''}</span>
+                            </div>
+                            ${phaseBreakdown ? `<div class="phase-breakdown hide">${phaseBreakdown}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                // Add click handlers to toggle phase breakdown
+                projectList.querySelectorAll('.project-list-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const wrapper = item.closest('.project-list-item-wrapper');
+                        const breakdown = wrapper.querySelector('.phase-breakdown');
+                        if (breakdown) {
+                            breakdown.classList.toggle('hide');
+                            item.classList.toggle('expanded');
+                        }
+                    });
+                });
+            }
+        }
+
+        // Render priorities dashboard view
+        function renderPrioritiesDashboard() {
+            const priorityData = loadPriorities();
+            const weekStats = getWeeklyPriorityStats();
+
+            // Update week stats
+            weekPriorityStats.innerHTML = `
+                <div class="week-stat-item">
+                    <div class="week-stat-value">${weekStats.completed}</div>
+                    <div class="week-stat-label">Completed</div>
+                </div>
+                <div class="week-stat-item">
+                    <div class="week-stat-value">${weekStats.total}</div>
+                    <div class="week-stat-label">Total</div>
+                </div>
+                <div class="week-stat-item">
+                    <div class="week-stat-value">${weekStats.percentage}%</div>
+                    <div class="week-stat-label">Complete</div>
+                </div>
+            `;
+
+            // Get last 7 days of priorities
+            const days = Object.entries(priorityData.days)
+                .sort((a, b) => b[0].localeCompare(a[0]))
+                .slice(0, 7);
+
+            if (days.length === 0) {
+                prioritiesHistory.innerHTML = '<div class="gratitude-empty-message">No priorities recorded yet</div>';
+            } else {
+                prioritiesHistory.innerHTML = days.map(([dateKey, dayData]) => {
+                    const date = new Date(dateKey);
+                    const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                    const completed = dayData.priorities.filter(p => p.completed).length;
+                    const total = dayData.priorities.length;
+
+                    return `
+                        <div class="priority-day-card">
+                            <div class="priority-day-header">
+                                <span>${dateStr}</span>
+                                <span class="priority-day-completion">${completed}/${total}</span>
+                            </div>
+                            ${dayData.priorities.map(p => `
+                                <div class="priority-history-item ${p.completed ? 'completed' : ''}">
+                                    <div class="priority-history-check"></div>
+                                    <span>${p.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Render gratitude dashboard view
+        function renderGratitudeDashboard() {
+            const gratitudeData = loadGratitude();
+
+            // Update streak badge
+            gratitudeStreakBadge.innerHTML = `
+                <span class="streak-number">${gratitudeData.stats.currentStreak}</span>
+                <span class="streak-label">day streak</span>
+            `;
+
+            // Get all entries sorted by date (most recent first)
+            const entries = Object.entries(gratitudeData.entries)
+                .sort((a, b) => b[0].localeCompare(a[0]))
+                .slice(0, 14); // Show last 2 weeks
+
+            if (entries.length === 0) {
+                gratitudeJournal.innerHTML = '<div class="gratitude-empty-message">No gratitude entries yet</div>';
+            } else {
+                gratitudeJournal.innerHTML = entries.map(([dateKey, entry]) => {
+                    const date = new Date(dateKey);
+                    const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+                    return `
+                        <div class="gratitude-entry-card">
+                            <div class="gratitude-entry-date">${dateStr}</div>
+                            ${entry.items.map(item => `
+                                <div class="gratitude-entry-item">${item}</div>
+                            `).join('')}
+                        </div>
+                    `;
+                }).join('');
             }
         }
 
         // Render the entire dashboard
         function renderDashboard() {
-            const stats = calculateStats(currentViewMode);
+            // Hide all view-specific sections first
+            projectSummary.classList.add('hide');
+            prioritiesDashboard.classList.add('hide');
+            gratitudeDashboard.classList.add('hide');
+            chartContainer.classList.remove('hide');
 
-            daysActiveEl.textContent = stats.daysActive;
-            todaySessionsEl.textContent = stats.todaySessions;
-            totalSessionsEl.textContent = stats.totalSessions;
+            // Hide/show stat cards based on view
+            statPriority.classList.add('hide');
+            statGratitude.classList.add('hide');
 
-            renderChart(currentViewMode);
+            if (currentViewMode === 'priorities') {
+                // Priorities view
+                statPriority.classList.remove('hide');
+                chartContainer.classList.add('hide');
+                prioritiesDashboard.classList.remove('hide');
 
-            // Show project summary only for Quinlan Travels view
-            if (currentViewMode === 'youtube') {
-                renderProjectSummary();
-                projectSummary.classList.remove('hide');
+                const weekStats = getWeeklyPriorityStats();
+                priorityPercentEl.textContent = `${weekStats.percentage}%`;
+
+                // Update general stats with priorities data
+                const priorityData = loadPriorities();
+                daysActiveEl.textContent = priorityData.stats.totalDaysSet;
+                const todayPriorities = getTodayPriorities();
+                todaySessionsEl.textContent = todayPriorities ? todayPriorities.priorities.filter(p => p.completed).length : 0;
+                totalSessionsEl.textContent = priorityData.stats.totalCompleted;
+
+                renderPrioritiesDashboard();
+            } else if (currentViewMode === 'gratitude') {
+                // Gratitude view
+                statGratitude.classList.remove('hide');
+                chartContainer.classList.add('hide');
+                gratitudeDashboard.classList.remove('hide');
+
+                const gratitudeData = loadGratitude();
+                gratitudeStreakEl.textContent = gratitudeData.stats.currentStreak;
+
+                // Update general stats with gratitude data
+                daysActiveEl.textContent = gratitudeData.stats.totalDaysRecorded;
+                todaySessionsEl.textContent = getTodayGratitude() ? '1' : '0';
+                totalSessionsEl.textContent = Object.keys(gratitudeData.entries).length;
+
+                renderGratitudeDashboard();
             } else {
-                projectSummary.classList.add('hide');
+                // Session-based views (combined, pomodoro, youtube)
+                const stats = calculateStats(currentViewMode);
+
+                daysActiveEl.textContent = stats.daysActive;
+                todaySessionsEl.textContent = stats.todaySessions;
+                totalSessionsEl.textContent = stats.totalSessions;
+
+                renderChart(currentViewMode);
+
+                // Show project summary only for Quinlan Travels view
+                if (currentViewMode === 'youtube') {
+                    renderProjectSummary();
+                    projectSummary.classList.remove('hide');
+                }
             }
         }
 
@@ -2783,19 +5175,19 @@
 
         function showDashboard() {
             dashboardView.classList.remove('hide');
-            timerContainer.style.display = 'none';
-            sessionCounter.style.display = 'none';
-            stopButton.style.display = 'none';
-            dashboardBtn.classList.add('hide');
+            appContainer.style.display = 'none';
+            document.querySelector('.session-counter').style.display = 'none';
+            if (mainDashboardBtn) mainDashboardBtn.classList.add('hide');
             renderDashboard();
         }
 
         function hideDashboard() {
             dashboardView.classList.add('hide');
-            timerContainer.style.display = '';
-            sessionCounter.style.display = '';
-            stopButton.style.display = '';
-            dashboardBtn.classList.remove('hide');
+            appContainer.style.display = '';
+            document.querySelector('.session-counter').style.display = '';
+            if (mainDashboardBtn) mainDashboardBtn.classList.remove('hide');
+            // Return to main three-panel view
+            collapseAllSections();
         }
 
         function updateViewToggle(viewMode) {
@@ -2810,7 +5202,13 @@
         // DASHBOARD EVENT LISTENERS
         // ==========================================
 
-        dashboardBtn.addEventListener('click', showDashboard);
+        // Dashboard buttons (main button and inside timer section)
+        document.querySelectorAll('.dashboard-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showDashboard();
+            });
+        });
         dashboardBackBtn.addEventListener('click', hideDashboard);
         clearDataBtn.addEventListener('click', clearAllData);
 
@@ -2834,6 +5232,20 @@
         // Initialize session count from stored data
         sessionCount = getTodaySessionCount();
         sessionCountEl.textContent = sessionCount;
+
+        // Update time-of-day emphasis every minute
+        setInterval(() => {
+            if (!expandedSection) {
+                updateTimeOfDayEmphasis();
+            }
+        }, 60000);
+
+        // Also update timer preview when timer is running
+        setInterval(() => {
+            if (isRunning && !expandedSection) {
+                updateTimerCollapsedPreview();
+            }
+        }, 1000);
     </script>
 </body>
 </html>
