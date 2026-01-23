@@ -3365,8 +3365,7 @@
         /* River tooltip */
         .river-tooltip {
             position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 0.5rem 0.75rem;
@@ -3374,7 +3373,7 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.2s ease;
-            z-index: 100;
+            z-index: 10000;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
         }
@@ -3402,11 +3401,6 @@
 
         .river-hover-area:hover + .river-path {
             filter: drop-shadow(0 2px 8px rgba(159, 184, 181, 0.6)) brightness(1.1);
-        }
-
-        /* Mini river in gratitude card */
-        .gratitude-mini-river {
-            margin-top: 0.75rem;
         }
 
         /* River in dashboard */
@@ -4570,10 +4564,6 @@
                 `;
             }
 
-            // Render mini river (will be added after the status content)
-            if (typeof renderMiniRiver === 'function') {
-                setTimeout(() => renderMiniRiver(), 0);
-            }
         }
 
         // Update time-of-day emphasis
@@ -4711,10 +4701,6 @@
                             setTimeout(() => {
                                 if (restButton) restButton.classList.remove('hide');
                                 if (stopButton) stopButton.classList.remove('visible');
-                                // Update mini river
-                                if (typeof renderMiniRiver === 'function') {
-                                    renderMiniRiver();
-                                }
                             }, 2600);
                         } else {
                             restButton.classList.remove('hide');
@@ -5496,9 +5482,6 @@
             // Update river with new completion status
             if (typeof updateRiverSegment === 'function') {
                 updateRiverSegment();
-                if (typeof renderMiniRiver === 'function') {
-                    renderMiniRiver();
-                }
             }
         }
 
@@ -5726,9 +5709,6 @@
             // Update river with priorities status
             if (typeof updateRiverSegment === 'function') {
                 updateRiverSegment();
-                if (typeof renderMiniRiver === 'function') {
-                    renderMiniRiver();
-                }
             }
 
             // Show save feedback
@@ -5765,7 +5745,6 @@
             // Update river with gratitude status
             if (typeof updateRiverSegment === 'function') {
                 updateRiverSegment();
-                renderMiniRiver();
             }
 
             // Show save feedback then collapse
@@ -6787,94 +6766,6 @@
             if (tooltip) tooltip.classList.remove('visible');
         }
 
-        // Render mini river in gratitude collapsed view
-        function renderMiniRiver() {
-            const gratitudeCollapsed = document.getElementById('gratitude-collapsed-content');
-            if (!gratitudeCollapsed) return;
-
-            // Check if mini river container exists, if not create it
-            let miniRiverDiv = gratitudeCollapsed.querySelector('.gratitude-mini-river');
-            if (!miniRiverDiv) {
-                miniRiverDiv = document.createElement('div');
-                miniRiverDiv.className = 'gratitude-mini-river';
-                miniRiverDiv.innerHTML = `
-                    <div class="progress-river mini">
-                        <svg class="river-svg" viewBox="0 0 280 50" preserveAspectRatio="xMidYMid meet">
-                            <defs>
-                                <linearGradient id="riverGradientMini" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#9fb8b5;stop-opacity:0.8"/>
-                                    <stop offset="100%" style="stop-color:#7a9e9b;stop-opacity:1"/>
-                                </linearGradient>
-                                <linearGradient id="riverGradientWarmMini" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#b8c5a8;stop-opacity:0.8"/>
-                                    <stop offset="100%" style="stop-color:#9fb8a0;stop-opacity:1"/>
-                                </linearGradient>
-                            </defs>
-                            <g id="mini-river-content"></g>
-                        </svg>
-                    </div>
-                `;
-                gratitudeCollapsed.appendChild(miniRiverDiv);
-            }
-
-            // Render mini version
-            const data = loadRiverData();
-            const svg = miniRiverDiv.querySelector('.river-svg');
-            const content = svg.querySelector('#mini-river-content');
-            content.innerHTML = '';
-
-            const today = getTodayDateKey();
-            const daysToShow = 7;
-            const width = 280;
-            const height = 50;
-            const padding = 10;
-            const riverCenter = height / 2;
-
-            // Generate the last 7 days
-            const endDate = new Date();
-            const days = [];
-            for (let i = daysToShow - 1; i >= 0; i--) {
-                const date = new Date(endDate);
-                date.setDate(date.getDate() - i);
-                days.push(date.toLocaleDateString('sv'));
-            }
-
-            // Map segments to days
-            const segmentMap = {};
-            data.segments.forEach(s => segmentMap[s.date] = s);
-
-            const segmentWidth = (width - padding * 2) / daysToShow;
-
-            days.forEach((dateKey, i) => {
-                const segment = segmentMap[dateKey];
-                const x = padding + i * segmentWidth + segmentWidth / 2;
-
-                if (segment && segment.sessions > 0) {
-                    const riverWidth = Math.min(10, Math.max(2, segment.sessions * 1.5));
-                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                    rect.setAttribute('x', x - segmentWidth / 2 + 1);
-                    rect.setAttribute('y', riverCenter - riverWidth / 2);
-                    rect.setAttribute('width', segmentWidth - 2);
-                    rect.setAttribute('height', riverWidth);
-                    rect.setAttribute('rx', riverWidth / 2);
-                    rect.setAttribute('fill', segment.gratitudeRecorded ? 'url(#riverGradientWarmMini)' : 'url(#riverGradientMini)');
-                    rect.setAttribute('class', 'river-wave');
-                    if (dateKey === today) {
-                        rect.classList.add('river-segment-today');
-                    }
-                    content.appendChild(rect);
-                } else {
-                    // Small dot for empty day
-                    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    dot.setAttribute('cx', x);
-                    dot.setAttribute('cy', riverCenter);
-                    dot.setAttribute('r', 2);
-                    dot.setAttribute('fill', 'rgba(210, 195, 170, 0.3)');
-                    content.appendChild(dot);
-                }
-            });
-        }
-
         // ==========================================
         // SESSION COMPLETION CEREMONY
         // ==========================================
@@ -6919,7 +6810,6 @@
             // Update river after drop lands
             setTimeout(() => {
                 updateRiverSegment();
-                renderMiniRiver();
                 if (!document.querySelector('.dashboard-view').classList.contains('hide')) {
                     renderRiver('dashboard-river');
                 }
@@ -7026,7 +6916,6 @@
 
         // Initialize river on page load
         updateRiverSegment();
-        renderMiniRiver();
 
         // ==========================================
         // CLEANUP ON PAGE UNLOAD
