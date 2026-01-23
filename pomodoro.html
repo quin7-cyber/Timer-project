@@ -264,67 +264,147 @@
             padding: 1rem 0;
         }
 
-        /* Section Card Base Styles */
+        /* Section Card Base Styles - Ambient Glow Design */
         .section-card {
             background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            border: none;
+            border-radius: 28px;
             padding: 1.5rem 2rem;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 0.8s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                        0 0 0 1px rgba(255, 255, 255, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .section-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1),
+                        0 0 40px rgba(255, 255, 255, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
         .section-card.expanded {
             cursor: default;
+            animation: cardExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .section-card.expanded:hover {
             transform: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                        0 0 0 1px rgba(255, 255, 255, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
-        /* Section color tints */
+        /* Fluid morphing animation for card expansion */
+        @keyframes cardExpand {
+            0% {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Section color tints with ambient glows */
         .priorities-section {
-            background: rgba(184, 164, 212, 0.28);
-            backdrop-filter: blur(12px);
+            background: rgba(184, 164, 212, 0.25);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(184, 164, 212, 0.15),
+                        0 0 60px rgba(184, 164, 212, 0.08),
+                        0 0 0 1px rgba(184, 164, 212, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .priorities-section:hover {
+            box-shadow: 0 20px 50px rgba(184, 164, 212, 0.2),
+                        0 0 80px rgba(184, 164, 212, 0.15),
+                        0 0 0 1px rgba(184, 164, 212, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
         .timer-section {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                        0 0 60px rgba(255, 255, 255, 0.15),
+                        0 0 0 1px rgba(255, 255, 255, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .timer-section:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1),
+                        0 0 80px rgba(255, 255, 255, 0.25),
+                        0 0 0 1px rgba(255, 255, 255, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.45);
         }
 
         .gratitude-section {
-            background: rgba(159, 184, 181, 0.28);
-            backdrop-filter: blur(12px);
+            background: rgba(159, 184, 181, 0.22);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(159, 184, 181, 0.12),
+                        0 0 60px rgba(159, 184, 181, 0.08),
+                        0 0 0 1px rgba(159, 184, 181, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
-        /* Time-of-day emphasis glow */
+        .gratitude-section:hover {
+            box-shadow: 0 20px 50px rgba(159, 184, 181, 0.18),
+                        0 0 80px rgba(159, 184, 181, 0.12),
+                        0 0 0 1px rgba(159, 184, 181, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        /* Ensure collapsed cards have consistent height */
+        .section-card:not(.expanded).priorities-section,
+        .section-card:not(.expanded).gratitude-section {
+            min-height: 140px;
+        }
+
+        /* Time-of-day emphasis glow - enhanced ambient effect */
         .section-card.time-emphasis {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 4px 15px rgba(0, 0, 0, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
+                        0 0 60px rgba(255, 255, 255, 0.2),
+                        0 12px 40px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            animation: gentlePulse 4s ease-in-out infinite;
         }
 
-        /* Collapsed/Expanded states */
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
+                            0 0 60px rgba(255, 255, 255, 0.2),
+                            0 12px 40px rgba(0, 0, 0, 0.1),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 255, 255, 0.6),
+                            0 0 80px rgba(255, 255, 255, 0.3),
+                            0 15px 50px rgba(0, 0, 0, 0.12),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        /* Collapsed/Expanded states with fluid morphing */
         .section-collapsed {
             display: block;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
         }
 
         .section-expanded {
             display: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transform: scale(0.98);
+            transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .section-card.expanded .section-collapsed {
@@ -334,6 +414,19 @@
         .section-card.expanded .section-expanded {
             display: block;
             opacity: 1;
+            transform: scale(1);
+            animation: contentFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes contentFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* When a section is expanded, collapse others */
@@ -449,6 +542,21 @@
             display: none;
         }
 
+        /* Hide collapsed preview content during timer focus (titles only) */
+        .app-container.timer-focus-mode .priorities-section:not(.expanded) .section-collapsed .collapsed-priorities-view,
+        .app-container.timer-focus-mode .priorities-section:not(.expanded) .section-collapsed .collapsed-preview-hint,
+        .app-container.timer-focus-mode .gratitude-section:not(.expanded) .section-collapsed .gratitude-collapsed-status,
+        .app-container.timer-focus-mode .gratitude-section:not(.expanded) .section-collapsed .collapsed-preview-hint,
+        .app-container.timer-focus-mode .priorities-section:not(.expanded) .section-collapsed .priorities-progress-container,
+        .app-container.timer-focus-mode .priorities-section:not(.expanded) .section-collapsed .priorities-all-done {
+            display: none;
+        }
+
+        /* Show session counter when side panels expanded (not during timer) */
+        .app-container.has-expanded:not(.timer-focus-mode) ~ .session-counter {
+            display: block;
+        }
+
         /* When priorities/gratitude expanded during focus mode */
         .app-container.timer-focus-mode.has-expanded .priorities-section.expanded,
         .app-container.timer-focus-mode.has-expanded .gratitude-section.expanded {
@@ -493,10 +601,10 @@
         /* Close button for expanded sections */
         .section-close-btn {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 32px;
-            height: 32px;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -507,7 +615,7 @@
             transition: all 0.3s ease;
             color: rgba(0, 0, 0, 0.5);
             font-size: 1.2rem;
-            z-index: 10;
+            z-index: 20;
         }
 
         .section-close-btn:hover {
@@ -518,9 +626,11 @@
         /* Section headers */
         .section-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 0.5rem;
             margin-bottom: 0.75rem;
+            text-align: center;
         }
 
         .section-title {
@@ -528,7 +638,7 @@
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.65);
         }
 
         .priorities-section .section-title,
@@ -545,22 +655,37 @@
         .collapsed-preview {
             font-size: 0.95rem;
             color: rgba(0, 0, 0, 0.6);
+            text-align: center;
         }
 
         .collapsed-preview-hint {
-            font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.4);
+            font-size: 0.95rem;
+            color: rgba(0, 0, 0, 0.5);
             font-style: italic;
+            text-align: center;
+        }
+
+        /* Vertical centering for collapsed state */
+        .priorities-section:not(.expanded) .section-collapsed,
+        .gratitude-section:not(.expanded) .section-collapsed {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
         }
 
         /* Priorities collapsed view (view-only) */
         .collapsed-priorities-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-top: 0.5rem;
         }
 
         .collapsed-priority-list {
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 0.3rem;
         }
 
@@ -639,10 +764,10 @@
         /* Timer collapsed state */
         .timer-collapsed-display {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             gap: 1rem;
-            flex-wrap: wrap;
         }
 
         .mini-timer {
@@ -659,8 +784,7 @@
         }
 
         .mini-session-count {
-            font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.4);
+            display: none;
         }
 
         /* Mode switcher in collapsed timer */
@@ -699,7 +823,8 @@
             letter-spacing: 0.02em;
             color: rgba(0, 0, 0, 0.65);
             margin-bottom: 2.5rem;
-            margin-top: 1rem;
+            margin-top: 2rem;
+            padding-right: 2.5rem;
             text-align: center;
         }
 
@@ -804,6 +929,11 @@
             padding-top: 1rem;
         }
 
+        .timer-section.expanded.time-emphasis {
+            box-shadow: none;
+            animation: none;
+        }
+
         /* Hide main dashboard button when a section is expanded */
         .app-container.has-expanded ~ #main-dashboard-btn {
             display: none;
@@ -848,6 +978,22 @@
             z-index: 1;
         }
 
+        /* Focus Timer title */
+        .timer-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.6);
+            margin: 0 0 1.5rem 0;
+        }
+
+        /* Hide title during focus mode (timer is focal point) */
+        .app-container.timer-focus-mode .timer-title {
+            display: none;
+        }
+
         /* Session label */
         .session-label {
             font-size: 1.5rem;
@@ -855,14 +1001,14 @@
             letter-spacing: 0.3em;
             text-transform: uppercase;
             color: rgba(0, 0, 0, 0.5);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             transition: all 0.8s ease;
         }
 
         /* Countdown timer */
         .countdown {
             font-family: 'Playfair Display', serif;
-            font-size: 140px;
+            font-size: 160px;
             font-weight: 900;
             color: rgba(0, 0, 0, 0.8);
             line-height: 1;
@@ -872,6 +1018,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 1rem 0;
+        }
+
+        /* Larger countdown in focus mode */
+        .app-container.timer-focus-mode .countdown {
+            font-size: 180px;
+            margin: 2rem 0;
         }
 
         .countdown .digit {
@@ -1109,7 +1262,11 @@
         /* Mobile responsive */
         @media (max-width: 768px) {
             .countdown {
-                font-size: 100px;
+                font-size: 110px;
+            }
+
+            .app-container.timer-focus-mode .countdown {
+                font-size: 120px;
             }
 
             .session-label {
@@ -1153,7 +1310,11 @@
 
         @media (max-width: 480px) {
             .countdown {
-                font-size: 80px;
+                font-size: 90px;
+            }
+
+            .app-container.timer-focus-mode .countdown {
+                font-size: 100px;
             }
 
             .session-label {
@@ -1166,15 +1327,9 @@
             }
         }
 
-        /* Session counter at bottom */
+        /* Session counter at bottom - hidden by design */
         .session-counter {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
+            display: none;
         }
 
         .session-counter:hover {
@@ -1223,12 +1378,13 @@
             display: flex;
             justify-content: center;
             gap: 0;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             background: rgba(255, 255, 255, 0.3);
             border-radius: 50px;
             padding: 0.25rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 0, 0, 0.1);
+            min-width: fit-content;
         }
 
         .mode-slider {
@@ -1236,30 +1392,28 @@
             top: 0.25rem;
             left: 0.25rem;
             height: calc(100% - 0.5rem);
-            width: calc(50% - 0.25rem);
+            /* Width set dynamically by JS based on selected option */
             background: rgba(255, 255, 255, 0.6);
             border-radius: 50px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 0;
-        }
-
-        .mode-slider.youtube {
-            transform: translateX(100%);
         }
 
         .mode-option {
             position: relative;
             z-index: 1;
-            flex: 1;
-            padding: 0.6rem 1.5rem;
+            flex: 1 1 auto;
+            min-width: fit-content;
+            padding: 0.6rem 1.25rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-align: center;
             white-space: nowrap;
-            overflow: hidden;
+            overflow: visible;
             background: transparent;
             border: none;
             border-radius: 50px;
@@ -1281,12 +1435,13 @@
 
         @media (max-width: 768px) {
             .mode-switcher {
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
             }
 
             .mode-option {
                 padding: 0.5rem 1rem;
                 font-size: 0.75rem;
+                min-width: fit-content;
             }
         }
 
@@ -1295,6 +1450,7 @@
                 padding: 0.4rem 0.8rem;
                 font-size: 0.7rem;
                 letter-spacing: 0.05em;
+                min-width: fit-content;
             }
         }
 
@@ -2803,6 +2959,926 @@
                 height: 200px;
             }
         }
+
+        /* ==========================================
+           PHASE 1: UI REFINEMENTS
+           ========================================== */
+
+        /* Inner Glass Panels - nested containers for visual hierarchy */
+        .inner-glass-panel {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+        }
+
+        /* Timer display inner panel */
+        .countdown-panel {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 1.5rem 2rem;
+            margin: 1rem 0;
+        }
+
+        /* Priority/Gratitude input group panel */
+        .input-group-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(6px);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Top Edge Highlight - "Etched glass" effect */
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            right: 1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            border-radius: 28px 28px 0 0;
+            pointer-events: none;
+        }
+
+        /* Stat cards also get the edge highlight */
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            right: 1px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            border-radius: 20px 20px 0 0;
+            pointer-events: none;
+        }
+
+        .stat-card {
+            position: relative;
+        }
+
+        /* Button Press Feedback */
+        .start-button:active,
+        .rest-button:active,
+        .work-button:active,
+        .start-youtube-btn:active,
+        .set-priorities-btn:active,
+        .save-gratitude-btn:active,
+        .edit-priorities-btn:active,
+        .dashboard-btn:active,
+        .dashboard-back-btn:active,
+        .clear-data-btn:active,
+        .view-option:active,
+        .mode-option:active,
+        .duration-option:active {
+            transform: translateY(1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Colored Ambient Button Glows */
+        .section-card.expanded .set-priorities-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
+                        0 0 30px rgba(184, 164, 212, 0.25);
+        }
+
+        .section-card.expanded .save-gratitude-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
+                        0 0 30px rgba(159, 184, 181, 0.25);
+        }
+
+        .edit-priorities-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
+                        0 0 25px rgba(184, 164, 212, 0.2);
+        }
+
+        .start-button:hover,
+        .work-button:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
+                        0 0 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .rest-button:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
+                        0 0 25px rgba(159, 184, 181, 0.3);
+        }
+
+        /* ==========================================
+           PHASE 2: MOTION & CEREMONY
+           ========================================== */
+
+        /* Session Completion Ceremony Overlay */
+        .completion-ceremony {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .completion-ceremony.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ceremony-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 3rem 4rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15),
+                        0 0 0 1px rgba(255, 255, 255, 0.3);
+            animation: ceremonyFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes ceremonyFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .ceremony-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .ceremony-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ceremony-checkmark {
+            stroke: #6b8e7e;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: checkmarkDraw 0.6s ease-out 0.2s forwards;
+        }
+
+        .ceremony-circle {
+            stroke: rgba(107, 142, 126, 0.3);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @keyframes checkmarkDraw {
+            0% {
+                stroke-dashoffset: 100;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .ceremony-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 0.75rem;
+        }
+
+        .ceremony-stat {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.05em;
+        }
+
+        /* Water drop animation */
+        .water-drop {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #9fb8b5, #7a9e9b);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .water-drop.animate {
+            animation: dropFall 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes dropFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(300px) scale(0.8);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(350px) scale(0.5);
+            }
+        }
+
+        /* SVG Checkmark Draw Animation for Priority Checkboxes */
+        .priority-checkmark-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .priority-checkmark-svg path {
+            stroke: rgba(107, 142, 126, 0.9);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+        }
+
+        .expanded-priority-checkbox:checked ~ .priority-checkmark-svg {
+            opacity: 1;
+        }
+
+        .expanded-priority-checkbox:checked ~ .priority-checkmark-svg path {
+            animation: priorityCheckDraw 0.3s ease-out forwards;
+        }
+
+        @keyframes priorityCheckDraw {
+            0% {
+                stroke-dashoffset: 20;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Animated Number Count-Up class */
+        .stat-value.counting {
+            transition: none;
+        }
+
+        /* Skeleton Loading States */
+        .skeleton {
+            background: linear-gradient(90deg,
+                rgba(255, 255, 255, 0.3) 25%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.3) 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeletonShimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-text {
+            height: 1em;
+            margin: 0.25rem 0;
+        }
+
+        .skeleton-number {
+            height: 2.5rem;
+            width: 3rem;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           PHASE 3: PROGRESS RIVER
+           ========================================== */
+
+        /* River Container */
+        .progress-river {
+            width: 100%;
+            height: 100px;
+            overflow: visible;
+            margin: 1rem 0;
+        }
+
+        .progress-river.mini {
+            height: 50px;
+            margin: 0.5rem 0;
+        }
+
+        /* River SVG Styles */
+        .river-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* River gradient definition will be in the SVG */
+        .river-path {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.3));
+            transition: stroke-width 0.3s ease;
+        }
+
+        .river-path.shimmer {
+            animation: riverShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes riverShimmer {
+            0%, 100% {
+                filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.3)) brightness(1);
+            }
+            50% {
+                filter: drop-shadow(0 2px 6px rgba(159, 184, 181, 0.5)) brightness(1.15);
+            }
+        }
+
+        /* Today's segment pulse */
+        .river-segment-today {
+            animation: todayPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes todayPulse {
+            0%, 100% {
+                filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 2px 8px rgba(159, 184, 181, 0.7));
+            }
+        }
+
+        /* River shore (gap day) */
+        .river-shore {
+            fill: rgba(210, 195, 170, 0.3);
+        }
+
+        /* River milestone markers */
+        .river-milestone {
+            fill: rgba(255, 255, 255, 0.9);
+            stroke: rgba(159, 184, 181, 0.6);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+        }
+
+        .river-milestone.gold {
+            fill: rgba(255, 215, 0, 0.3);
+            stroke: rgba(218, 165, 32, 0.6);
+        }
+
+        /* Gratitude warmth overlay */
+        .river-warmth {
+            fill: rgba(255, 200, 150, 0.2);
+            mix-blend-mode: overlay;
+        }
+
+        /* River tooltip */
+        .river-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+
+        .river-tooltip.visible {
+            opacity: 1;
+        }
+
+        .river-tooltip-date {
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 0.25rem;
+        }
+
+        .river-tooltip-stats {
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 0.7rem;
+        }
+
+        /* River segment hover area */
+        .river-hover-area {
+            fill: transparent;
+            cursor: pointer;
+        }
+
+        .river-hover-area:hover + .river-path {
+            filter: drop-shadow(0 2px 8px rgba(159, 184, 181, 0.6)) brightness(1.1);
+        }
+
+        /* Mini river in gratitude card */
+        .gratitude-mini-river {
+            margin-top: 0.75rem;
+        }
+
+        /* River in dashboard */
+        .dashboard-river-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .dashboard-river-container.hide {
+            display: none;
+        }
+
+        .river-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .river-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        .river-subtitle {
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 0.25rem;
+        }
+
+        /* Wave animation for flowing effect */
+        .river-wave {
+            animation: riverWave 4s ease-in-out infinite;
+        }
+
+        @keyframes riverWave {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(2px);
+            }
+        }
+
+        /* Ripple effect when drop lands */
+        .river-ripple {
+            fill: none;
+            stroke: rgba(159, 184, 181, 0.6);
+            stroke-width: 1;
+            opacity: 0;
+        }
+
+        .river-ripple.animate {
+            animation: rippleExpand 0.8s ease-out forwards;
+        }
+
+        @keyframes rippleExpand {
+            0% {
+                r: 5;
+                opacity: 1;
+            }
+            100% {
+                r: 25;
+                opacity: 0;
+            }
+        }
+
+        /* Mobile responsive for river */
+        @media (max-width: 480px) {
+            .progress-river {
+                height: 70px;
+            }
+
+            .progress-river.mini {
+                height: 40px;
+            }
+
+            .dashboard-river-container {
+                padding: 1rem;
+            }
+
+            .river-title {
+                font-size: 1rem;
+            }
+        }
+
+        /* ==========================================
+           DESIGN REFINEMENT SYSTEM
+           Premium Atomic Habits Visual Cohesion
+           ========================================== */
+
+        /* ------------------------------------------
+           1. BUTTON HIERARCHY SYSTEM
+           Primary: Start, Save (main actions)
+           Secondary: Stop, Edit, Dashboard (support)
+           Tertiary: Close × (minimal)
+        ------------------------------------------ */
+
+        /* Primary Button - Main Actions */
+        .start-button,
+        .rest-button,
+        .work-button,
+        .start-youtube-btn {
+            padding: 1rem 2.5rem;
+            font-size: 0.95rem;
+            border: 1.5px solid rgba(0, 0, 0, 0.18);
+            border-radius: 50px;
+        }
+
+        .section-card.expanded .set-priorities-btn,
+        .section-card.expanded .save-gratitude-btn {
+            padding: 1rem 2.5rem;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Secondary Button - Support Actions */
+        .stop-button,
+        .edit-priorities-btn,
+        .dashboard-btn,
+        .dashboard-back-btn,
+        .clear-data-btn {
+            padding: 0.85rem 2rem;
+            font-size: 0.8rem;
+            border-width: 1px;
+            border-radius: 50px;
+        }
+
+        /* ------------------------------------------
+           2. INPUT FIELD UNIFICATION
+           Consistent 12px radius, unified focus glow
+        ------------------------------------------ */
+
+        .project-select,
+        .project-input,
+        .project-dropdown {
+            border-radius: 12px;
+        }
+
+        .project-select:focus,
+        .project-input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        /* Priority and gratitude inputs - subtle focus enhancement */
+        .section-card.expanded .priority-input:focus,
+        .section-card.expanded .gratitude-input:focus {
+            border-bottom-color: rgba(0, 0, 0, 0.35);
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.08) 100%);
+        }
+
+        /* ------------------------------------------
+           3. CLOSE BUTTON ENHANCEMENT
+           Premium inset styling with section glows
+        ------------------------------------------ */
+
+        .section-close-btn {
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25),
+                        0 2px 8px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(8px);
+        }
+
+        .section-close-btn:hover {
+            background: rgba(255, 255, 255, 0.65);
+            transform: scale(1.05);
+        }
+
+        /* Section-specific close button glows */
+        .priorities-section .section-close-btn:hover {
+            box-shadow: 0 0 20px rgba(184, 164, 212, 0.4),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .timer-section .section-close-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .gratitude-section .section-close-btn:hover {
+            box-shadow: 0 0 20px rgba(159, 184, 181, 0.4),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ------------------------------------------
+           4. SAVE ACTION MICRO-FEEDBACK
+           Success confirmation with checkmark animation
+        ------------------------------------------ */
+
+        .set-priorities-btn,
+        .save-gratitude-btn {
+            transition: all 0.3s ease, background-color 0.4s ease;
+        }
+
+        .set-priorities-btn.saved,
+        .save-gratitude-btn.saved {
+            background: rgba(107, 142, 126, 0.25) !important;
+            border-color: rgba(107, 142, 126, 0.4) !important;
+            color: rgba(107, 142, 126, 0.9) !important;
+            animation: saveSuccessPulse 0.6s ease-out;
+        }
+
+        @keyframes saveSuccessPulse {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.02);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Save button checkmark icon */
+        .save-checkmark {
+            display: inline-block;
+            width: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            margin-right: 0;
+        }
+
+        .set-priorities-btn.saved .save-checkmark,
+        .save-gratitude-btn.saved .save-checkmark {
+            width: 16px;
+            opacity: 1;
+            margin-right: 8px;
+        }
+
+        /* ------------------------------------------
+           5. DASHBOARD GLASSMORPHISM
+           Premium blur and shadow treatment
+        ------------------------------------------ */
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(16px);
+            border: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                        0 0 0 1px rgba(255, 255, 255, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08),
+                        0 0 0 1px rgba(255, 255, 255, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(16px);
+            border: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                        0 0 60px rgba(255, 255, 255, 0.1),
+                        0 0 0 1px rgba(255, 255, 255, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+        }
+
+        .view-toggle {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            border: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04),
+                        0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .view-option.selected {
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Dashboard project/priority/gratitude cards */
+        .project-list-item,
+        .priority-day-card,
+        .gratitude-entry-card,
+        .week-stat-item {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(12px);
+            border: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04),
+                        0 0 0 1px rgba(255, 255, 255, 0.12),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+        }
+
+        .project-list-item:hover,
+        .priority-day-card:hover,
+        .gratitude-entry-card:hover,
+        .week-stat-item:hover {
+            background: rgba(255, 255, 255, 0.45);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06),
+                        0 0 0 1px rgba(255, 255, 255, 0.18),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .phase-breakdown {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Gratitude streak badge glassmorphism */
+        .gratitude-streak-badge {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+                        0 0 40px rgba(159, 184, 181, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* ------------------------------------------
+           6. CHART THEME INTEGRATION
+           CSS custom properties for theme-aware colors
+        ------------------------------------------ */
+
+        :root {
+            --chart-pomodoro: rgba(184, 164, 212, 1);
+            --chart-pomodoro-light: rgba(184, 164, 212, 0.15);
+            --chart-youtube: rgba(232, 165, 152, 1);
+            --chart-youtube-light: rgba(232, 165, 152, 0.15);
+        }
+
+        /* Morning theme - cooler purples */
+        body.morning {
+            --chart-pomodoro: rgba(179, 157, 219, 1);
+            --chart-pomodoro-light: rgba(179, 157, 219, 0.15);
+            --chart-youtube: rgba(225, 170, 165, 1);
+            --chart-youtube-light: rgba(225, 170, 165, 0.15);
+        }
+
+        /* Afternoon theme - warmer tones */
+        body.afternoon {
+            --chart-pomodoro: rgba(200, 175, 180, 1);
+            --chart-pomodoro-light: rgba(200, 175, 180, 0.15);
+            --chart-youtube: rgba(235, 160, 140, 1);
+            --chart-youtube-light: rgba(235, 160, 140, 0.15);
+        }
+
+        /* Evening theme - muted colors */
+        body.evening {
+            --chart-pomodoro: rgba(160, 155, 190, 1);
+            --chart-pomodoro-light: rgba(160, 155, 190, 0.15);
+            --chart-youtube: rgba(200, 165, 160, 1);
+            --chart-youtube-light: rgba(200, 165, 160, 0.15);
+        }
+
+        /* Apply theme colors to chart elements */
+        .chart-line.pomodoro {
+            stroke: var(--chart-pomodoro, #b8a4d4);
+        }
+
+        .chart-line.youtube {
+            stroke: var(--chart-youtube, #e8a598);
+        }
+
+        .chart-area.pomodoro {
+            fill: var(--chart-pomodoro, #b8a4d4);
+        }
+
+        .chart-area.youtube {
+            fill: var(--chart-youtube, #e8a598);
+        }
+
+        .chart-dot.pomodoro {
+            fill: var(--chart-pomodoro, #b8a4d4);
+        }
+
+        .chart-dot.youtube {
+            fill: var(--chart-youtube, #e8a598);
+        }
+
+        .legend-color.pomodoro {
+            background: var(--chart-pomodoro, #b8a4d4);
+        }
+
+        .legend-color.youtube {
+            background: var(--chart-youtube, #e8a598);
+        }
+
+        /* ------------------------------------------
+           7. CORNER RADIUS HIERARCHY
+           Main cards: 28px, Nested: 14px, Chips: 8px
+        ------------------------------------------ */
+
+        /* Main cards stay at 28px (already set) */
+
+        /* Nested elements - 14px radius */
+        .priority-day-card,
+        .gratitude-entry-card,
+        .project-list-item,
+        .week-stat-item,
+        .expanded-all-complete,
+        .priorities-all-done {
+            border-radius: 14px;
+        }
+
+        .project-list-item.expanded {
+            border-radius: 14px 14px 0 0;
+        }
+
+        .phase-breakdown {
+            border-radius: 0 0 14px 14px;
+        }
+
+        /* Chips and badges - 8px radius */
+        .priority-checkbox {
+            border-radius: 6px;
+        }
+
+        .priority-history-check {
+            border-radius: 4px;
+        }
+
+        .priorities-progress-bar {
+            border-radius: 4px;
+        }
+
+        .priorities-progress-fill {
+            border-radius: 4px;
+        }
+
+        /* ------------------------------------------
+           8. FOCUS MODE POLISH
+           Enhanced tunnel vision with desaturation
+        ------------------------------------------ */
+
+        /* Subtle desaturation for collapsed panels during focus */
+        .app-container.timer-focus-mode .priorities-section:not(.expanded),
+        .app-container.timer-focus-mode .gratitude-section:not(.expanded) {
+            filter: saturate(0.7) brightness(0.98);
+            transition: all 0.5s ease, filter 0.8s ease;
+        }
+
+        .app-container.timer-focus-mode .priorities-section:not(.expanded):hover,
+        .app-container.timer-focus-mode .gratitude-section:not(.expanded):hover {
+            filter: saturate(1) brightness(1);
+            opacity: 1;
+        }
+
+        /* Enhanced blur on non-active sections during focus */
+        .app-container.timer-focus-mode.has-expanded .timer-section {
+            filter: blur(4px) saturate(0.6);
+            opacity: 0.25;
+        }
+
+        /* Smooth transition for focus mode entry */
+        .app-container.timer-focus-mode .timer-section {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Ensure expanded panels during focus are crisp */
+        .app-container.timer-focus-mode.has-expanded .priorities-section.expanded,
+        .app-container.timer-focus-mode.has-expanded .gratitude-section.expanded {
+            filter: none;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2),
+                        0 0 100px rgba(255, 255, 255, 0.15);
+        }
+
     </style>
 </head>
 <body>
@@ -2866,7 +3942,7 @@
                             <input type="text" class="priority-input" id="priority-3" placeholder="Third priority..." maxlength="100">
                         </div>
                     </div>
-                    <button class="set-priorities-btn">Set Priorities</button>
+                    <button class="set-priorities-btn"><span class="save-checkmark">✓</span><span class="btn-text">Set Priorities</span></button>
                 </div>
 
                 <!-- Complete Mode (interactive checkboxes) -->
@@ -2907,6 +3983,7 @@
             <div class="section-expanded" id="timer-expanded">
                 <button class="section-close-btn" data-close="timer">&times;</button>
                 <div class="timer-container">
+                    <h2 class="timer-title">Focus Timer</h2>
                     <div class="mode-switcher">
                         <div class="mode-slider"></div>
                         <button class="mode-option selected" data-mode="pomodoro">Work</button>
@@ -3000,7 +4077,7 @@
                     </div>
                 </div>
                 <div class="gratitude-actions">
-                    <button class="save-gratitude-btn">Save Gratitude</button>
+                    <button class="save-gratitude-btn"><span class="save-checkmark">✓</span><span class="btn-text">Save Gratitude</span></button>
                 </div>
             </div>
         </div>
@@ -3010,6 +4087,29 @@
     <div class="session-counter" style="position: relative; bottom: auto; left: auto; transform: none; margin-top: 1rem;">
         <div class="counter-label">Sessions Today</div>
         <div class="counter-value" id="session-count">0</div>
+    </div>
+
+    <!-- Session Completion Ceremony Overlay -->
+    <div class="completion-ceremony" id="completion-ceremony">
+        <div class="ceremony-content">
+            <div class="ceremony-icon">
+                <svg viewBox="0 0 80 80">
+                    <circle class="ceremony-circle" cx="40" cy="40" r="35"/>
+                    <path class="ceremony-checkmark" d="M24 42 L35 53 L56 28"/>
+                </svg>
+            </div>
+            <div class="ceremony-message">Session Complete</div>
+            <div class="ceremony-stat" id="ceremony-stat">That's 1 session today</div>
+        </div>
+    </div>
+
+    <!-- Water Drop Animation Element -->
+    <div class="water-drop" id="water-drop"></div>
+
+    <!-- River Tooltip -->
+    <div class="river-tooltip" id="river-tooltip">
+        <div class="river-tooltip-date"></div>
+        <div class="river-tooltip-stats"></div>
     </div>
 
     <!-- Dashboard view -->
@@ -3046,6 +4146,30 @@
             <div class="stat-card stat-card-gratitude hide" id="stat-gratitude">
                 <div class="stat-label">Gratitude Streak</div>
                 <div class="stat-value" id="gratitude-streak">0</div>
+            </div>
+        </div>
+
+        <!-- Progress River Visualization -->
+        <div class="dashboard-river-container" id="dashboard-river-container">
+            <div class="river-header">
+                <div class="river-title">Your Progress River</div>
+                <div class="river-subtitle">Each day adds to the flow</div>
+            </div>
+            <div class="progress-river" id="dashboard-river">
+                <svg class="river-svg" id="river-svg" viewBox="0 0 760 100" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <linearGradient id="riverGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#9fb8b5;stop-opacity:0.8"/>
+                            <stop offset="100%" style="stop-color:#7a9e9b;stop-opacity:1"/>
+                        </linearGradient>
+                        <linearGradient id="riverGradientWarm" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#b8c5a8;stop-opacity:0.8"/>
+                            <stop offset="100%" style="stop-color:#9fb8a0;stop-opacity:1"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- River path will be generated dynamically -->
+                    <g id="river-content"></g>
+                </svg>
             </div>
         </div>
 
@@ -3093,6 +4217,7 @@
     <script>
         // Timer state
         let timerInterval = null;
+        const trackedIntervals = []; // Track all intervals for cleanup
         let workDuration = 25; // Selected work duration in minutes
         let remainingSeconds = workDuration * 60;
         let isWorkSession = true;
@@ -3196,6 +4321,32 @@
             }
         }
 
+        // Apply time-of-day class to body for theme integration
+        function updateBodyTimeClass() {
+            const timeOfDay = getTimeOfDay();
+            document.body.classList.remove('morning', 'afternoon', 'evening');
+            document.body.classList.add(timeOfDay);
+        }
+        updateBodyTimeClass();
+        // Update every 5 minutes
+        trackedIntervals.push(setInterval(updateBodyTimeClass, 5 * 60 * 1000));
+
+        // ==========================================
+        // SAVE FEEDBACK HELPER
+        // ==========================================
+        function showSaveFeedback(button, originalText) {
+            const btnTextEl = button.querySelector('.btn-text');
+            if (!btnTextEl) return;
+
+            button.classList.add('saved');
+            btnTextEl.textContent = 'Saved!';
+
+            setTimeout(() => {
+                button.classList.remove('saved');
+                btnTextEl.textContent = originalText;
+            }, 1500);
+        }
+
         // ==========================================
         // THREE-PANEL EXPAND/COLLAPSE MANAGEMENT
         // ==========================================
@@ -3220,6 +4371,18 @@
             if (sectionName === 'priorities') {
                 updateExpandedPrioritiesView();
             }
+
+            // Populate gratitude inputs when opening gratitude section
+            if (sectionName === 'gratitude') {
+                populateGratitudeInputs();
+            }
+
+            // Reinitialize mode sliders when timer section expands
+            if (sectionName === 'timer') {
+                requestAnimationFrame(() => {
+                    initializeModeSliders();
+                });
+            }
         }
 
         // Collapse all sections
@@ -3240,6 +4403,8 @@
 
         // Update priorities collapsed preview (view-only with progress bar)
         function updatePrioritiesCollapsedPreview() {
+            if (!prioritiesStatus || !prioritiesCollapsedContent) return;
+
             const todayData = getTodayPriorities();
 
             if (!todayData) {
@@ -3267,7 +4432,6 @@
                             <div class="priorities-progress-bar">
                                 <div class="priorities-progress-fill" style="width: ${percentage}%"></div>
                             </div>
-                            <span class="priorities-progress-label">${completed}/${total} complete</span>
                         </div>
                 `;
 
@@ -3322,16 +4486,19 @@
         }
 
         // Use change event on the container (event delegation)
-        document.getElementById('expanded-priority-list').addEventListener('change', (e) => {
-            if (e.target.classList.contains('expanded-priority-checkbox')) {
-                const row = e.target.closest('.expanded-priority-row');
-                if (row) {
-                    togglePriorityCompletion(parseInt(row.dataset.index));
-                    updateExpandedPrioritiesView();
-                    updatePrioritiesCollapsedPreview();
+        const expandedPriorityList = document.getElementById('expanded-priority-list');
+        if (expandedPriorityList) {
+            expandedPriorityList.addEventListener('change', (e) => {
+                if (e.target.classList.contains('expanded-priority-checkbox')) {
+                    const row = e.target.closest('.expanded-priority-row');
+                    if (row) {
+                        togglePriorityCompletion(parseInt(row.dataset.index));
+                        updateExpandedPrioritiesView();
+                        updatePrioritiesCollapsedPreview();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // Switch to edit mode in expanded view
         function switchToEditMode() {
@@ -3362,20 +4529,24 @@
         function updateTimerCollapsedPreview() {
             const mins = Math.floor(remainingSeconds / 60);
             const secs = remainingSeconds % 60;
-            miniTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            if (miniTimer) miniTimer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
 
-            if (isRunning) {
-                miniTimerStatus.textContent = isWorkSession ? 'Working...' : 'Resting...';
-            } else {
-                miniTimerStatus.textContent = 'Ready';
+            if (miniTimerStatus) {
+                if (isRunning) {
+                    miniTimerStatus.textContent = isWorkSession ? 'Working...' : 'Resting...';
+                } else {
+                    miniTimerStatus.textContent = 'Ready';
+                }
             }
 
             // Update session count
-            miniSessionCount.textContent = `${sessionCount} today`;
+            if (miniSessionCount) miniSessionCount.textContent = `${sessionCount} today`;
         }
 
         // Update gratitude collapsed preview
         function updateGratitudeCollapsedPreview() {
+            if (!gratitudeStatus || !gratitudeCollapsedContent) return;
+
             const todayData = getTodayGratitude();
             const gratitudeData = loadGratitude();
             const streak = gratitudeData.stats.currentStreak || 0;
@@ -3397,6 +4568,11 @@
                     </div>
                     ${streak > 0 ? `<div class="gratitude-streak-mini">${streak} day streak</div>` : ''}
                 `;
+            }
+
+            // Render mini river (will be added after the status content)
+            if (typeof renderMiniRiver === 'function') {
+                setTimeout(() => renderMiniRiver(), 0);
             }
         }
 
@@ -3486,10 +4662,10 @@
         // Update display
         function updateDisplay() {
             const time = formatTime(remainingSeconds);
-            minTensEl.textContent = time.minTens;
-            minOnesEl.textContent = time.minOnes;
-            secTensEl.textContent = time.secTens;
-            secOnesEl.textContent = time.secOnes;
+            if (minTensEl) minTensEl.textContent = time.minTens;
+            if (minOnesEl) minOnesEl.textContent = time.minOnes;
+            if (secTensEl) secTensEl.textContent = time.secTens;
+            if (secOnesEl) secOnesEl.textContent = time.secOnes;
         }
 
         // Show notification
@@ -3515,25 +4691,65 @@
 
                 if (currentMode === 'pomodoro') {
                     if (isWorkSession) {
-                        // Work session completed - show rest button
+                        // Work session completed - show completion ceremony
                         showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
-                        restButton.classList.remove('hide');
-                        stopButton.classList.remove('visible');
+
+                        // Increment session count when work session completes
+                        sessionCount++;
+                        if (sessionCountEl) sessionCountEl.textContent = sessionCount;
+                        recordSession('pomodoro');
+
+                        // Update river data first
+                        if (typeof updateRiverSegment === 'function') {
+                            updateRiverSegment();
+                        }
+
+                        // Show completion ceremony, then reveal rest button
+                        if (typeof showCompletionCeremony === 'function') {
+                            showCompletionCeremony();
+                            // Delay showing rest button until ceremony fades
+                            setTimeout(() => {
+                                if (restButton) restButton.classList.remove('hide');
+                                if (stopButton) stopButton.classList.remove('visible');
+                                // Update mini river
+                                if (typeof renderMiniRiver === 'function') {
+                                    renderMiniRiver();
+                                }
+                            }, 2600);
+                        } else {
+                            restButton.classList.remove('hide');
+                            stopButton.classList.remove('visible');
+                        }
+
                         // Keep session context visible during rest
                         // Update adaptive UI
                         if (typeof updateAdaptiveUI === 'function') {
                             updateAdaptiveUI();
                         }
                     } else {
-                        // Rest session completed - show work button
+                        // Rest session completed - reset to duration selection
                         showNotification('Rest Complete!', 'Ready for another work session?');
-                        // Show session setup again (only for Quinlan mode)
-                        if (currentMode === 'youtube') {
-                            sessionSetup.classList.remove('hide');
-                        }
+
+                        // Reset to initial state (duration selection)
+                        isWorkSession = true;
+                        remainingSeconds = workDuration * 60;
+
+                        const timeOfDay = getTimeOfDay();
+                        sessionLabelEl.textContent = 'Work';
+                        backgroundEl.className = `background work ${timeOfDay}`;
+
+                        updateDisplay();
+
+                        // Exit focus mode
+                        appContainer.classList.remove('timer-focus-mode');
+
+                        // Show duration selector and start button (not work button)
                         hideSessionContext();
-                        workButton.classList.remove('hide');
+                        startButton.classList.remove('hide');
+                        durationSelector.classList.remove('hide');
+                        workButton.classList.add('hide');
                         stopButton.classList.remove('visible');
+
                         // Update adaptive UI
                         if (typeof updateAdaptiveUI === 'function') {
                             updateAdaptiveUI();
@@ -3544,7 +4760,7 @@
                     if (!sessionRecorded) {
                         sessionRecorded = true;
                         sessionCount++;
-                        sessionCountEl.textContent = sessionCount;
+                        if (sessionCountEl) sessionCountEl.textContent = sessionCount;
                         recordSession('youtube', youtubePhase);
                     }
 
@@ -3552,6 +4768,16 @@
                     const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
                     const phaseLabel = currentPhase ? currentPhase.label : youtubePhase;
                     showNotification('Session Complete!', `${phaseLabel} session recorded!`);
+
+                    // Update river data
+                    if (typeof updateRiverSegment === 'function') {
+                        updateRiverSegment();
+                    }
+
+                    // Show completion ceremony
+                    if (typeof showCompletionCeremony === 'function') {
+                        showCompletionCeremony();
+                    }
 
                     // Reset to ready state
                     sessionLabelEl.textContent = phaseLabel;
@@ -3583,6 +4809,7 @@
                 startButton.classList.add('hide');
                 durationSelector.classList.add('hide');
                 stopButton.classList.add('visible');
+                restButton.classList.add('hide');
 
                 // Enter focus mode
                 appContainer.classList.add('timer-focus-mode');
@@ -3600,6 +4827,7 @@
                 }
 
                 endTime = Date.now() + (remainingSeconds * 1000);
+                if (timerInterval) clearInterval(timerInterval);
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -3636,18 +4864,12 @@
             // Start the timer
             isRunning = true;
             endTime = Date.now() + (remainingSeconds * 1000);
+            if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(tick, 1000);
         }
 
         // Start work timer (after rest is complete)
         function startWorkTimer() {
-            // Increment session count (work + rest cycle completed)
-            sessionCount++;
-            sessionCountEl.textContent = sessionCount;
-
-            // Record the completed session
-            recordSession('pomodoro');
-
             // Set up work session
             isWorkSession = true;
             remainingSeconds = workDuration * 60;
@@ -3663,6 +4885,7 @@
             workButton.classList.add('hide');
             sessionSetup.classList.add('hide');
             stopButton.classList.add('visible');
+            restButton.classList.add('hide');
 
             // Enter/stay in focus mode
             appContainer.classList.add('timer-focus-mode');
@@ -3682,6 +4905,7 @@
             // Start the timer
             isRunning = true;
             endTime = Date.now() + (remainingSeconds * 1000);
+            if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(tick, 1000);
         }
 
@@ -3695,7 +4919,7 @@
 
             // Load today's session count from storage (don't reset to 0)
             sessionCount = getTodaySessionCount();
-            sessionCountEl.textContent = sessionCount;
+            if (sessionCountEl) sessionCountEl.textContent = sessionCount;
 
             // Remove breathing animation when stopped
             sessionLabelEl.classList.remove('breathing');
@@ -3770,6 +4994,7 @@
                 }
 
                 endTime = Date.now() + (remainingSeconds * 1000);
+                if (timerInterval) clearInterval(timerInterval);
                 timerInterval = setInterval(tick, 1000);
             }
         }
@@ -3792,16 +5017,23 @@
 
             // Load today's session count for the new mode from storage
             sessionCount = getTodaySessionCount();
-            sessionCountEl.textContent = sessionCount;
+            if (sessionCountEl) sessionCountEl.textContent = sessionCount;
 
             // Update all mode switcher UIs (collapsed and expanded)
             allModeOptions.forEach(opt => {
                 opt.classList.toggle('selected', opt.dataset.mode === mode);
             });
 
-            // Update all slider positions
-            allModeSliders.forEach(slider => {
-                slider.classList.toggle('youtube', mode === 'youtube');
+            // Update all slider positions and widths dynamically
+            document.querySelectorAll('.mode-switcher').forEach(switcher => {
+                const slider = switcher.querySelector('.mode-slider');
+                const selectedOption = switcher.querySelector(`.mode-option[data-mode="${mode}"]`);
+                if (slider && selectedOption) {
+                    const sliderWidth = selectedOption.offsetWidth;
+                    const sliderLeft = selectedOption.offsetLeft - 4; // Account for container padding
+                    slider.style.width = sliderWidth + 'px';
+                    slider.style.transform = `translateX(${sliderLeft}px)`;
+                }
             });
 
             // Hide all buttons first
@@ -3851,30 +5083,12 @@
 
         // Load projects from localStorage
         function loadProjects() {
-            try {
-                const stored = localStorage.getItem(PROJECTS_STORAGE_KEY);
-                if (!stored) {
-                    return { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} };
-                }
-                const data = JSON.parse(stored);
-                if (!data.version) data.version = 1;
-                if (!data.projects) data.projects = { work: [], quinlan: [] };
-                if (!data.introLines) data.introLines = {};
-                if (!data.projectSessions) data.projectSessions = {};
-                return data;
-            } catch (e) {
-                console.warn('Failed to load projects:', e);
-                return { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} };
-            }
+            return projectStorage.load();
         }
 
         // Save projects to localStorage
         function saveProjects(data) {
-            try {
-                localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(data));
-            } catch (e) {
-                console.warn('Failed to save projects:', e);
-            }
+            return projectStorage.save(data);
         }
 
         // Add a project to the list (most recent first)
@@ -3946,12 +5160,16 @@
             }
 
             projectDropdown.innerHTML = html;
+            // Note: Click handlers use event delegation (set up once below)
+        }
 
-            // Add click handlers to options
-            projectDropdown.querySelectorAll('.project-option').forEach(option => {
-                option.addEventListener('click', () => {
+        // Set up event delegation for project dropdown (prevents listener accumulation)
+        if (projectDropdown) {
+            projectDropdown.addEventListener('click', (e) => {
+                const option = e.target.closest('.project-option');
+                if (option) {
                     selectProject(option.dataset.project);
-                });
+                }
             });
         }
 
@@ -4144,20 +5362,66 @@
 
         const PRIORITIES_STORAGE_KEY = 'pomodoro_priorities';
         const GRATITUDE_STORAGE_KEY = 'pomodoro_gratitude';
+        const RIVER_STORAGE_KEY = 'pomodoro_river';
+
+        // ==========================================
+        // UNIFIED STORAGE MANAGER
+        // ==========================================
+
+        // Show storage error feedback to user
+        let storageErrorShown = false;
+        function showStorageError() {
+            if (storageErrorShown) return; // Prevent spam
+            storageErrorShown = true;
+            console.error('Unable to save data. Storage may be full or unavailable.');
+            // Reset after 5 seconds to allow showing again if needed
+            setTimeout(() => { storageErrorShown = false; }, 5000);
+        }
+
+        function createStorage(key, defaults) {
+            return {
+                load() {
+                    try {
+                        const stored = localStorage.getItem(key);
+                        if (!stored) return { ...defaults };
+                        return { ...defaults, ...JSON.parse(stored) };
+                    } catch (e) {
+                        console.warn(`Storage load failed [${key}]:`, e);
+                        return { ...defaults };
+                    }
+                },
+                save(data) {
+                    try {
+                        localStorage.setItem(key, JSON.stringify(data));
+                        return true;
+                    } catch (e) {
+                        console.warn(`Storage save failed [${key}]:`, e);
+                        showStorageError();
+                        return false;
+                    }
+                }
+            };
+        }
+
+        // Storage instances (session storage added later after STORAGE_KEY is defined)
+        const projectStorage = createStorage(PROJECTS_STORAGE_KEY, { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} });
+        const priorityStorage = createStorage(PRIORITIES_STORAGE_KEY, { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } });
+        const gratitudeStorage = createStorage(GRATITUDE_STORAGE_KEY, { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } });
+        const riverStorage = createStorage(RIVER_STORAGE_KEY, { version: 1, segments: [] });
+        // Note: sessionDataStorage is created later after STORAGE_KEY is defined
+
+        // Input array factory - creates arrays of DOM elements with null filtering
+        function getInputArray(prefix, count) {
+            return Array.from({ length: count }, (_, i) =>
+                document.getElementById(`${prefix}-${i + 1}`)
+            ).filter(Boolean);
+        }
 
         // DOM elements for priorities and gratitude (now in section cards)
-        const priorityInputs = [
-            document.getElementById('priority-1'),
-            document.getElementById('priority-2'),
-            document.getElementById('priority-3')
-        ];
+        const priorityInputs = getInputArray('priority', 3);
         const setPrioritiesBtn = document.querySelector('.set-priorities-btn');
 
-        const gratitudeInputs = [
-            document.getElementById('gratitude-1'),
-            document.getElementById('gratitude-2'),
-            document.getElementById('gratitude-3')
-        ];
+        const gratitudeInputs = getInputArray('gratitude', 3);
         const saveGratitudeBtn = document.querySelector('.save-gratitude-btn');
 
         // Session-level flag for gratitude dismissal
@@ -4165,29 +5429,12 @@
 
         // Load priorities data from localStorage
         function loadPriorities() {
-            try {
-                const stored = localStorage.getItem(PRIORITIES_STORAGE_KEY);
-                if (!stored) {
-                    return { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } };
-                }
-                const data = JSON.parse(stored);
-                if (!data.version) data.version = 1;
-                if (!data.days) data.days = {};
-                if (!data.stats) data.stats = { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 };
-                return data;
-            } catch (e) {
-                console.warn('Failed to load priorities:', e);
-                return { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } };
-            }
+            return priorityStorage.load();
         }
 
         // Save priorities data to localStorage
         function savePriorities(data) {
-            try {
-                localStorage.setItem(PRIORITIES_STORAGE_KEY, JSON.stringify(data));
-            } catch (e) {
-                console.warn('Failed to save priorities:', e);
-            }
+            return priorityStorage.save(data);
         }
 
         // Get today's priorities
@@ -4245,6 +5492,14 @@
             savePriorities(data);
             renderCompactPriorities();
             updatePrioritiesCollapsedPreview();
+
+            // Update river with new completion status
+            if (typeof updateRiverSegment === 'function') {
+                updateRiverSegment();
+                if (typeof renderMiniRiver === 'function') {
+                    renderMiniRiver();
+                }
+            }
         }
 
         // Update priority streak
@@ -4300,29 +5555,12 @@
 
         // Load gratitude data from localStorage
         function loadGratitude() {
-            try {
-                const stored = localStorage.getItem(GRATITUDE_STORAGE_KEY);
-                if (!stored) {
-                    return { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } };
-                }
-                const data = JSON.parse(stored);
-                if (!data.version) data.version = 1;
-                if (!data.entries) data.entries = {};
-                if (!data.stats) data.stats = { totalDaysRecorded: 0, currentStreak: 0 };
-                return data;
-            } catch (e) {
-                console.warn('Failed to load gratitude:', e);
-                return { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } };
-            }
+            return gratitudeStorage.load();
         }
 
         // Save gratitude data to localStorage
         function saveGratitude(data) {
-            try {
-                localStorage.setItem(GRATITUDE_STORAGE_KEY, JSON.stringify(data));
-            } catch (e) {
-                console.warn('Failed to save gratitude:', e);
-            }
+            return gratitudeStorage.save(data);
         }
 
         // Get today's gratitude
@@ -4330,6 +5568,24 @@
             const data = loadGratitude();
             const today = getTodayDateKey();
             return data.entries[today] || null;
+        }
+
+        // Populate gratitude inputs when expanding the gratitude card
+        function populateGratitudeInputs() {
+            const todayData = getTodayGratitude();
+            if (todayData && todayData.items) {
+                // Populate inputs with saved data
+                todayData.items.forEach((item, index) => {
+                    if (gratitudeInputs[index]) {
+                        gratitudeInputs[index].value = item;
+                    }
+                });
+            } else {
+                // Clear inputs if no saved data
+                gratitudeInputs.forEach(input => {
+                    input.value = '';
+                });
+            }
         }
 
         // Save today's gratitude
@@ -4467,15 +5723,29 @@
                 setTodayPriorities(newPriorities);
             }
 
+            // Update river with priorities status
+            if (typeof updateRiverSegment === 'function') {
+                updateRiverSegment();
+                if (typeof renderMiniRiver === 'function') {
+                    renderMiniRiver();
+                }
+            }
+
+            // Show save feedback
+            showSaveFeedback(setPrioritiesBtn, 'Set Priorities');
+
             // Switch to complete mode and update collapsed preview
             updateExpandedPrioritiesView();
             updatePrioritiesCollapsedPreview();
         });
 
         // Edit priorities button handler
-        document.querySelector('.edit-priorities-btn').addEventListener('click', () => {
-            switchToEditMode();
-        });
+        const editPrioritiesBtn = document.querySelector('.edit-priorities-btn');
+        if (editPrioritiesBtn) {
+            editPrioritiesBtn.addEventListener('click', () => {
+                switchToEditMode();
+            });
+        }
 
         // Save gratitude button handler
         saveGratitudeBtn.addEventListener('click', () => {
@@ -4491,12 +5761,40 @@
             }
 
             saveTodayGratitude(items);
-            collapseAllSections();
+
+            // Update river with gratitude status
+            if (typeof updateRiverSegment === 'function') {
+                updateRiverSegment();
+                renderMiniRiver();
+            }
+
+            // Show save feedback then collapse
+            showSaveFeedback(saveGratitudeBtn, 'Save Gratitude');
+            setTimeout(() => {
+                collapseAllSections();
+            }, 800);
         });
 
         // Initialize three-panel layout
         setupSectionClickHandlers();
         updateAdaptiveUI();
+
+        // Initialize mode slider positions based on current mode
+        function initializeModeSliders() {
+            document.querySelectorAll('.mode-switcher').forEach(switcher => {
+                const slider = switcher.querySelector('.mode-slider');
+                const selectedOption = switcher.querySelector('.mode-option.selected');
+                if (slider && selectedOption) {
+                    const sliderWidth = selectedOption.offsetWidth;
+                    const sliderLeft = selectedOption.offsetLeft - 4; // Account for container padding
+                    slider.style.width = sliderWidth + 'px';
+                    slider.style.transform = `translateX(${sliderLeft}px)`;
+                }
+            });
+        }
+        initializeModeSliders();
+        // Re-initialize sliders on window resize
+        window.addEventListener('resize', initializeModeSliders);
 
         // ==========================================
         // SESSION TRACKING & STORAGE
@@ -4504,6 +5802,9 @@
 
         const STORAGE_KEY = 'pomodoro_session_data';
         const DATA_VERSION = 1;
+
+        // Session data storage instance
+        const sessionDataStorage = createStorage(STORAGE_KEY, { version: DATA_VERSION, sessions: {} });
 
         // Dashboard DOM elements
         const dashboardBtn = document.querySelector('.dashboard-btn');
@@ -4543,30 +5844,12 @@
 
         // Load session data from localStorage
         function loadSessionData() {
-            try {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (!stored) {
-                    return { version: DATA_VERSION, sessions: {} };
-                }
-                const data = JSON.parse(stored);
-                // Handle future version migrations here if needed
-                if (!data.version) {
-                    data.version = DATA_VERSION;
-                }
-                return data;
-            } catch (e) {
-                console.warn('Failed to load session data:', e);
-                return { version: DATA_VERSION, sessions: {} };
-            }
+            return sessionDataStorage.load();
         }
 
         // Save session data to localStorage
         function saveSessionData(data) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            } catch (e) {
-                console.warn('Failed to save session data:', e);
-            }
+            return sessionDataStorage.save(data);
         }
 
         // Helper to get youtube session total (handles old and new data formats)
@@ -4759,6 +6042,9 @@
             const svg = sessionChart;
             const container = document.querySelector('.chart-container');
 
+            // Guard against missing elements
+            if (!svg || !container) return;
+
             // Clear existing content
             svg.innerHTML = '';
 
@@ -4805,7 +6091,8 @@
             maxValue = Math.ceil(maxValue * 1.2) || 1;
 
             // Create scales
-            const xScale = (index) => padding.left + (index / (sessions.length - 1)) * chartWidth;
+            const xDivisor = Math.max(sessions.length - 1, 1);
+            const xScale = (index) => padding.left + (index / xDivisor) * chartWidth;
             const yScale = (value) => padding.top + chartHeight - (value / maxValue) * chartHeight;
 
             // Draw grid lines
@@ -4843,7 +6130,12 @@
                     label.setAttribute('y', height - padding.bottom + 20);
                     label.setAttribute('text-anchor', 'middle');
                     label.setAttribute('class', 'chart-label');
-                    label.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
+                    // Validate date before displaying
+                    if (isNaN(date.getTime())) {
+                        label.textContent = '??';
+                    } else {
+                        label.textContent = `${date.getMonth() + 1}/${date.getDate()}`;
+                    }
                     xLabelGroup.appendChild(label);
                 }
             });
@@ -4918,7 +6210,9 @@
                         // Tooltip on hover
                         dot.addEventListener('mouseenter', (e) => {
                             const date = new Date(sessions[i].date);
-                            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            const dateStr = isNaN(date.getTime())
+                                ? 'Unknown date'
+                                : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                             tooltip.innerHTML = `<strong>${dateStr}</strong><br>${value} session${value !== 1 ? 's' : ''}`;
                             tooltip.classList.add('visible');
                         });
@@ -5115,6 +6409,9 @@
             gratitudeDashboard.classList.add('hide');
             chartContainer.classList.remove('hide');
 
+            // Get river container
+            const riverContainer = document.getElementById('dashboard-river-container');
+
             // Hide/show stat cards based on view
             statPriority.classList.add('hide');
             statGratitude.classList.add('hide');
@@ -5124,6 +6421,7 @@
                 statPriority.classList.remove('hide');
                 chartContainer.classList.add('hide');
                 prioritiesDashboard.classList.remove('hide');
+                if (riverContainer) riverContainer.classList.add('hide');
 
                 const weekStats = getWeeklyPriorityStats();
                 priorityPercentEl.textContent = `${weekStats.percentage}%`;
@@ -5141,6 +6439,7 @@
                 statGratitude.classList.remove('hide');
                 chartContainer.classList.add('hide');
                 gratitudeDashboard.classList.remove('hide');
+                if (riverContainer) riverContainer.classList.add('hide');
 
                 const gratitudeData = loadGratitude();
                 gratitudeStreakEl.textContent = gratitudeData.stats.currentStreak;
@@ -5165,6 +6464,14 @@
                 if (currentViewMode === 'youtube') {
                     renderProjectSummary();
                     projectSummary.classList.remove('hide');
+                }
+
+                // Show and render river for session views
+                if (riverContainer) {
+                    riverContainer.classList.remove('hide');
+                    if (typeof renderRiver === 'function') {
+                        renderRiver('dashboard-river');
+                    }
                 }
             }
         }
@@ -5231,21 +6538,505 @@
 
         // Initialize session count from stored data
         sessionCount = getTodaySessionCount();
-        sessionCountEl.textContent = sessionCount;
+        if (sessionCountEl) sessionCountEl.textContent = sessionCount;
 
         // Update time-of-day emphasis every minute
-        setInterval(() => {
+        trackedIntervals.push(setInterval(() => {
             if (!expandedSection) {
                 updateTimeOfDayEmphasis();
             }
-        }, 60000);
+        }, 60000));
 
         // Also update timer preview when timer is running
-        setInterval(() => {
+        trackedIntervals.push(setInterval(() => {
             if (isRunning && !expandedSection) {
                 updateTimerCollapsedPreview();
             }
-        }, 1000);
+        }, 1000));
+
+        // ==========================================
+        // PROGRESS RIVER SYSTEM
+        // ==========================================
+
+        // Load river data from localStorage
+        function loadRiverData() {
+            return riverStorage.load();
+        }
+
+        // Save river data to localStorage
+        function saveRiverData(data) {
+            return riverStorage.save(data);
+        }
+
+        // Update river segment for today
+        function updateRiverSegment() {
+            const data = loadRiverData();
+            const today = getTodayDateKey();
+            const sessionData = loadSessionData();
+            const prioritiesData = loadPriorities();
+            const gratitudeData = loadGratitude();
+
+            // Calculate today's stats
+            const todaySessions = sessionData.sessions[today]
+                ? (sessionData.sessions[today].pomodoro || 0) +
+                  Object.values(sessionData.sessions[today].youtube || {}).reduce((sum, proj) => {
+                      return sum + Object.values(proj).reduce((s, v) => s + v, 0);
+                  }, 0)
+                : 0;
+
+            const todayPriorities = prioritiesData.days[today];
+            let prioritiesCompleted = 0;
+            let prioritiesTotal = 0;
+            if (todayPriorities && todayPriorities.priorities) {
+                prioritiesTotal = todayPriorities.priorities.length;
+                prioritiesCompleted = todayPriorities.priorities.filter(p => p.completed).length;
+            }
+
+            const gratitudeRecorded = !!gratitudeData.entries[today];
+
+            // Find or create today's segment
+            let segmentIndex = data.segments.findIndex(s => s.date === today);
+            if (segmentIndex === -1) {
+                data.segments.push({
+                    date: today,
+                    sessions: todaySessions,
+                    prioritiesCompleted: prioritiesCompleted,
+                    prioritiesTotal: prioritiesTotal,
+                    gratitudeRecorded: gratitudeRecorded
+                });
+            } else {
+                data.segments[segmentIndex] = {
+                    date: today,
+                    sessions: todaySessions,
+                    prioritiesCompleted: prioritiesCompleted,
+                    prioritiesTotal: prioritiesTotal,
+                    gratitudeRecorded: gratitudeRecorded
+                };
+            }
+
+            // Sort by date and keep last 30 days
+            data.segments.sort((a, b) => a.date.localeCompare(b.date));
+            if (data.segments.length > 30) {
+                data.segments = data.segments.slice(-30);
+            }
+
+            saveRiverData(data);
+            return data;
+        }
+
+        // Render the river visualization
+        function renderRiver(containerId, mini = false) {
+            const data = loadRiverData();
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const svg = container.querySelector('.river-svg') || container;
+            const content = svg.querySelector('#river-content') || svg;
+
+            // Clear existing content
+            content.innerHTML = '';
+
+            if (data.segments.length === 0) {
+                // Show empty state
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', '50%');
+                text.setAttribute('y', '50%');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', 'rgba(0,0,0,0.3)');
+                text.setAttribute('font-size', '14');
+                text.setAttribute('font-family', 'Inter, sans-serif');
+                text.textContent = 'Complete sessions to start your river';
+                content.appendChild(text);
+                return;
+            }
+
+            const today = getTodayDateKey();
+            const daysToShow = mini ? 7 : 30;
+            const width = mini ? 280 : 760;
+            const height = mini ? 50 : 100;
+            const padding = 20;
+            const riverCenter = height / 2;
+
+            // Update viewBox for mini river
+            if (mini) {
+                svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            }
+
+            // Generate the last N days
+            const endDate = new Date();
+            const days = [];
+            for (let i = daysToShow - 1; i >= 0; i--) {
+                const date = new Date(endDate);
+                date.setDate(date.getDate() - i);
+                days.push(date.toLocaleDateString('sv'));
+            }
+
+            // Map segments to days
+            const segmentMap = {};
+            data.segments.forEach(s => segmentMap[s.date] = s);
+
+            // Calculate segment width
+            const segmentWidth = (width - padding * 2) / daysToShow;
+
+            // Build river path
+            let pathD = '';
+            let lastY = riverCenter;
+            let consecutiveDays = 0;
+
+            days.forEach((dateKey, i) => {
+                const segment = segmentMap[dateKey];
+                const x = padding + i * segmentWidth + segmentWidth / 2;
+
+                if (segment && segment.sessions > 0) {
+                    // Calculate width based on sessions (3-15 pixels)
+                    const riverWidth = Math.min(15, Math.max(3, segment.sessions * 2));
+
+                    // River flows through this day
+                    if (pathD === '') {
+                        pathD = `M ${x - segmentWidth / 2} ${riverCenter}`;
+                    }
+
+                    // Add slight wave variation
+                    const wave = Math.sin(i * 0.5) * 3;
+                    pathD += ` Q ${x} ${riverCenter + wave}, ${x + segmentWidth / 2} ${riverCenter}`;
+
+                    // Draw the segment
+                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', x - segmentWidth / 2 + 2);
+                    rect.setAttribute('y', riverCenter - riverWidth / 2);
+                    rect.setAttribute('width', segmentWidth - 4);
+                    rect.setAttribute('height', riverWidth);
+                    rect.setAttribute('rx', riverWidth / 2);
+                    rect.setAttribute('fill', segment.gratitudeRecorded ? 'url(#riverGradientWarm)' : 'url(#riverGradient)');
+                    rect.setAttribute('class', 'river-wave' + (segment.prioritiesCompleted === segment.prioritiesTotal && segment.prioritiesTotal > 0 ? ' shimmer' : ''));
+
+                    if (dateKey === today) {
+                        rect.classList.add('river-segment-today');
+                    }
+
+                    // Add hover functionality
+                    rect.style.cursor = 'pointer';
+                    rect.dataset.date = dateKey;
+                    rect.dataset.sessions = segment.sessions;
+                    rect.dataset.priorities = `${segment.prioritiesCompleted}/${segment.prioritiesTotal}`;
+                    rect.dataset.gratitude = segment.gratitudeRecorded ? 'Yes' : 'No';
+
+                    rect.addEventListener('mouseenter', showRiverTooltip);
+                    rect.addEventListener('mouseleave', hideRiverTooltip);
+
+                    content.appendChild(rect);
+                    consecutiveDays++;
+
+                    // Check for milestones
+                    if (consecutiveDays === 7 || consecutiveDays === 14 || consecutiveDays === 30) {
+                        const milestone = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        milestone.setAttribute('cx', x);
+                        milestone.setAttribute('cy', riverCenter);
+                        milestone.setAttribute('r', 6);
+                        milestone.setAttribute('class', 'river-milestone');
+                        content.appendChild(milestone);
+                    }
+                } else {
+                    // Gap day - draw shore
+                    if (pathD !== '' && consecutiveDays > 0) {
+                        // Draw a thin connecting line
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', x - segmentWidth / 2);
+                        line.setAttribute('y1', riverCenter);
+                        line.setAttribute('x2', x + segmentWidth / 2);
+                        line.setAttribute('y2', riverCenter);
+                        line.setAttribute('stroke', 'rgba(210, 195, 170, 0.4)');
+                        line.setAttribute('stroke-width', '1');
+                        line.setAttribute('stroke-dasharray', '4,4');
+                        content.appendChild(line);
+                    }
+                    consecutiveDays = 0;
+                }
+            });
+        }
+
+        // River tooltip functions
+        function showRiverTooltip(e) {
+            const tooltip = document.getElementById('river-tooltip');
+            if (!tooltip) return;
+
+            const rect = e.target.getBoundingClientRect();
+            const date = new Date(e.target.dataset.date);
+            const dateStr = isNaN(date.getTime())
+                ? 'Unknown date'
+                : date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+            const dateEl = tooltip.querySelector('.river-tooltip-date');
+            if (dateEl) dateEl.textContent = dateStr;
+            const statsEl = tooltip.querySelector('.river-tooltip-stats');
+            if (statsEl) {
+                statsEl.innerHTML = `
+                    Sessions: ${e.target.dataset.sessions}<br>
+                    Priorities: ${e.target.dataset.priorities}<br>
+                    Gratitude: ${e.target.dataset.gratitude}
+                `;
+            }
+
+            tooltip.style.left = `${rect.left + rect.width / 2 - 60}px`;
+            tooltip.style.top = `${rect.top - 70}px`;
+            tooltip.classList.add('visible');
+        }
+
+        function hideRiverTooltip() {
+            const tooltip = document.getElementById('river-tooltip');
+            if (tooltip) tooltip.classList.remove('visible');
+        }
+
+        // Render mini river in gratitude collapsed view
+        function renderMiniRiver() {
+            const gratitudeCollapsed = document.getElementById('gratitude-collapsed-content');
+            if (!gratitudeCollapsed) return;
+
+            // Check if mini river container exists, if not create it
+            let miniRiverDiv = gratitudeCollapsed.querySelector('.gratitude-mini-river');
+            if (!miniRiverDiv) {
+                miniRiverDiv = document.createElement('div');
+                miniRiverDiv.className = 'gratitude-mini-river';
+                miniRiverDiv.innerHTML = `
+                    <div class="progress-river mini">
+                        <svg class="river-svg" viewBox="0 0 280 50" preserveAspectRatio="xMidYMid meet">
+                            <defs>
+                                <linearGradient id="riverGradientMini" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9fb8b5;stop-opacity:0.8"/>
+                                    <stop offset="100%" style="stop-color:#7a9e9b;stop-opacity:1"/>
+                                </linearGradient>
+                                <linearGradient id="riverGradientWarmMini" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#b8c5a8;stop-opacity:0.8"/>
+                                    <stop offset="100%" style="stop-color:#9fb8a0;stop-opacity:1"/>
+                                </linearGradient>
+                            </defs>
+                            <g id="mini-river-content"></g>
+                        </svg>
+                    </div>
+                `;
+                gratitudeCollapsed.appendChild(miniRiverDiv);
+            }
+
+            // Render mini version
+            const data = loadRiverData();
+            const svg = miniRiverDiv.querySelector('.river-svg');
+            const content = svg.querySelector('#mini-river-content');
+            content.innerHTML = '';
+
+            const today = getTodayDateKey();
+            const daysToShow = 7;
+            const width = 280;
+            const height = 50;
+            const padding = 10;
+            const riverCenter = height / 2;
+
+            // Generate the last 7 days
+            const endDate = new Date();
+            const days = [];
+            for (let i = daysToShow - 1; i >= 0; i--) {
+                const date = new Date(endDate);
+                date.setDate(date.getDate() - i);
+                days.push(date.toLocaleDateString('sv'));
+            }
+
+            // Map segments to days
+            const segmentMap = {};
+            data.segments.forEach(s => segmentMap[s.date] = s);
+
+            const segmentWidth = (width - padding * 2) / daysToShow;
+
+            days.forEach((dateKey, i) => {
+                const segment = segmentMap[dateKey];
+                const x = padding + i * segmentWidth + segmentWidth / 2;
+
+                if (segment && segment.sessions > 0) {
+                    const riverWidth = Math.min(10, Math.max(2, segment.sessions * 1.5));
+                    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('x', x - segmentWidth / 2 + 1);
+                    rect.setAttribute('y', riverCenter - riverWidth / 2);
+                    rect.setAttribute('width', segmentWidth - 2);
+                    rect.setAttribute('height', riverWidth);
+                    rect.setAttribute('rx', riverWidth / 2);
+                    rect.setAttribute('fill', segment.gratitudeRecorded ? 'url(#riverGradientWarmMini)' : 'url(#riverGradientMini)');
+                    rect.setAttribute('class', 'river-wave');
+                    if (dateKey === today) {
+                        rect.classList.add('river-segment-today');
+                    }
+                    content.appendChild(rect);
+                } else {
+                    // Small dot for empty day
+                    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    dot.setAttribute('cx', x);
+                    dot.setAttribute('cy', riverCenter);
+                    dot.setAttribute('r', 2);
+                    dot.setAttribute('fill', 'rgba(210, 195, 170, 0.3)');
+                    content.appendChild(dot);
+                }
+            });
+        }
+
+        // ==========================================
+        // SESSION COMPLETION CEREMONY
+        // ==========================================
+
+        const completionCeremony = document.getElementById('completion-ceremony');
+        const ceremonyStat = document.getElementById('ceremony-stat');
+        const waterDrop = document.getElementById('water-drop');
+
+        function showCompletionCeremony() {
+            // Update the stat text
+            const todayCount = getTodaySessionCount();
+            ceremonyStat.textContent = todayCount === 1
+                ? "That's 1 session today"
+                : `That's ${todayCount} sessions today`;
+
+            // Show the ceremony
+            completionCeremony.classList.add('visible');
+
+            // Auto-hide after 2.5 seconds
+            setTimeout(() => {
+                completionCeremony.classList.remove('visible');
+
+                // Trigger water drop animation
+                triggerWaterDrop();
+            }, 2500);
+        }
+
+        function triggerWaterDrop() {
+            // Position the drop at center-top
+            waterDrop.style.left = '50%';
+            waterDrop.style.top = '40%';
+            waterDrop.style.transform = 'translateX(-50%)';
+
+            // Trigger animation
+            waterDrop.classList.add('animate');
+
+            // Remove animation class after completion
+            setTimeout(() => {
+                waterDrop.classList.remove('animate');
+            }, 1000);
+
+            // Update river after drop lands
+            setTimeout(() => {
+                updateRiverSegment();
+                renderMiniRiver();
+                if (!document.querySelector('.dashboard-view').classList.contains('hide')) {
+                    renderRiver('dashboard-river');
+                }
+            }, 800);
+        }
+
+        // ==========================================
+        // ANIMATED NUMBER COUNT-UP
+        // ==========================================
+
+        function animateNumber(element, target, duration = 800) {
+            if (!element) return;
+
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(start + (target - start) * eased);
+
+                // Handle percentage values
+                if (element.textContent.includes('%')) {
+                    element.textContent = current + '%';
+                } else {
+                    element.textContent = current;
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            element.classList.add('counting');
+            requestAnimationFrame(update);
+
+            setTimeout(() => {
+                element.classList.remove('counting');
+            }, duration);
+        }
+
+        // Override the dashboard stats update to use animations
+        const originalUpdateDashboardStats = typeof updateDashboardStats === 'function' ? updateDashboardStats : null;
+
+        // Wrap updateDashboardStats to add animations
+        function animatedUpdateDashboardStats() {
+            const daysActiveEl = document.getElementById('days-active');
+            const todaySessionsEl = document.getElementById('today-sessions');
+            const totalSessionsEl = document.getElementById('total-sessions');
+            const priorityPercentEl = document.getElementById('priority-percent');
+            const gratitudeStreakEl = document.getElementById('gratitude-streak');
+
+            // Get current values before update
+            const oldDays = parseInt(daysActiveEl?.textContent) || 0;
+            const oldToday = parseInt(todaySessionsEl?.textContent) || 0;
+            const oldTotal = parseInt(totalSessionsEl?.textContent) || 0;
+
+            // Calculate new values
+            const stats = calculateStats(currentViewMode);
+
+            // Animate if values changed
+            if (daysActiveEl && stats.daysActive !== oldDays) {
+                animateNumber(daysActiveEl, stats.daysActive);
+            } else if (daysActiveEl) {
+                daysActiveEl.textContent = stats.daysActive;
+            }
+
+            if (todaySessionsEl && stats.todaySessions !== oldToday) {
+                animateNumber(todaySessionsEl, stats.todaySessions);
+            } else if (todaySessionsEl) {
+                todaySessionsEl.textContent = stats.todaySessions;
+            }
+
+            if (totalSessionsEl && stats.totalSessions !== oldTotal) {
+                animateNumber(totalSessionsEl, stats.totalSessions);
+            } else if (totalSessionsEl) {
+                totalSessionsEl.textContent = stats.totalSessions;
+            }
+
+            // Render river in dashboard
+            renderRiver('dashboard-river');
+        }
+
+        // ==========================================
+        // INTEGRATION: Update existing functions
+        // ==========================================
+
+        // Store reference to original dashboard show function
+        const dashboardViewEl = document.querySelector('.dashboard-view');
+
+        // Override dashboard button click to trigger animations
+        const originalDashboardBtn = document.getElementById('main-dashboard-btn');
+        if (originalDashboardBtn) {
+            originalDashboardBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    // Render river when dashboard opens
+                    updateRiverSegment();
+                    renderRiver('dashboard-river');
+                }, 100);
+            });
+        }
+
+        // Initialize river on page load
+        updateRiverSegment();
+        renderMiniRiver();
+
+        // ==========================================
+        // CLEANUP ON PAGE UNLOAD
+        // ==========================================
+        window.addEventListener('beforeunload', () => {
+            // Clear all tracked intervals
+            trackedIntervals.forEach(id => clearInterval(id));
+            // Clear timer interval
+            if (timerInterval) clearInterval(timerInterval);
+        });
     </script>
 </body>
 </html>
