@@ -601,30 +601,31 @@
         /* ==========================================
            FLIP ANIMATION FOR SMOOTH FOCUS TRANSITIONS
            ========================================== */
+
+        /* Disable ALL base transitions during FLIP to prevent competing animations */
+        .app-container.timer-transitioning .section-card {
+            transition: none !important;
+        }
+
+        /* FLIP animation - only transition transform (the FLIP technique) */
         .flip-animating {
-            transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 550ms cubic-bezier(0.4, 0, 0.2, 1),
-                        width 550ms cubic-bezier(0.4, 0, 0.2, 1),
-                        padding 550ms cubic-bezier(0.4, 0, 0.2, 1),
-                        background 550ms cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 550ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+            transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
         /* Staggered timing for priorities (slight delay) */
         .flip-animating.flip-priorities {
-            transition-delay: 50ms;
+            transition-delay: 50ms !important;
         }
 
         /* Staggered timing for gratitude (slightly more delay) */
         .flip-animating.flip-gratitude {
-            transition-delay: 100ms;
+            transition-delay: 100ms !important;
         }
 
         /* Faster animations on mobile */
         @media (max-width: 480px) {
             .flip-animating {
-                transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                            opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1) !important;
             }
         }
 
@@ -4394,6 +4395,9 @@
                 return;
             }
 
+            // Disable all base section-card transitions during FLIP
+            appContainer.classList.add('timer-transitioning');
+
             // FIRST: Record current positions before state change
             const firstPriorities = prioritiesSection.getBoundingClientRect();
             const firstGratitude = gratitudeSection.getBoundingClientRect();
@@ -4455,6 +4459,9 @@
                         prioritiesSection.classList.remove('flip-animating', 'flip-priorities');
                         gratitudeSection.classList.remove('flip-animating', 'flip-gratitude');
                         timerSection.classList.remove('flip-animating');
+
+                        // Re-enable base transitions
+                        appContainer.classList.remove('timer-transitioning');
 
                         // Clear inline transform styles when exiting
                         if (!entering) {
