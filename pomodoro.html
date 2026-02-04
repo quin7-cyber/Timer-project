@@ -598,6 +598,36 @@
             }
         }
 
+        /* ==========================================
+           FLIP ANIMATION FOR SMOOTH FOCUS TRANSITIONS
+           ========================================== */
+        .flip-animating {
+            transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 550ms cubic-bezier(0.4, 0, 0.2, 1),
+                        width 550ms cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 550ms cubic-bezier(0.4, 0, 0.2, 1),
+                        background 550ms cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 550ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* Staggered timing for priorities (slight delay) */
+        .flip-animating.flip-priorities {
+            transition-delay: 50ms;
+        }
+
+        /* Staggered timing for gratitude (slightly more delay) */
+        .flip-animating.flip-gratitude {
+            transition-delay: 100ms;
+        }
+
+        /* Faster animations on mobile */
+        @media (max-width: 480px) {
+            .flip-animating {
+                transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+        }
+
         /* Close button for expanded sections */
         .section-close-btn {
             position: absolute;
@@ -4348,6 +4378,96 @@
         }
 
         // ==========================================
+        // FLIP ANIMATION FOR SMOOTH FOCUS TRANSITIONS
+        // ==========================================
+
+        /**
+         * Performs a FLIP animation for smooth focus mode transitions
+         * FLIP = First, Last, Invert, Play
+         * @param {boolean} entering - true if entering focus mode, false if exiting
+         * @param {function} applyStateChange - callback that applies the CSS class change
+         */
+        function flipFocusModeTransition(entering, applyStateChange) {
+            // Bail out if elements don't exist
+            if (!prioritiesSection || !gratitudeSection || !timerSection) {
+                applyStateChange();
+                return;
+            }
+
+            // FIRST: Record current positions before state change
+            const firstPriorities = prioritiesSection.getBoundingClientRect();
+            const firstGratitude = gratitudeSection.getBoundingClientRect();
+            const firstTimer = timerSection.getBoundingClientRect();
+
+            // LAST: Apply the state change and measure new positions
+            applyStateChange();
+
+            // Force layout recalculation
+            const lastPriorities = prioritiesSection.getBoundingClientRect();
+            const lastGratitude = gratitudeSection.getBoundingClientRect();
+            const lastTimer = timerSection.getBoundingClientRect();
+
+            // INVERT: Calculate deltas and apply inverse transforms
+            // This makes elements appear at their old positions visually
+
+            // For priorities: account for the translateX(-50%) in focus mode
+            const deltaXPriorities = firstPriorities.left + firstPriorities.width / 2 - (lastPriorities.left + lastPriorities.width / 2);
+            const deltaYPriorities = firstPriorities.top - lastPriorities.top;
+
+            const deltaXGratitude = firstGratitude.left + firstGratitude.width / 2 - (lastGratitude.left + lastGratitude.width / 2);
+            const deltaYGratitude = firstGratitude.top - lastGratitude.top;
+
+            const deltaXTimer = firstTimer.left + firstTimer.width / 2 - (lastTimer.left + lastTimer.width / 2);
+            const deltaYTimer = firstTimer.top - lastTimer.top;
+
+            // Apply inverse transforms (elements visually appear at their old positions)
+            if (entering) {
+                // When entering, the final state has translateX(-50%), so we incorporate that
+                prioritiesSection.style.transform = `translateX(calc(-50% + ${deltaXPriorities}px)) translateY(${deltaYPriorities}px)`;
+                gratitudeSection.style.transform = `translateX(calc(-50% + ${deltaXGratitude}px)) translateY(${deltaYGratitude}px)`;
+            } else {
+                // When exiting, we're going back to no transform
+                prioritiesSection.style.transform = `translateX(${deltaXPriorities}px) translateY(${deltaYPriorities}px)`;
+                gratitudeSection.style.transform = `translateX(${deltaXGratitude}px) translateY(${deltaYGratitude}px)`;
+            }
+            timerSection.style.transform = `translateX(${deltaXTimer}px) translateY(${deltaYTimer}px)`;
+
+            // PLAY: Animate to final positions
+            requestAnimationFrame(() => {
+                // Add the animating classes with staggered timing
+                prioritiesSection.classList.add('flip-animating', 'flip-priorities');
+                gratitudeSection.classList.add('flip-animating', 'flip-gratitude');
+                timerSection.classList.add('flip-animating');
+
+                requestAnimationFrame(() => {
+                    // Reset transforms - CSS transition will animate to final position
+                    if (entering) {
+                        prioritiesSection.style.transform = 'translateX(-50%)';
+                        gratitudeSection.style.transform = 'translateX(-50%)';
+                    } else {
+                        prioritiesSection.style.transform = '';
+                        gratitudeSection.style.transform = '';
+                    }
+                    timerSection.style.transform = '';
+
+                    // Clean up after animation completes
+                    setTimeout(() => {
+                        prioritiesSection.classList.remove('flip-animating', 'flip-priorities');
+                        gratitudeSection.classList.remove('flip-animating', 'flip-gratitude');
+                        timerSection.classList.remove('flip-animating');
+
+                        // Clear inline transform styles when exiting
+                        if (!entering) {
+                            prioritiesSection.style.transform = '';
+                            gratitudeSection.style.transform = '';
+                        }
+                        timerSection.style.transform = '';
+                    }, 650); // Slightly longer than animation duration
+                });
+            });
+        }
+
+        // ==========================================
         // THREE-PANEL EXPAND/COLLAPSE MANAGEMENT
         // ==========================================
 
@@ -4740,8 +4860,10 @@
 
                         updateDisplay();
 
-                        // Exit focus mode
-                        appContainer.classList.remove('timer-focus-mode');
+                        // Exit focus mode with smooth FLIP animation
+                        flipFocusModeTransition(false, () => {
+                            appContainer.classList.remove('timer-focus-mode');
+                        });
 
                         // Show duration selector and start button (not work button)
                         hideSessionContext();
@@ -4786,8 +4908,10 @@
                     remainingSeconds = YOUTUBE_SESSION_DURATION;
                     updateDisplay();
 
-                    // Exit focus mode
-                    appContainer.classList.remove('timer-focus-mode');
+                    // Exit focus mode with smooth FLIP animation
+                    flipFocusModeTransition(false, () => {
+                        appContainer.classList.remove('timer-focus-mode');
+                    });
 
                     // Show session setup and start button
                     sessionSetup.classList.remove('hide');
@@ -4811,10 +4935,12 @@
                 stopButton.classList.add('visible');
                 restButton.classList.add('hide');
 
-                // Enter focus mode
-                appContainer.classList.add('timer-focus-mode');
-                appContainer.classList.remove('has-expanded');
-                expandedSection = null;
+                // Enter focus mode with smooth FLIP animation
+                flipFocusModeTransition(true, () => {
+                    appContainer.classList.add('timer-focus-mode');
+                    appContainer.classList.remove('has-expanded');
+                    expandedSection = null;
+                });
 
                 // Hide priorities/gratitude panels during timer
                 if (typeof updateAdaptiveUI === 'function') {
@@ -4914,8 +5040,10 @@
             clearInterval(timerInterval);
             isRunning = false;
 
-            // Exit focus mode
-            appContainer.classList.remove('timer-focus-mode');
+            // Exit focus mode with smooth FLIP animation
+            flipFocusModeTransition(false, () => {
+                appContainer.classList.remove('timer-focus-mode');
+            });
 
             // Load today's session count from storage (don't reset to 0)
             sessionCount = getTodaySessionCount();
@@ -4983,10 +5111,12 @@
                 startYoutubeBtn.classList.add('hide');
                 stopButton.classList.add('visible');
 
-                // Enter focus mode
-                appContainer.classList.add('timer-focus-mode');
-                appContainer.classList.remove('has-expanded');
-                expandedSection = null;
+                // Enter focus mode with smooth FLIP animation
+                flipFocusModeTransition(true, () => {
+                    appContainer.classList.add('timer-focus-mode');
+                    appContainer.classList.remove('has-expanded');
+                    expandedSection = null;
+                });
 
                 // Hide priorities/gratitude panels during timer
                 if (typeof updateAdaptiveUI === 'function') {
@@ -5009,8 +5139,12 @@
             sessionRecorded = false;  // Reset guard flag
             sessionLabelEl.classList.remove('breathing');
 
-            // Exit focus mode
-            appContainer.classList.remove('timer-focus-mode');
+            // Exit focus mode with smooth FLIP animation (if in focus mode)
+            if (appContainer.classList.contains('timer-focus-mode')) {
+                flipFocusModeTransition(false, () => {
+                    appContainer.classList.remove('timer-focus-mode');
+                });
+            }
 
             // Update mode state
             currentMode = mode;
