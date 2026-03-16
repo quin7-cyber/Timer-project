@@ -8,6 +8,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
+        /* ==========================================
+           DESIGN TOKENS
+           ========================================== */
+        :root {
+            /* Typography */
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+
+            /* Text colours (black at semantic opacities) */
+            --text-emphasis: rgba(0, 0, 0, 0.8);
+            --text-primary: rgba(0, 0, 0, 0.7);
+            --text-body: rgba(0, 0, 0, 0.6);
+            --text-secondary: rgba(0, 0, 0, 0.5);
+            --text-tertiary: rgba(0, 0, 0, 0.4);
+            --text-subtle: rgba(0, 0, 0, 0.55);
+            --text-faint: rgba(0, 0, 0, 0.35);
+            --text-muted: rgba(0, 0, 0, 0.25);
+
+            /* Surfaces (glass at varying opacity) */
+            --surface-glass-light: rgba(255, 255, 255, 0.3);
+            --surface-glass: rgba(255, 255, 255, 0.35);
+            --surface-glass-medium: rgba(255, 255, 255, 0.4);
+            --surface-glass-hover: rgba(255, 255, 255, 0.5);
+            --surface-glass-strong: rgba(255, 255, 255, 0.6);
+            --surface-glass-heavy: rgba(255, 255, 255, 0.7);
+            --surface-glass-solid: rgba(255, 255, 255, 0.95);
+            --surface-input: rgba(255, 255, 255, 0.55);
+
+            /* Borders */
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --border-medium: rgba(0, 0, 0, 0.15);
+            --border-strong: rgba(0, 0, 0, 0.2);
+            --border-emphasis: rgba(0, 0, 0, 0.25);
+
+            /* Brand accents (RGB channels for composing at any opacity) */
+            --accent-pomodoro: 184, 164, 212;
+            --accent-gratitude: 159, 184, 181;
+            --accent-nature: 107, 142, 126;
+            --accent-youtube: 232, 165, 152;
+            --accent-rest: 100, 160, 150;
+
+            /* Effects */
+            --blur-sm: blur(4px);
+            --blur-md: blur(10px);
+            --blur-lg: blur(16px);
+            --blur-xl: blur(20px);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-pill: 50px;
+
+            /* Transitions */
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --transition-base: all 0.3s ease;
+            --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Chart colours (overridden per time-of-day via body.morning etc.) */
+            --chart-pomodoro: rgba(var(--accent-pomodoro), 1);
+            --chart-pomodoro-light: rgba(var(--accent-pomodoro), 0.15);
+            --chart-youtube: rgba(var(--accent-youtube), 1);
+            --chart-youtube-light: rgba(var(--accent-youtube), 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +80,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             min-height: 100vh;
             overflow-y: auto;
             display: flex;
@@ -50,15 +115,15 @@
             animation: gradientShift 20s ease infinite;
         }
 
-        /* Afternoon palettes (12 PM - 5:59 PM) */
+        /* Afternoon palettes (12 PM - 5:59 PM) — deepened for readability */
         .background.work.afternoon {
-            background: linear-gradient(-45deg, #ffd4a3, #ffcba4, #ffe4c4, #ffd9b3);
+            background: linear-gradient(-45deg, #f0c892, #ebbe8e, #f5d8b5, #f0cda5);
             background-size: 400% 400%;
             animation: gradientShift 20s ease infinite;
         }
 
         .background.rest.afternoon {
-            background: linear-gradient(-45deg, #ffd4c8, #ffe0d4, #f7d5b5, #fce5cd);
+            background: linear-gradient(-45deg, #f0c4b8, #f5d0c4, #e8c5a5, #ebd5bd);
             background-size: 400% 400%;
             animation: gradientShift 20s ease infinite;
         }
@@ -109,11 +174,11 @@
 
         .particle {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.55);
+            width: 5px;
+            height: 5px;
+            background: var(--surface-glass-light);
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
             animation: float 20s infinite ease-in-out;
         }
 
@@ -234,19 +299,19 @@
         @keyframes float {
             0%, 100% {
                 transform: translate(0, 0) scale(1);
-                opacity: 0.45;
+                opacity: 0.25;
             }
             25% {
                 transform: translate(30px, -30px) scale(1.1);
-                opacity: 0.65;
+                opacity: 0.35;
             }
             50% {
                 transform: translate(-20px, 20px) scale(0.9);
-                opacity: 0.55;
+                opacity: 0.3;
             }
             75% {
                 transform: translate(40px, 10px) scale(1.05);
-                opacity: 0.6;
+                opacity: 0.35;
             }
         }
 
@@ -266,10 +331,10 @@
 
         /* Section Card Base Styles - Ambient Glow Design */
         .section-card {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(16px);
+            background: var(--surface-glass);
+            backdrop-filter: var(--blur-lg);
             border: none;
-            border-radius: 28px;
+            border-radius: var(--radius-xl);
             padding: 1.5rem 2rem;
             cursor: pointer;
             transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1),
@@ -316,24 +381,24 @@
 
         /* Section color tints with ambient glows */
         .priorities-section {
-            background: rgba(184, 164, 212, 0.25);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 8px 32px rgba(184, 164, 212, 0.15),
-                        0 0 60px rgba(184, 164, 212, 0.08),
-                        0 0 0 1px rgba(184, 164, 212, 0.1),
+            background: rgba(var(--accent-pomodoro), 0.25);
+            backdrop-filter: var(--blur-lg);
+            box-shadow: 0 8px 32px rgba(var(--accent-pomodoro), 0.15),
+                        0 0 60px rgba(var(--accent-pomodoro), 0.08),
+                        0 0 0 1px rgba(var(--accent-pomodoro), 0.1),
                         inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .priorities-section:hover {
-            box-shadow: 0 20px 50px rgba(184, 164, 212, 0.2),
-                        0 0 80px rgba(184, 164, 212, 0.15),
-                        0 0 0 1px rgba(184, 164, 212, 0.2),
+            box-shadow: 0 20px 50px rgba(var(--accent-pomodoro), 0.2),
+                        0 0 80px rgba(var(--accent-pomodoro), 0.15),
+                        0 0 0 1px rgba(var(--accent-pomodoro), 0.2),
                         inset 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
         .timer-section {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(16px);
+            background: var(--surface-glass-medium);
+            backdrop-filter: var(--blur-lg);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
                         0 0 60px rgba(255, 255, 255, 0.15),
                         0 0 0 1px rgba(255, 255, 255, 0.2),
@@ -348,18 +413,18 @@
         }
 
         .gratitude-section {
-            background: rgba(159, 184, 181, 0.22);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 8px 32px rgba(159, 184, 181, 0.12),
-                        0 0 60px rgba(159, 184, 181, 0.08),
-                        0 0 0 1px rgba(159, 184, 181, 0.1),
+            background: rgba(var(--accent-gratitude), 0.22);
+            backdrop-filter: var(--blur-lg);
+            box-shadow: 0 8px 32px rgba(var(--accent-gratitude), 0.12),
+                        0 0 60px rgba(var(--accent-gratitude), 0.08),
+                        0 0 0 1px rgba(var(--accent-gratitude), 0.1),
                         inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .gratitude-section:hover {
-            box-shadow: 0 20px 50px rgba(159, 184, 181, 0.18),
-                        0 0 80px rgba(159, 184, 181, 0.12),
-                        0 0 0 1px rgba(159, 184, 181, 0.2),
+            box-shadow: 0 20px 50px rgba(var(--accent-gratitude), 0.18),
+                        0 0 80px rgba(var(--accent-gratitude), 0.12),
+                        0 0 0 1px rgba(var(--accent-gratitude), 0.2),
                         inset 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
@@ -368,6 +433,59 @@
         .section-card:not(.expanded).gratitude-section {
             min-height: 140px;
         }
+
+        /* Hidden panels mode - default state hides priorities and gratitude */
+        .app-container.panels-hidden .priorities-section,
+        .app-container.panels-hidden .gratitude-section {
+            display: none;
+        }
+
+        .app-container.panels-hidden .streak-indicator {
+            display: none;
+        }
+
+        /* Panels toggle button — pill shape to match STATS button */
+        .panels-toggle-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--surface-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: var(--transition-base);
+            backdrop-filter: var(--blur-md);
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .panels-toggle-label {
+            line-height: 1;
+        }
+
+        .panels-toggle-btn:hover {
+            background: var(--surface-glass-hover);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .panels-toggle-btn.active {
+            background: var(--surface-glass-hover);
+            color: var(--text-primary);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Panels toggle is hidden during focus mode and dashboard via JS
+           (CSS sibling selector can't target preceding elements) */
 
         /* Time-of-day emphasis glow - enhanced ambient effect */
         .section-card.time-emphasis {
@@ -470,7 +588,7 @@
             padding: 0.6rem 1.25rem;
             opacity: 0.7;
             z-index: 5;
-            background: rgba(184, 164, 212, 0.2);
+            background: rgba(var(--accent-pomodoro), 0.2);
         }
 
         .app-container.timer-focus-mode .priorities-section:hover {
@@ -530,7 +648,7 @@
             padding: 0.6rem 1.25rem;
             opacity: 0.7;
             z-index: 5;
-            background: rgba(159, 184, 181, 0.2);
+            background: rgba(var(--accent-gratitude), 0.2);
         }
 
         .app-container.timer-focus-mode .gratitude-section:hover {
@@ -571,7 +689,7 @@
             opacity: 1;
             z-index: 100;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            backdrop-filter: var(--blur-xl);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         }
 
@@ -608,19 +726,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--surface-glass-medium);
+            border: 1px solid var(--border-subtle);
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: rgba(0, 0, 0, 0.5);
+            transition: var(--transition-base);
+            color: var(--text-secondary);
             font-size: 1.2rem;
             z-index: 20;
         }
 
         .section-close-btn:hover {
-            background: rgba(255, 255, 255, 0.6);
-            color: rgba(0, 0, 0, 0.7);
+            background: var(--surface-glass-strong);
+            color: var(--text-primary);
         }
 
         /* Section headers */
@@ -643,24 +761,24 @@
 
         .priorities-section .section-title,
         .gratitude-section .section-title {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
         }
 
         .section-status {
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
         }
 
         /* Collapsed section previews */
         .collapsed-preview {
             font-size: 0.95rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             text-align: center;
         }
 
         .collapsed-preview-hint {
             font-size: 0.95rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             font-style: italic;
             text-align: center;
         }
@@ -698,20 +816,20 @@
 
         .collapsed-priority-bullet {
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             width: 16px;
             text-align: center;
             flex-shrink: 0;
         }
 
         .collapsed-priority-item.completed .collapsed-priority-bullet {
-            color: rgba(107, 142, 126, 0.8);
+            color: rgba(var(--accent-nature), 0.8);
         }
 
         .collapsed-priority-text {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -719,7 +837,7 @@
 
         .collapsed-priority-item.completed .collapsed-priority-text {
             text-decoration: line-through;
-            color: rgba(0, 0, 0, 0.35);
+            color: var(--text-faint);
         }
 
         /* Progress bar */
@@ -740,24 +858,24 @@
 
         .priorities-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, rgba(107, 142, 126, 0.5), rgba(107, 142, 126, 0.7));
+            background: linear-gradient(90deg, rgba(var(--accent-nature), 0.5), rgba(var(--accent-nature), 0.7));
             border-radius: 3px;
             transition: width 0.3s ease;
         }
 
         .priorities-progress-label {
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             white-space: nowrap;
         }
 
         .priorities-all-done {
             margin-top: 0.5rem;
             padding: 0.5rem 0.75rem;
-            background: rgba(107, 142, 126, 0.08);
+            background: rgba(var(--accent-nature), 0.08);
             border-radius: 6px;
             font-size: 0.85rem;
-            color: rgba(107, 142, 126, 0.85);
+            color: rgba(var(--accent-nature), 0.85);
             text-align: center;
         }
 
@@ -771,15 +889,15 @@
         }
 
         .mini-timer {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 3rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .mini-timer-status {
             font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-top: 0.25rem;
         }
 
@@ -787,10 +905,14 @@
             display: none;
         }
 
-        /* Mode switcher in collapsed timer */
+        /* Mode switcher in collapsed timer — explicit sizing instead of scale */
         .section-collapsed .mode-switcher {
-            transform: scale(0.9);
-            transform-origin: right center;
+            padding: 0.15rem;
+        }
+
+        .section-collapsed .mode-option {
+            padding: 0.4rem 0.9rem;
+            font-size: 0.75rem;
         }
 
         /* Gratitude collapsed state */
@@ -806,7 +928,7 @@
 
         .gratitude-streak-mini {
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             margin-top: 0.25rem;
         }
 
@@ -817,7 +939,7 @@
 
         .section-card.expanded .priorities-header,
         .section-card.expanded .gratitude-header {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.5rem;
             font-weight: 400;
             letter-spacing: 0.02em;
@@ -853,10 +975,10 @@
 
         .section-card.expanded .priority-number,
         .section-card.expanded .gratitude-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1rem;
             font-weight: 400;
-            color: rgba(0, 0, 0, 0.25);
+            color: var(--text-muted);
             width: 1.25rem;
             text-align: center;
         }
@@ -865,14 +987,14 @@
         .section-card.expanded .gratitude-input {
             flex: 1;
             padding: 0.75rem 0.25rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
             font-weight: 400;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border-subtle);
             border-radius: 0;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             transition: border-color 0.3s ease;
         }
 
@@ -885,7 +1007,7 @@
 
         .section-card.expanded .priority-input::placeholder,
         .section-card.expanded .gratitude-input::placeholder {
-            color: rgba(0, 0, 0, 0.25);
+            color: var(--text-muted);
             font-style: italic;
         }
 
@@ -893,16 +1015,16 @@
         .section-card.expanded .save-gratitude-btn {
             width: 100%;
             padding: 1.1rem 2rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.95rem;
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             color: rgba(0, 0, 0, 0.65);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
@@ -980,12 +1102,12 @@
 
         /* Focus Timer title */
         .timer-title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.5rem;
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             margin: 0 0 1.5rem 0;
         }
 
@@ -1000,20 +1122,20 @@
             font-weight: 300;
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 1.5rem;
             transition: all 0.8s ease;
         }
 
         /* Countdown timer */
         .countdown {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 160px;
             font-weight: 900;
-            color: rgba(0, 0, 0, 0.8);
+            color: var(--text-emphasis);
             line-height: 1;
             letter-spacing: 0.05em;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             user-select: none;
             display: flex;
             justify-content: center;
@@ -1039,7 +1161,7 @@
             text-align: center;
         }
 
-        /* Breathing animation */
+        /* Breathing animation for session label */
         @keyframes breathe {
             0% {
                 transform: scale(1.0);
@@ -1053,7 +1175,80 @@
         }
 
         .session-label.breathing {
-            animation: breathe 8s ease-in-out infinite;
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        /* Deep breathing animation for timer digits - synchronized 6s breath cycle */
+        @keyframes breathe-deep {
+            0%, 100% {
+                transform: scale(1.0);
+            }
+            50% {
+                transform: scale(1.012);
+            }
+        }
+
+        .countdown.breathing {
+            animation: breathe-deep 6s ease-in-out infinite;
+        }
+
+        /* Rest phase animations */
+        @keyframes rest-drift {
+            0%, 100% {
+                transform: translateX(0);
+                opacity: 0.85;
+            }
+            50% {
+                transform: translateX(1px);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes colon-pulse {
+            0%, 100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .countdown.resting {
+            font-weight: 700;
+            color: var(--text-subtle);
+            animation: rest-drift 10s ease-in-out infinite;
+        }
+
+        .countdown.resting .colon {
+            animation: colon-pulse 3s ease-in-out infinite;
+        }
+
+        /* Rest phase - softer progress ring */
+        .progress-ring-fill.resting.active,
+        .app-container.timer-focus-mode .progress-ring-fill.resting.active {
+            stroke: rgba(var(--accent-rest), 0.25);
+            stroke-width: 2.5;
+            filter: none;
+        }
+
+        /* Rest phase - slower, softer particles */
+        .particles.resting .particle {
+            width: 7px;
+            height: 7px;
+            opacity: 0.4;
+            animation-duration: 40s !important;
+        }
+
+        /* Optional pulse ring around timer during focus - synchronized 6s cycle */
+        @keyframes pulseRing {
+            0%, 100% {
+                opacity: 0.15;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.25;
+                transform: scale(1.02);
+            }
         }
 
         /* Duration selector */
@@ -1063,37 +1258,40 @@
             justify-content: center;
             gap: 0.5rem;
             margin-top: 2rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition-slow);
         }
 
         .duration-option {
             padding: 0.5rem 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
             font-weight: 300;
             letter-spacing: 0.1em;
             background: transparent;
             border: none;
             cursor: pointer;
-            color: rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            color: var(--text-tertiary);
+            transition: var(--transition-base);
         }
 
         .duration-option:hover {
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             transform: scale(1.05);
         }
 
         .duration-option.selected {
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
+            background: var(--surface-glass);
+            border-radius: var(--radius-lg);
+            padding: 0.5rem 1.2rem;
         }
 
         .duration-label {
             font-size: 0.85rem;
             font-weight: 300;
             letter-spacing: 0.1em;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             margin-left: 0.25rem;
         }
 
@@ -1113,140 +1311,71 @@
             align-items: center;
         }
 
-        /* Start button */
-        .start-button {
+        /* Timer action buttons — shared base */
+        .timer-btn {
             position: absolute;
             padding: 1.2rem 3.5rem;
+            font-family: var(--font-body);
             font-size: 1rem;
             font-weight: 400;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50px;
+            background: var(--surface-glass-medium);
+            border: 2px solid var(--border-strong);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.7);
+            transition: var(--transition-slow);
+            backdrop-filter: var(--blur-md);
+            color: var(--text-primary);
         }
 
-        .start-button:hover {
-            background: rgba(255, 255, 255, 0.6);
+        .timer-btn:hover {
+            background: var(--surface-glass-strong);
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
-        .start-button.hide {
+        .timer-btn.hide {
             opacity: 0;
             transform: scale(0.8);
             pointer-events: none;
         }
 
-        /* Rest button - identical to start button */
-        .rest-button {
-            position: absolute;
-            padding: 1.2rem 3.5rem;
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.7);
+        /* Primary variant — start buttons with stronger visual weight */
+        .timer-btn--primary {
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.06);
+            border-color: var(--border-emphasis);
         }
 
-        .rest-button:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
+        .timer-btn--primary:hover {
+            background: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
         }
 
-        .rest-button.hide {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        /* Work button - appears after rest */
-        .work-button {
-            position: absolute;
-            padding: 1.2rem 3.5rem;
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.7);
-        }
-
-        .work-button:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .work-button.hide {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        /* YouTube Start button */
+        /* YouTube start — additional text alignment */
         .start-youtube-btn {
-            position: absolute;
-            padding: 1.2rem 3.5rem;
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
             text-align: center;
             white-space: nowrap;
-            background: rgba(255, 255, 255, 0.4);
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.7);
         }
 
-        .start-youtube-btn:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .start-youtube-btn.hide {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        /* Stop button (inside timer section) */
+        /* Stop button — de-emphasized, secondary action */
         .stop-button {
             display: none;
             margin-top: 1.5rem;
             padding: 0.8rem 2rem;
-            font-size: 0.85rem;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
             font-weight: 400;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.6);
+            transition: var(--transition-base);
+            backdrop-filter: var(--blur-md);
+            color: var(--text-tertiary);
         }
 
         .stop-button.visible {
@@ -1254,9 +1383,8 @@
         }
 
         .stop-button:hover {
-            background: rgba(255, 255, 255, 0.5);
-            transform: translateY(-1px) scale(1.02);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: var(--text-subtle);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Mobile responsive */
@@ -1341,15 +1469,15 @@
             font-weight: 300;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
 
         .counter-value {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         /* Mobile responsive for session counter */
@@ -1379,11 +1507,11 @@
             justify-content: center;
             gap: 0;
             margin-bottom: 2rem;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
+            background: var(--surface-glass-light);
+            border-radius: var(--radius-pill);
             padding: 0.25rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
             min-width: fit-content;
         }
 
@@ -1393,8 +1521,8 @@
             left: 0.25rem;
             height: calc(100% - 0.5rem);
             /* Width set dynamically by JS based on selected option */
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50px;
+            background: var(--surface-glass-strong);
+            border-radius: var(--radius-pill);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                         width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1407,7 +1535,7 @@
             flex: 1 1 auto;
             min-width: fit-content;
             padding: 0.6rem 1.25rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.85rem;
             font-weight: 400;
             letter-spacing: 0.1em;
@@ -1416,20 +1544,20 @@
             overflow: visible;
             background: transparent;
             border: none;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            color: rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            transition: var(--transition-base);
         }
 
         .mode-option:hover {
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             transform: scale(1.02);
         }
 
         .mode-option.selected {
             background: transparent;
-            color: rgba(0, 0, 0, 0.8);
+            color: var(--text-emphasis);
             font-weight: 500;
         }
 
@@ -1460,23 +1588,23 @@
             top: 2rem;
             right: 2rem;
             padding: 0.6rem 1.2rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.8rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            background: var(--surface-glass-light);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.6);
+            transition: var(--transition-base);
+            backdrop-filter: var(--blur-md);
+            color: var(--text-body);
             z-index: 10;
         }
 
         .dashboard-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--surface-glass-hover);
             transform: translateY(-1px) scale(1.02);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
@@ -1512,22 +1640,22 @@
             top: 2rem;
             left: 2rem;
             padding: 0.6rem 1.2rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.8rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            background: var(--surface-glass-medium);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            color: rgba(0, 0, 0, 0.6);
+            transition: var(--transition-base);
+            backdrop-filter: var(--blur-md);
+            color: var(--text-body);
         }
 
         .dashboard-back-btn:hover {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--surface-glass-strong);
             transform: translateY(-1px) scale(1.02);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
@@ -1539,10 +1667,10 @@
         }
 
         .stats-header h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2.5rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.8);
+            color: var(--text-emphasis);
             margin-bottom: 1.5rem;
         }
 
@@ -1550,34 +1678,34 @@
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
+            background: var(--surface-glass-light);
+            border-radius: var(--radius-pill);
             padding: 0.25rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
         }
 
         .view-option {
             padding: 0.5rem 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.8rem;
             font-weight: 400;
             letter-spacing: 0.05em;
             background: transparent;
             border: none;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            color: rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            color: var(--text-secondary);
+            transition: var(--transition-base);
         }
 
         .view-option:hover {
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .view-option.selected {
-            background: rgba(255, 255, 255, 0.6);
-            color: rgba(0, 0, 0, 0.8);
+            background: var(--surface-glass-strong);
+            color: var(--text-emphasis);
             font-weight: 500;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
@@ -1592,14 +1720,14 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass-medium);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.5rem 2rem;
             text-align: center;
             min-width: 140px;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
         }
 
         .stat-card:hover {
@@ -1612,25 +1740,25 @@
             font-weight: 300;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
 
         .stat-value {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2.5rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.8);
+            color: var(--text-emphasis);
         }
 
         /* Chart Container */
         .chart-container {
             width: 100%;
             max-width: 800px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass-medium);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
             margin-bottom: 2rem;
             position: relative;
@@ -1652,7 +1780,7 @@
             transform: translate(-50%, -50%);
             font-size: 1rem;
             font-weight: 300;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             letter-spacing: 0.05em;
         }
 
@@ -1690,7 +1818,7 @@
 
         .chart-dot {
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-fast);
             transform-box: fill-box;
             transform-origin: center;
         }
@@ -1718,7 +1846,7 @@
         }
 
         .chart-label {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 10px;
             fill: rgba(0, 0, 0, 0.4);
         }
@@ -1726,8 +1854,8 @@
         .chart-tooltip {
             position: absolute;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
             padding: 0.5rem 0.75rem;
             font-size: 0.75rem;
@@ -1754,7 +1882,7 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.75rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
         }
 
         .legend-color {
@@ -1774,16 +1902,16 @@
         /* Clear Data Button */
         .clear-data-btn {
             padding: 0.8rem 1.5rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.8rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             background: rgba(255, 100, 100, 0.2);
             border: 1px solid rgba(200, 0, 0, 0.2);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             color: rgba(150, 0, 0, 0.7);
         }
 
@@ -1808,7 +1936,7 @@
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 1rem;
             text-align: center;
         }
@@ -1821,15 +1949,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
+            background: var(--surface-glass-medium);
+            border-radius: var(--radius-md);
             padding: 0.75rem 1rem;
             cursor: pointer;
             transition: background 0.2s ease;
         }
 
         .project-list-item:hover {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--surface-glass-strong);
         }
 
         .project-list-item.expanded {
@@ -1838,18 +1966,18 @@
 
         .project-name {
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .project-count {
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
         }
 
         .project-list-empty {
             text-align: center;
             font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             font-style: italic;
         }
 
@@ -1865,10 +1993,10 @@
 
         .phase-breakdown-item {
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.55);
+            color: var(--text-subtle);
             padding: 0.2rem 0;
             padding-left: 0.75rem;
-            border-left: 2px solid rgba(0, 0, 0, 0.15);
+            border-left: 2px solid var(--border-medium);
             margin-left: 0.25rem;
         }
 
@@ -1894,22 +2022,22 @@
         }
 
         .week-stat-item {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
+            background: var(--surface-glass-medium);
+            border-radius: var(--radius-md);
             padding: 1rem 1.5rem;
             text-align: center;
         }
 
         .week-stat-value {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.75rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .week-stat-label {
             font-size: 0.7rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-top: 0.25rem;
@@ -1922,15 +2050,15 @@
         }
 
         .priority-day-card {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
+            background: var(--surface-glass-medium);
+            border-radius: var(--radius-md);
             padding: 1rem;
         }
 
         .priority-day-header {
             font-size: 0.8rem;
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             margin-bottom: 0.75rem;
             display: flex;
             justify-content: space-between;
@@ -1939,7 +2067,7 @@
 
         .priority-day-completion {
             font-size: 0.75rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
         }
 
         .priority-history-item {
@@ -1948,18 +2076,18 @@
             gap: 0.5rem;
             padding: 0.35rem 0;
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
         }
 
         .priority-history-item.completed {
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             text-decoration: line-through;
         }
 
         .priority-history-check {
             width: 14px;
             height: 14px;
-            border: 2px solid rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--border-strong);
             border-radius: 3px;
             display: flex;
             align-items: center;
@@ -1973,7 +2101,7 @@
 
         .priority-history-item.completed .priority-history-check::after {
             content: '✓';
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
         }
 
         /* ==========================================
@@ -1994,7 +2122,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--surface-glass-hover);
             border-radius: 50%;
             width: 100px;
             height: 100px;
@@ -2003,16 +2131,16 @@
         }
 
         .gratitude-streak-badge .streak-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2.5rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             line-height: 1;
         }
 
         .gratitude-streak-badge .streak-label {
             font-size: 0.65rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
@@ -2026,31 +2154,31 @@
         }
 
         .gratitude-entry-card {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
+            background: var(--surface-glass-medium);
+            border-radius: var(--radius-md);
             padding: 1rem;
         }
 
         .gratitude-entry-date {
             font-size: 0.8rem;
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             margin-bottom: 0.75rem;
         }
 
         .gratitude-entry-item {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             padding: 0.35rem 0;
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             padding-left: 0.75rem;
-            border-left: 2px solid rgba(159, 184, 181, 0.5);
+            border-left: 2px solid rgba(var(--accent-gratitude), 0.5);
         }
 
         .gratitude-empty-message {
             text-align: center;
             font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             font-style: italic;
             padding: 2rem 0;
         }
@@ -2059,15 +2187,15 @@
            SESSION SETUP PANEL
            ========================================== */
         .session-setup {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass-light);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.25rem 1.5rem;
             margin-bottom: 2rem;
             width: auto;
             min-width: 280px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition-slow);
         }
 
         .session-setup.hide {
@@ -2092,7 +2220,7 @@
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
 
@@ -2104,21 +2232,21 @@
         .project-select {
             width: 100%;
             padding: 0.7rem 2.5rem 0.7rem 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             cursor: pointer;
-            color: rgba(0, 0, 0, 0.7);
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            transition: var(--transition-base);
             appearance: none;
             -webkit-appearance: none;
         }
 
         .project-select:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             border-color: rgba(0, 0, 0, 0.15);
         }
 
@@ -2150,18 +2278,18 @@
         .project-input {
             width: 100%;
             padding: 0.7rem 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            color: rgba(0, 0, 0, 0.7);
-            transition: all 0.3s ease;
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: var(--transition-base);
         }
 
         .project-input:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             border-color: rgba(0, 0, 0, 0.15);
         }
 
@@ -2172,7 +2300,7 @@
         }
 
         .project-input::placeholder {
-            color: rgba(0, 0, 0, 0.35);
+            color: var(--text-faint);
         }
 
         .project-dropdown {
@@ -2181,9 +2309,9 @@
             left: 0;
             right: 0;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             max-height: 200px;
             overflow-y: auto;
             z-index: 100;
@@ -2198,7 +2326,7 @@
         .project-option {
             padding: 0.7rem 1rem;
             font-size: 0.9rem;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             cursor: pointer;
             transition: background 0.2s ease;
         }
@@ -2208,9 +2336,9 @@
         }
 
         .project-option.create-new {
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             font-style: italic;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid var(--border-subtle);
         }
 
         /* Phase selector */
@@ -2221,21 +2349,21 @@
         .phase-select {
             width: 100%;
             padding: 0.7rem 2.5rem 0.7rem 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             cursor: pointer;
-            color: rgba(0, 0, 0, 0.7);
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            transition: var(--transition-base);
             appearance: none;
             -webkit-appearance: none;
         }
 
         .phase-select:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             border-color: rgba(0, 0, 0, 0.15);
         }
 
@@ -2278,14 +2406,14 @@
             font-size: 0.85rem;
             font-weight: 400;
             letter-spacing: 0.1em;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 0.35rem;
         }
 
         .context-phase {
             font-size: 0.8rem;
             font-weight: 400;
-            color: rgba(0, 0, 0, 0.55);
+            color: var(--text-subtle);
             letter-spacing: 0.05em;
         }
 
@@ -2293,10 +2421,10 @@
         .saved-intro-preview {
             margin-top: 0.75rem;
             padding: 0.6rem 0.8rem;
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--surface-glass-medium);
             border-radius: 8px;
             font-size: 0.75rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             font-style: italic;
             display: none;
         }
@@ -2308,7 +2436,7 @@
         .saved-intro-label {
             font-style: normal;
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             margin-right: 0.25rem;
         }
 
@@ -2323,16 +2451,16 @@
            PRIORITIES PANEL
            ========================================== */
         .priorities-panel {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.5rem 2rem;
             margin-bottom: 2rem;
             width: auto;
             min-width: 320px;
             max-width: 400px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition-slow);
             animation: slideDown 0.4s ease-out;
         }
 
@@ -2352,11 +2480,11 @@
         }
 
         .priorities-header {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
             font-weight: 400;
             letter-spacing: 0.05em;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             margin-bottom: 1.25rem;
             text-align: center;
         }
@@ -2378,10 +2506,10 @@
         }
 
         .priority-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.1rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.4);
+            color: var(--text-tertiary);
             width: 1.25rem;
             text-align: center;
         }
@@ -2389,18 +2517,18 @@
         .priority-input {
             flex: 1;
             padding: 0.6rem 0.9rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-subtle);
             border-radius: 10px;
-            color: rgba(0, 0, 0, 0.7);
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            transition: var(--transition-base);
         }
 
         .priority-input:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             border-color: rgba(0, 0, 0, 0.15);
         }
 
@@ -2417,22 +2545,22 @@
         .set-priorities-btn {
             margin-top: 1.25rem;
             padding: 0.9rem 2rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: rgba(0, 0, 0, 0.7);
+            transition: var(--transition-base);
+            color: var(--text-primary);
             width: 100%;
         }
 
         .set-priorities-btn:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
@@ -2461,11 +2589,11 @@
             align-items: center;
             gap: 1.25rem;
             padding: 1.25rem 1.5rem;
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--surface-glass-medium);
             border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-fast);
             animation: softFadeIn 0.3s ease-out forwards;
         }
 
@@ -2474,7 +2602,7 @@
         .expanded-priority-row:nth-child(3) { animation-delay: 0.1s; }
 
         .expanded-priority-row:hover {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--surface-glass-strong);
             border-color: rgba(0, 0, 0, 0.12);
         }
 
@@ -2489,12 +2617,12 @@
         .expanded-priority-checkmark {
             width: 22px;
             height: 22px;
-            border: 1.5px solid rgba(0, 0, 0, 0.15);
+            border: 1.5px solid var(--border-medium);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: var(--transition-fast);
             flex-shrink: 0;
             background: transparent;
         }
@@ -2505,29 +2633,29 @@
 
         .expanded-priority-checkbox:checked ~ .expanded-priority-checkmark {
             background: transparent;
-            border-color: rgba(107, 142, 126, 0.5);
+            border-color: rgba(var(--accent-nature), 0.5);
         }
 
         .expanded-priority-checkbox:checked ~ .expanded-priority-checkmark::after {
             content: '\2713';
             font-size: 12px;
-            color: rgba(107, 142, 126, 0.9);
+            color: rgba(var(--accent-nature), 0.9);
             font-weight: 300;
         }
 
         .expanded-priority-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1rem;
             font-weight: 400;
-            color: rgba(0, 0, 0, 0.25);
+            color: var(--text-muted);
             width: 1.25rem;
         }
 
         .expanded-priority-text {
             flex: 1;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1rem;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             position: relative;
             transition: color 0.4s ease;
         }
@@ -2544,7 +2672,7 @@
         }
 
         .expanded-priority-row.completed .expanded-priority-text {
-            color: rgba(0, 0, 0, 0.35);
+            color: var(--text-faint);
         }
 
         .expanded-priority-row.completed .expanded-priority-text::after {
@@ -2554,34 +2682,34 @@
         .edit-priorities-btn {
             margin-top: 0.5rem;
             padding: 0.75rem 1.5rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.85rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             background: transparent;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: rgba(0, 0, 0, 0.5);
+            transition: var(--transition-base);
+            color: var(--text-secondary);
             width: 100%;
         }
 
         .edit-priorities-btn:hover {
             background: rgba(0, 0, 0, 0.03);
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         /* Expanded all complete celebration */
         .expanded-all-complete {
             margin-bottom: 1rem;
             padding: 1rem;
-            background: rgba(107, 142, 126, 0.08);
-            border: 1px solid rgba(107, 142, 126, 0.15);
-            border-radius: 12px;
+            background: rgba(var(--accent-nature), 0.08);
+            border: 1px solid rgba(var(--accent-nature), 0.15);
+            border-radius: var(--radius-md);
             text-align: center;
-            color: rgba(107, 142, 126, 0.85);
+            color: rgba(var(--accent-nature), 0.85);
             font-size: 1rem;
         }
 
@@ -2604,18 +2732,18 @@
         .priority-checkbox {
             width: 18px;
             height: 18px;
-            border: 2px solid rgba(0, 0, 0, 0.25);
+            border: 2px solid var(--border-emphasis);
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            background: rgba(255, 255, 255, 0.3);
+            transition: var(--transition-fast);
+            background: var(--surface-glass-light);
         }
 
         .priority-check-item:hover .priority-checkbox {
             border-color: rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--surface-glass-hover);
         }
 
         .priority-checkbox.checked {
@@ -2626,39 +2754,39 @@
         .priority-checkbox.checked::after {
             content: '✓';
             font-size: 12px;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
         }
 
         .priority-check-text {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 0.85rem;
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--text-body);
             max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: var(--transition-fast);
         }
 
         .priority-check-item.completed .priority-check-text {
             text-decoration: line-through;
-            color: rgba(0, 0, 0, 0.35);
+            color: var(--text-faint);
         }
 
         /* ==========================================
            GRATITUDE PANEL
            ========================================== */
         .gratitude-panel {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.5rem 2rem;
             margin-bottom: 2rem;
             width: auto;
             min-width: 320px;
             max-width: 400px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition-slow);
             animation: slideDown 0.4s ease-out;
             position: relative;
         }
@@ -2672,7 +2800,7 @@
         }
 
         .gratitude-header {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.5rem;
             font-weight: 400;
             letter-spacing: 0.02em;
@@ -2699,10 +2827,10 @@
         .gratitude-row:nth-child(3) { animation-delay: 0.1s; }
 
         .gratitude-number {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1rem;
             font-weight: 400;
-            color: rgba(0, 0, 0, 0.25);
+            color: var(--text-muted);
             width: 1.25rem;
             text-align: center;
         }
@@ -2710,14 +2838,14 @@
         .gratitude-input {
             flex: 1;
             padding: 0.75rem 0.25rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
             font-weight: 400;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border-subtle);
             border-radius: 0;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             transition: border-color 0.3s ease;
         }
 
@@ -2732,7 +2860,7 @@
         }
 
         .gratitude-input::placeholder {
-            color: rgba(0, 0, 0, 0.25);
+            color: var(--text-muted);
             font-style: italic;
         }
 
@@ -2746,22 +2874,22 @@
 
         .save-gratitude-btn {
             padding: 0.9rem 2rem;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             font-weight: 400;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 50px;
+            background: var(--surface-glass-hover);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: rgba(0, 0, 0, 0.7);
+            transition: var(--transition-base);
+            color: var(--text-primary);
             flex: 1;
         }
 
         .save-gratitude-btn:hover {
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--surface-glass-heavy);
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
@@ -2772,18 +2900,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: var(--surface-glass-light);
+            border: 1px solid var(--border-subtle);
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: rgba(0, 0, 0, 0.4);
+            transition: var(--transition-base);
+            color: var(--text-tertiary);
             font-size: 1.1rem;
         }
 
         .dismiss-gratitude-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
-            color: rgba(0, 0, 0, 0.6);
+            background: var(--surface-glass-hover);
+            color: var(--text-body);
         }
 
         /* Gratitude recorded indicator */
@@ -2793,10 +2921,10 @@
             justify-content: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
+            background: var(--surface-glass-light);
+            border-radius: var(--radius-pill);
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-bottom: 1rem;
         }
 
@@ -2978,7 +3106,7 @@
         .countdown-panel {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(4px);
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
             border: 1px solid rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
             padding: 1.5rem 2rem;
@@ -3047,17 +3175,17 @@
         /* Colored Ambient Button Glows */
         .section-card.expanded .set-priorities-btn:hover {
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
-                        0 0 30px rgba(184, 164, 212, 0.25);
+                        0 0 30px rgba(var(--accent-pomodoro), 0.25);
         }
 
         .section-card.expanded .save-gratitude-btn:hover {
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
-                        0 0 30px rgba(159, 184, 181, 0.25);
+                        0 0 30px rgba(var(--accent-gratitude), 0.25);
         }
 
         .edit-priorities-btn:hover {
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1),
-                        0 0 25px rgba(184, 164, 212, 0.2);
+                        0 0 25px rgba(var(--accent-pomodoro), 0.2);
         }
 
         .start-button:hover,
@@ -3068,7 +3196,7 @@
 
         .rest-button:hover {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
-                        0 0 25px rgba(159, 184, 181, 0.3);
+                        0 0 25px rgba(var(--accent-gratitude), 0.3);
         }
 
         /* ==========================================
@@ -3083,7 +3211,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(20px);
+            backdrop-filter: var(--blur-xl);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -3100,8 +3228,8 @@
 
         .ceremony-content {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 28px;
+            backdrop-filter: var(--blur-xl);
+            border-radius: var(--radius-xl);
             padding: 3rem 4rem;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15),
@@ -3143,7 +3271,7 @@
         }
 
         .ceremony-circle {
-            stroke: rgba(107, 142, 126, 0.3);
+            stroke: rgba(var(--accent-nature), 0.3);
             stroke-width: 2;
             fill: none;
         }
@@ -3158,17 +3286,17 @@
         }
 
         .ceremony-message {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 2rem;
             font-weight: 700;
-            color: rgba(0, 0, 0, 0.8);
+            color: var(--text-emphasis);
             margin-bottom: 0.75rem;
         }
 
         .ceremony-stat {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 1rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             letter-spacing: 0.05em;
         }
 
@@ -3216,7 +3344,7 @@
         }
 
         .priority-checkmark-svg path {
-            stroke: rgba(107, 142, 126, 0.9);
+            stroke: rgba(var(--accent-nature), 0.9);
             stroke-width: 2.5;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -3242,41 +3370,9 @@
             }
         }
 
-        /* Animated Number Count-Up class */
-        .stat-value.counting {
-            transition: none;
-        }
+        /* Stat values display immediately */
 
-        /* Skeleton Loading States */
-        .skeleton {
-            background: linear-gradient(90deg,
-                rgba(255, 255, 255, 0.3) 25%,
-                rgba(255, 255, 255, 0.5) 50%,
-                rgba(255, 255, 255, 0.3) 75%);
-            background-size: 200% 100%;
-            animation: skeletonShimmer 1.5s ease-in-out infinite;
-            border-radius: 8px;
-        }
-
-        @keyframes skeletonShimmer {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
-        }
-
-        .skeleton-text {
-            height: 1em;
-            margin: 0.25rem 0;
-        }
-
-        .skeleton-number {
-            height: 2.5rem;
-            width: 3rem;
-            margin: 0 auto;
-        }
+        /* Skeleton Loading States removed - not needed for localStorage app */
 
         /* ==========================================
            PHASE 3: PROGRESS RIVER
@@ -3307,7 +3403,7 @@
             fill: none;
             stroke-linecap: round;
             stroke-linejoin: round;
-            filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.3));
+            filter: drop-shadow(0 2px 4px rgba(var(--accent-gratitude), 0.3));
             transition: stroke-width 0.3s ease;
         }
 
@@ -3317,10 +3413,10 @@
 
         @keyframes riverShimmer {
             0%, 100% {
-                filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.3)) brightness(1);
+                filter: drop-shadow(0 2px 4px rgba(var(--accent-gratitude), 0.3)) brightness(1);
             }
             50% {
-                filter: drop-shadow(0 2px 6px rgba(159, 184, 181, 0.5)) brightness(1.15);
+                filter: drop-shadow(0 2px 6px rgba(var(--accent-gratitude), 0.5)) brightness(1.15);
             }
         }
 
@@ -3331,10 +3427,10 @@
 
         @keyframes todayPulse {
             0%, 100% {
-                filter: drop-shadow(0 2px 4px rgba(159, 184, 181, 0.4));
+                filter: drop-shadow(0 2px 4px rgba(var(--accent-gratitude), 0.4));
             }
             50% {
-                filter: drop-shadow(0 2px 8px rgba(159, 184, 181, 0.7));
+                filter: drop-shadow(0 2px 8px rgba(var(--accent-gratitude), 0.7));
             }
         }
 
@@ -3346,7 +3442,7 @@
         /* River milestone markers */
         .river-milestone {
             fill: rgba(255, 255, 255, 0.9);
-            stroke: rgba(159, 184, 181, 0.6);
+            stroke: rgba(var(--accent-gratitude), 0.6);
             stroke-width: 1.5;
             filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
         }
@@ -3366,7 +3462,7 @@
         .river-tooltip {
             position: absolute;
             background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
             padding: 0.5rem 0.75rem;
             font-size: 0.75rem;
@@ -3384,12 +3480,12 @@
 
         .river-tooltip-date {
             font-weight: 500;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
             margin-bottom: 0.25rem;
         }
 
         .river-tooltip-stats {
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             font-size: 0.7rem;
         }
 
@@ -3400,17 +3496,17 @@
         }
 
         .river-hover-area:hover + .river-path {
-            filter: drop-shadow(0 2px 8px rgba(159, 184, 181, 0.6)) brightness(1.1);
+            filter: drop-shadow(0 2px 8px rgba(var(--accent-gratitude), 0.6)) brightness(1.1);
         }
 
         /* River in dashboard */
         .dashboard-river-container {
             width: 100%;
             max-width: 800px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 20px;
+            background: var(--surface-glass-medium);
+            backdrop-filter: var(--blur-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
             margin-bottom: 2rem;
             position: relative;
@@ -3426,15 +3522,15 @@
         }
 
         .river-title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             font-size: 1.25rem;
             font-weight: 600;
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--text-primary);
         }
 
         .river-subtitle {
             font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
             margin-top: 0.25rem;
         }
 
@@ -3455,7 +3551,7 @@
         /* Ripple effect when drop lands */
         .river-ripple {
             fill: none;
-            stroke: rgba(159, 184, 181, 0.6);
+            stroke: rgba(var(--accent-gratitude), 0.6);
             stroke-width: 1;
             opacity: 0;
         }
@@ -3514,14 +3610,14 @@
             padding: 1rem 2.5rem;
             font-size: 0.95rem;
             border: 1.5px solid rgba(0, 0, 0, 0.18);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
         }
 
         .section-card.expanded .set-priorities-btn,
         .section-card.expanded .save-gratitude-btn {
             padding: 1rem 2.5rem;
             border: 1.5px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
             position: relative;
             overflow: hidden;
         }
@@ -3535,7 +3631,7 @@
             padding: 0.85rem 2rem;
             font-size: 0.8rem;
             border-width: 1px;
-            border-radius: 50px;
+            border-radius: var(--radius-pill);
         }
 
         /* ------------------------------------------
@@ -3546,7 +3642,7 @@
         .project-select,
         .project-input,
         .project-dropdown {
-            border-radius: 12px;
+            border-radius: var(--radius-md);
         }
 
         .project-select:focus,
@@ -3581,7 +3677,7 @@
 
         /* Section-specific close button glows */
         .priorities-section .section-close-btn:hover {
-            box-shadow: 0 0 20px rgba(184, 164, 212, 0.4),
+            box-shadow: 0 0 20px rgba(var(--accent-pomodoro), 0.4),
                         inset 0 1px 2px rgba(255, 255, 255, 0.3);
         }
 
@@ -3591,7 +3687,7 @@
         }
 
         .gratitude-section .section-close-btn:hover {
-            box-shadow: 0 0 20px rgba(159, 184, 181, 0.4),
+            box-shadow: 0 0 20px rgba(var(--accent-gratitude), 0.4),
                         inset 0 1px 2px rgba(255, 255, 255, 0.3);
         }
 
@@ -3607,9 +3703,9 @@
 
         .set-priorities-btn.saved,
         .save-gratitude-btn.saved {
-            background: rgba(107, 142, 126, 0.25) !important;
-            border-color: rgba(107, 142, 126, 0.4) !important;
-            color: rgba(107, 142, 126, 0.9) !important;
+            background: rgba(var(--accent-nature), 0.25) !important;
+            border-color: rgba(var(--accent-nature), 0.4) !important;
+            color: rgba(var(--accent-nature), 0.9) !important;
             animation: saveSuccessPulse 0.6s ease-out;
         }
 
@@ -3630,7 +3726,7 @@
             display: inline-block;
             width: 0;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: var(--transition-base);
             margin-right: 0;
         }
 
@@ -3647,13 +3743,13 @@
         ------------------------------------------ */
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(16px);
+            background: var(--surface-glass);
+            backdrop-filter: var(--blur-lg);
             border: none;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
                         0 0 0 1px rgba(255, 255, 255, 0.15),
                         inset 0 1px 0 rgba(255, 255, 255, 0.25);
-            border-radius: 20px;
+            border-radius: var(--radius-lg);
         }
 
         .stat-card:hover {
@@ -3663,8 +3759,8 @@
         }
 
         .chart-container {
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(16px);
+            background: var(--surface-glass);
+            backdrop-filter: var(--blur-lg);
             border: none;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
                         0 0 60px rgba(255, 255, 255, 0.1),
@@ -3691,7 +3787,7 @@
         .priority-day-card,
         .gratitude-entry-card,
         .week-stat-item {
-            background: rgba(255, 255, 255, 0.35);
+            background: var(--surface-glass);
             backdrop-filter: blur(12px);
             border: none;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04),
@@ -3717,25 +3813,18 @@
 
         /* Gratitude streak badge glassmorphism */
         .gratitude-streak-badge {
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--surface-glass-medium);
             backdrop-filter: blur(12px);
             border: none;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
-                        0 0 40px rgba(159, 184, 181, 0.1),
+                        0 0 40px rgba(var(--accent-gratitude), 0.1),
                         inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         /* ------------------------------------------
            6. CHART THEME INTEGRATION
-           CSS custom properties for theme-aware colors
+           Theme-aware chart color overrides
         ------------------------------------------ */
-
-        :root {
-            --chart-pomodoro: rgba(184, 164, 212, 1);
-            --chart-pomodoro-light: rgba(184, 164, 212, 0.15);
-            --chart-youtube: rgba(232, 165, 152, 1);
-            --chart-youtube-light: rgba(232, 165, 152, 0.15);
-        }
 
         /* Morning theme - cooler purples */
         body.morning {
@@ -3873,6 +3962,231 @@
                         0 0 100px rgba(255, 255, 255, 0.15);
         }
 
+        /* ==========================================
+           CINEMATIC FOCUS MODE ENTRY ANIMATIONS
+           ========================================== */
+
+        /* Soft fade for entering focus - no jarring movement */
+        @keyframes softFadeOut {
+            0% {
+                opacity: 1;
+                filter: blur(0);
+            }
+            100% {
+                opacity: 0.7;
+                filter: blur(2px);
+            }
+        }
+
+        /* Timer gentle emphasis */
+        @keyframes timerFocusIn {
+            0% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Apply entry animations - smooth opacity only, no position changes */
+        .app-container.entering-focus .priorities-section {
+            animation: softFadeOut 0.6s ease-out forwards;
+        }
+
+        .app-container.entering-focus .gratitude-section {
+            animation: softFadeOut 0.6s ease-out forwards;
+        }
+
+        .app-container.entering-focus .timer-section {
+            animation: timerFocusIn 0.6s ease-out forwards;
+        }
+
+        .app-container.entering-focus ~ .session-counter {
+            animation: softFadeOut 0.5s ease-out forwards;
+        }
+
+        .app-container.entering-focus ~ .streak-indicator {
+            animation: softFadeOut 0.5s ease-out forwards;
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .countdown.breathing,
+            .session-label.breathing {
+                animation: none;
+            }
+            .app-container.entering-focus .priorities-section,
+            .app-container.entering-focus .gratitude-section,
+            .app-container.entering-focus .timer-section,
+            .app-container.entering-focus ~ .session-counter,
+            .app-container.entering-focus ~ .streak-indicator {
+                animation: none;
+            }
+        }
+
+        /* ==========================================
+           COMPLETION GLOW EFFECT
+           ========================================== */
+
+        @keyframes completionGlow {
+            0% {
+                filter: brightness(1) saturate(1);
+            }
+            15% {
+                filter: brightness(1.12) saturate(1.15);
+            }
+            40% {
+                filter: brightness(1.08) saturate(1.1);
+            }
+            100% {
+                filter: brightness(1) saturate(1);
+            }
+        }
+
+        .background.completion-glow {
+            animation: completionGlow 1.2s ease-out;
+        }
+
+        @keyframes ringComplete {
+            0% { stroke-width: 3.5; opacity: 1; }
+            50% { stroke-width: 6; opacity: 0.8; }
+            100% { stroke-width: 3.5; opacity: 0.6; }
+        }
+
+        @keyframes countBump {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* ==========================================
+           HAPTIC DIGIT TRANSITIONS
+           ========================================== */
+
+        @keyframes digitTick {
+            0% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-2px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .countdown .digit.tick {
+            animation: digitTick 0.15s ease-out;
+        }
+
+        /* ==========================================
+           AMBIENT PROGRESS RING
+           ========================================== */
+
+        .progress-ring-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .progress-ring {
+            width: 320px;
+            height: 320px;
+            transform: rotate(-90deg);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.08);
+            stroke-width: 2.5;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.22);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+
+        .progress-ring-fill.active {
+            stroke: rgba(0, 0, 0, 0.35);
+            filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.08));
+        }
+
+        /* Focus mode - larger ring */
+        .app-container.timer-focus-mode .progress-ring {
+            width: 480px;
+            height: 480px;
+        }
+
+        .app-container.timer-focus-mode .progress-ring-fill.active {
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .progress-ring {
+                width: 240px;
+                height: 240px;
+            }
+            .app-container.timer-focus-mode .progress-ring {
+                width: 340px;
+                height: 340px;
+            }
+        }
+
+        /* ==========================================
+           ELEGANT STREAK INDICATOR
+           ========================================== */
+
+        .streak-indicator {
+            position: relative;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            letter-spacing: 0.05em;
+            transition: opacity 0.5s ease;
+        }
+
+        .streak-indicator .streak-text {
+            display: inline-block;
+        }
+
+        .streak-indicator .streak-count {
+            font-weight: 600;
+            color: var(--text-subtle);
+        }
+
+        .streak-indicator .streak-divider {
+            margin: 0 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Hide during focus mode */
+        .app-container.timer-focus-mode ~ .streak-indicator {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .streak-indicator {
+                font-size: 0.8rem;
+            }
+            .streak-indicator .streak-divider {
+                display: block;
+                margin: 0.25rem 0;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -3885,21 +4199,19 @@
         <span class="particle"></span>
         <span class="particle"></span>
         <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
     </div>
 
+    <!-- Panels toggle button -->
+    <button class="panels-toggle-btn" id="panels-toggle-btn" title="Show priorities & gratitude">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <rect x="1" y="2" width="5" height="12" rx="1"/>
+            <rect x="10" y="2" width="5" height="12" rx="1"/>
+        </svg>
+        <span class="panels-toggle-label">Panels</span>
+    </button>
+
     <!-- Three-Panel App Container -->
-    <div class="app-container" id="app-container">
+    <div class="app-container panels-hidden" id="app-container">
         <!-- ==========================================
              PRIORITIES SECTION (Top)
              ========================================== -->
@@ -4012,6 +4324,15 @@
                     </div>
 
                     <div class="session-label">Work</div>
+                    <!-- Ambient Progress Ring -->
+                    <div class="progress-ring-container" id="progress-ring-container">
+                        <svg class="progress-ring" viewBox="0 0 120 120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="54"/>
+                            <circle class="progress-ring-fill" id="progress-ring-fill" cx="60" cy="60" r="54"
+                                stroke-dasharray="339.292"
+                                stroke-dashoffset="339.292"/>
+                        </svg>
+                    </div>
                     <div class="countdown">
                         <span class="digit" id="min-tens">2</span>
                         <span class="digit" id="min-ones">5</span>
@@ -4026,10 +4347,10 @@
                         <span class="duration-label">min</span>
                     </div>
                     <div class="action-buttons">
-                        <button class="start-button">Begin</button>
-                        <button class="rest-button hide">Start Rest</button>
-                        <button class="work-button hide">Start Work</button>
-                        <button class="start-youtube-btn hide">Start</button>
+                        <button class="timer-btn timer-btn--primary start-button">Begin</button>
+                        <button class="timer-btn rest-button hide">Start Rest</button>
+                        <button class="timer-btn work-button hide">Start Work</button>
+                        <button class="timer-btn timer-btn--primary start-youtube-btn hide">Start</button>
                     </div>
 
                     <button class="stop-button">Reset</button>
@@ -4083,22 +4404,12 @@
         <div class="counter-value" id="session-count">0</div>
     </div>
 
-    <!-- Session Completion Ceremony Overlay -->
-    <div class="completion-ceremony" id="completion-ceremony">
-        <div class="ceremony-content">
-            <div class="ceremony-icon">
-                <svg viewBox="0 0 80 80">
-                    <circle class="ceremony-circle" cx="40" cy="40" r="35"/>
-                    <path class="ceremony-checkmark" d="M24 42 L35 53 L56 28"/>
-                </svg>
-            </div>
-            <div class="ceremony-message">Session Complete</div>
-            <div class="ceremony-stat" id="ceremony-stat">That's 1 session today</div>
-        </div>
-    </div>
+    <!-- Elegant streak indicator -->
+    <div class="streak-indicator" id="streak-indicator" style="display: none;"></div>
 
-    <!-- Water Drop Animation Element -->
-    <div class="water-drop" id="water-drop"></div>
+    <!-- Session Completion Ceremony (disabled - using subtle glow instead) -->
+    <div class="completion-ceremony" id="completion-ceremony" style="display: none;"></div>
+    <div class="water-drop" id="water-drop" style="display: none;"></div>
 
     <!-- River Tooltip -->
     <div class="river-tooltip" id="river-tooltip">
@@ -4649,13 +4960,159 @@
             };
         }
 
-        // Update display
+        // Track previous digit values for haptic tick effect
+        let prevDigits = { minTens: null, minOnes: null, secTens: null, secOnes: null };
+
+        // Track session start time for progress ring
+        let sessionStartSeconds = 0;
+
+        // ==========================================
+        // CINEMATIC FOCUS MODE FUNCTIONS
+        // ==========================================
+
+        // Enter focus mode immediately (no cinematic delay)
+        function triggerCinematicFocusEntry() {
+            // Store session start for progress ring
+            sessionStartSeconds = remainingSeconds;
+
+            // Enter focus mode immediately
+            appContainer.classList.add('timer-focus-mode');
+            appContainer.classList.remove('has-expanded');
+            expandedSection = null;
+
+            // Hide panels toggle during focus
+            if (panelsToggleBtn) panelsToggleBtn.style.display = 'none';
+
+            // Reset progress ring to full
+            resetProgressRing();
+        }
+
+        // Exit cinematic focus mode
+        function exitCinematicFocusMode() {
+            appContainer.classList.remove('timer-focus-mode');
+            appContainer.classList.remove('entering-focus');
+
+            // Show panels toggle again
+            if (panelsToggleBtn) panelsToggleBtn.style.display = '';
+
+            // Remove breathing and resting from countdown
+            const countdownEl = document.querySelector('.countdown');
+            if (countdownEl) {
+                countdownEl.classList.remove('breathing');
+                countdownEl.classList.remove('resting');
+            }
+
+            // Remove resting from particles
+            const particlesEl = document.querySelector('.particles');
+            if (particlesEl) particlesEl.classList.remove('resting');
+
+            // Reset progress ring
+            resetProgressRing();
+        }
+
+        // ==========================================
+        // PROGRESS RING FUNCTIONS
+        // ==========================================
+
+        const PROGRESS_RING_CIRCUMFERENCE = 2 * Math.PI * 54; // 339.292
+
+        function updateProgressRing() {
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (!progressRingFill || !isRunning || sessionStartSeconds === 0) return;
+
+            const elapsed = sessionStartSeconds - remainingSeconds;
+            const progress = elapsed / sessionStartSeconds;
+            const offset = PROGRESS_RING_CIRCUMFERENCE * (1 - progress);
+
+            progressRingFill.style.strokeDashoffset = offset;
+            progressRingFill.classList.add('active');
+        }
+
+        function resetProgressRing() {
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (progressRingFill) {
+                progressRingFill.style.strokeDashoffset = PROGRESS_RING_CIRCUMFERENCE;
+                progressRingFill.classList.remove('active');
+                progressRingFill.style.animation = '';
+            }
+        }
+
+        // ==========================================
+        // COMPLETION GLOW
+        // ==========================================
+
+        function triggerCompletionGlow() {
+            backgroundEl.classList.add('completion-glow');
+            // Ring completion flourish
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (progressRingFill) {
+                progressRingFill.style.animation = 'ringComplete 0.8s ease-out forwards';
+            }
+            setTimeout(() => {
+                backgroundEl.classList.remove('completion-glow');
+            }, 1200);
+        }
+
+        // ==========================================
+        // STREAK INDICATOR FUNCTION
+        // ==========================================
+
+        function updateStreakIndicator() {
+            const indicator = document.getElementById('streak-indicator');
+            if (!indicator) return;
+
+            const priorityData = loadPriorities();
+            const gratitudeData = loadGratitude();
+
+            const priorityStreak = priorityData.stats.currentStreak || 0;
+            const gratitudeStreak = gratitudeData.stats.currentStreak || 0;
+
+            // Build elegant text display
+            const parts = [];
+
+            if (priorityStreak > 0) {
+                const dayWord = priorityStreak === 1 ? 'day' : 'days';
+                parts.push(`<span class="streak-text"><span class="streak-count">${priorityStreak}</span> ${dayWord} priorities</span>`);
+            }
+
+            if (gratitudeStreak > 0) {
+                const dayWord = gratitudeStreak === 1 ? 'day' : 'days';
+                parts.push(`<span class="streak-text"><span class="streak-count">${gratitudeStreak}</span> ${dayWord} gratitude</span>`);
+            }
+
+            // Show nothing if both streaks are 0
+            if (parts.length === 0) {
+                indicator.innerHTML = '';
+                return;
+            }
+
+            indicator.innerHTML = parts.join('<span class="streak-divider">&middot;</span>');
+        }
+
+        // Alias for backwards compatibility
+        function updateStreakBadges() {
+            updateStreakIndicator();
+        }
+
+        // Update display with haptic digit transitions
         function updateDisplay() {
             const time = formatTime(remainingSeconds);
-            if (minTensEl) minTensEl.textContent = time.minTens;
-            if (minOnesEl) minOnesEl.textContent = time.minOnes;
-            if (secTensEl) secTensEl.textContent = time.secTens;
-            if (secOnesEl) secOnesEl.textContent = time.secOnes;
+
+            // Apply haptic tick effect when digits change
+            const applyTick = (el, newValue, key) => {
+                if (!el) return;
+                if (prevDigits[key] !== null && prevDigits[key] !== newValue) {
+                    el.classList.add('tick');
+                    setTimeout(() => el.classList.remove('tick'), 150);
+                }
+                el.textContent = newValue;
+                prevDigits[key] = newValue;
+            };
+
+            applyTick(minTensEl, time.minTens, 'minTens');
+            applyTick(minOnesEl, time.minOnes, 'minOnes');
+            applyTick(secTensEl, time.secTens, 'secTens');
+            applyTick(secOnesEl, time.secOnes, 'secOnes');
         }
 
         // Show notification
@@ -4675,18 +5132,28 @@
             remainingSeconds = Math.max(0, Math.ceil((endTime - now) / 1000));
             updateDisplay();
 
+            // Update progress ring
+            updateProgressRing();
+
             if (remainingSeconds <= 0) {
                 clearInterval(timerInterval);
                 isRunning = false;
 
                 if (currentMode === 'pomodoro') {
                     if (isWorkSession) {
-                        // Work session completed - show completion ceremony
+                        // Work session completed - trigger completion glow first
+                        triggerCompletionGlow();
+
                         showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
 
                         // Increment session count when work session completes
                         sessionCount++;
-                        if (sessionCountEl) sessionCountEl.textContent = sessionCount;
+                        if (sessionCountEl) {
+                            sessionCountEl.textContent = sessionCount;
+                            sessionCountEl.style.animation = 'none';
+                            sessionCountEl.offsetHeight;
+                            sessionCountEl.style.animation = 'countBump 0.4s ease-out';
+                        }
                         recordSession('pomodoro');
 
                         // Update river data first
@@ -4694,18 +5161,9 @@
                             updateRiverSegment();
                         }
 
-                        // Show completion ceremony, then reveal rest button
-                        if (typeof showCompletionCeremony === 'function') {
-                            showCompletionCeremony();
-                            // Delay showing rest button until ceremony fades
-                            setTimeout(() => {
-                                if (restButton) restButton.classList.remove('hide');
-                                if (stopButton) stopButton.classList.remove('visible');
-                            }, 2600);
-                        } else {
-                            restButton.classList.remove('hide');
-                            stopButton.classList.remove('visible');
-                        }
+                        // Show rest button
+                        restButton.classList.remove('hide');
+                        stopButton.classList.remove('visible');
 
                         // Keep session context visible during rest
                         // Update adaptive UI
@@ -4726,8 +5184,8 @@
 
                         updateDisplay();
 
-                        // Exit focus mode
-                        appContainer.classList.remove('timer-focus-mode');
+                        // Exit focus mode (includes removing breathing)
+                        exitCinematicFocusMode();
 
                         // Show duration selector and start button (not work button)
                         hideSessionContext();
@@ -4743,10 +5201,18 @@
                     }
                 } else {
                     // YouTube Creator mode - session completed
+                    // Trigger completion glow first
+                    triggerCompletionGlow();
+
                     if (!sessionRecorded) {
                         sessionRecorded = true;
                         sessionCount++;
-                        if (sessionCountEl) sessionCountEl.textContent = sessionCount;
+                        if (sessionCountEl) {
+                            sessionCountEl.textContent = sessionCount;
+                            sessionCountEl.style.animation = 'none';
+                            sessionCountEl.offsetHeight;
+                            sessionCountEl.style.animation = 'countBump 0.4s ease-out';
+                        }
                         recordSession('youtube', youtubePhase);
                     }
 
@@ -4760,11 +5226,6 @@
                         updateRiverSegment();
                     }
 
-                    // Show completion ceremony
-                    if (typeof showCompletionCeremony === 'function') {
-                        showCompletionCeremony();
-                    }
-
                     // Reset to ready state
                     sessionLabelEl.textContent = phaseLabel;
                     sessionLabelEl.classList.remove('breathing');
@@ -4772,8 +5233,8 @@
                     remainingSeconds = YOUTUBE_SESSION_DURATION;
                     updateDisplay();
 
-                    // Exit focus mode
-                    appContainer.classList.remove('timer-focus-mode');
+                    // Exit focus mode (includes removing breathing)
+                    exitCinematicFocusMode();
 
                     // Show session setup and start button
                     sessionSetup.classList.remove('hide');
@@ -4797,10 +5258,8 @@
                 stopButton.classList.add('visible');
                 restButton.classList.add('hide');
 
-                // Enter focus mode
-                appContainer.classList.add('timer-focus-mode');
-                appContainer.classList.remove('has-expanded');
-                expandedSection = null;
+                // Trigger cinematic focus mode entry
+                triggerCinematicFocusEntry();
 
                 // Hide priorities/gratitude panels during timer
                 if (typeof updateAdaptiveUI === 'function') {
@@ -4810,6 +5269,9 @@
                 // Add breathing animation during work sessions
                 if (isWorkSession) {
                     sessionLabelEl.classList.add('breathing');
+                    // Add 60bpm heartbeat to timer digits
+                    const countdownEl = document.querySelector('.countdown');
+                    if (countdownEl) countdownEl.classList.add('breathing');
                 }
 
                 endTime = Date.now() + (remainingSeconds * 1000);
@@ -4822,13 +5284,28 @@
         function startRestTimer() {
             isWorkSession = false;
             remainingSeconds = 5 * 60;
+            sessionStartSeconds = remainingSeconds; // For progress ring
 
             const timeOfDay = getTimeOfDay();
             sessionLabelEl.textContent = 'Rest';
             backgroundEl.className = `background rest ${timeOfDay}`;
             sessionLabelEl.classList.remove('breathing');
 
+            // Remove breathing from countdown during rest, add resting state
+            const countdownEl = document.querySelector('.countdown');
+            if (countdownEl) {
+                countdownEl.classList.remove('breathing');
+                countdownEl.classList.add('resting');
+            }
+
+            // Soften progress ring and slow particles for rest
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (progressRingFill) progressRingFill.classList.add('resting');
+            const particlesEl = document.querySelector('.particles');
+            if (particlesEl) particlesEl.classList.add('resting');
+
             updateDisplay();
+            resetProgressRing(); // Reset progress ring for rest session
 
             // Hide rest button and setup UI, show stop button
             restButton.classList.add('hide');
@@ -4859,13 +5336,28 @@
             // Set up work session
             isWorkSession = true;
             remainingSeconds = workDuration * 60;
+            sessionStartSeconds = remainingSeconds; // For progress ring
 
             const timeOfDay = getTimeOfDay();
             sessionLabelEl.textContent = 'Work';
             backgroundEl.className = `background work ${timeOfDay}`;
             sessionLabelEl.classList.add('breathing');
 
+            // Add breathing to countdown for work sessions, remove resting state
+            const countdownEl = document.querySelector('.countdown');
+            if (countdownEl) {
+                countdownEl.classList.add('breathing');
+                countdownEl.classList.remove('resting');
+            }
+
+            // Restore progress ring and particles for work
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (progressRingFill) progressRingFill.classList.remove('resting');
+            const particlesEl = document.querySelector('.particles');
+            if (particlesEl) particlesEl.classList.remove('resting');
+
             updateDisplay();
+            resetProgressRing(); // Reset progress ring for new work session
 
             // Hide work button and setup UI, show stop button
             workButton.classList.add('hide');
@@ -4900,15 +5392,24 @@
             clearInterval(timerInterval);
             isRunning = false;
 
-            // Exit focus mode
-            appContainer.classList.remove('timer-focus-mode');
+            // Exit focus mode and remove cinematic classes
+            exitCinematicFocusMode();
 
             // Load today's session count from storage (don't reset to 0)
             sessionCount = getTodaySessionCount();
             if (sessionCountEl) sessionCountEl.textContent = sessionCount;
 
-            // Remove breathing animation when stopped
+            // Remove breathing and resting animations when stopped
             sessionLabelEl.classList.remove('breathing');
+            const countdownEl = document.querySelector('.countdown');
+            if (countdownEl) {
+                countdownEl.classList.remove('breathing');
+                countdownEl.classList.remove('resting');
+            }
+            const progressRingFill = document.getElementById('progress-ring-fill');
+            if (progressRingFill) progressRingFill.classList.remove('resting');
+            const particlesEl = document.querySelector('.particles');
+            if (particlesEl) particlesEl.classList.remove('resting');
 
             // Show session setup (only for Quinlan mode)
             if (currentMode === 'youtube') {
@@ -4957,6 +5458,7 @@
                 isRunning = true;
                 youtubePhase = phaseSelect.value || 'idea';
                 remainingSeconds = YOUTUBE_SESSION_DURATION;
+                sessionStartSeconds = remainingSeconds; // For progress ring
 
                 const currentPhase = VIDEO_PHASES.find(p => p.id === youtubePhase);
                 const phaseLabel = currentPhase ? currentPhase.label : youtubePhase;
@@ -4964,15 +5466,18 @@
                 backgroundEl.className = 'background youtube-editing';
                 sessionLabelEl.classList.add('breathing');
 
+                // Add breathing to countdown
+                const countdownEl = document.querySelector('.countdown');
+                if (countdownEl) countdownEl.classList.add('breathing');
+
                 updateDisplay();
+                resetProgressRing(); // Reset progress ring for new session
 
                 startYoutubeBtn.classList.add('hide');
                 stopButton.classList.add('visible');
 
-                // Enter focus mode
-                appContainer.classList.add('timer-focus-mode');
-                appContainer.classList.remove('has-expanded');
-                expandedSection = null;
+                // Trigger cinematic focus mode entry
+                triggerCinematicFocusEntry();
 
                 // Hide priorities/gratitude panels during timer
                 if (typeof updateAdaptiveUI === 'function') {
@@ -4995,8 +5500,12 @@
             sessionRecorded = false;  // Reset guard flag
             sessionLabelEl.classList.remove('breathing');
 
-            // Exit focus mode
-            appContainer.classList.remove('timer-focus-mode');
+            // Remove breathing from countdown
+            const countdownEl = document.querySelector('.countdown');
+            if (countdownEl) countdownEl.classList.remove('breathing');
+
+            // Exit focus mode and reset progress ring
+            exitCinematicFocusMode();
 
             // Update mode state
             currentMode = mode;
@@ -5257,10 +5766,25 @@
                 durationOptions.forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
 
-                // Update work duration
+                // Update work duration with cross-fade
                 workDuration = parseInt(option.dataset.duration);
                 remainingSeconds = workDuration * 60;
-                updateDisplay();
+                const countdownEl = document.querySelector('.countdown');
+                if (countdownEl) {
+                    countdownEl.style.transition = 'opacity 0.15s ease';
+                    countdownEl.style.opacity = '0.5';
+                    setTimeout(() => {
+                        updateDisplay();
+                        countdownEl.style.opacity = '1';
+                    }, 150);
+                } else {
+                    updateDisplay();
+                }
+
+                // Save preference for quick start memory
+                const prefs = preferencesStorage.load();
+                prefs.lastDuration = workDuration;
+                preferencesStorage.save(prefs);
             });
         });
 
@@ -5394,7 +5918,29 @@
         const priorityStorage = createStorage(PRIORITIES_STORAGE_KEY, { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } });
         const gratitudeStorage = createStorage(GRATITUDE_STORAGE_KEY, { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } });
         const riverStorage = createStorage(RIVER_STORAGE_KEY, { version: 1, segments: [] });
+        const preferencesStorage = createStorage('pomodoro_preferences', { version: 1, lastDuration: 25 });
         // Note: sessionDataStorage is created later after STORAGE_KEY is defined
+
+        // Initialize saved preferences (Quick Start Memory)
+        function initializeSavedPreferences() {
+            const prefs = preferencesStorage.load();
+            const savedDuration = prefs.lastDuration || 25;
+
+            // Update work duration
+            workDuration = savedDuration;
+            remainingSeconds = workDuration * 60;
+
+            // Select the correct duration option
+            durationOptions.forEach(opt => {
+                opt.classList.remove('selected');
+                if (parseInt(opt.dataset.duration) === savedDuration) {
+                    opt.classList.add('selected');
+                }
+            });
+
+            updateDisplay();
+        }
+        initializeSavedPreferences();
 
         // Input array factory - creates arrays of DOM elements with null filtering
         function getInputArray(prefix, count) {
@@ -5711,6 +6257,9 @@
                 updateRiverSegment();
             }
 
+            // Update streak badges
+            updateStreakBadges();
+
             // Show save feedback
             showSaveFeedback(setPrioritiesBtn, 'Set Priorities');
 
@@ -5747,6 +6296,9 @@
                 updateRiverSegment();
             }
 
+            // Update streak badges
+            updateStreakBadges();
+
             // Show save feedback then collapse
             showSaveFeedback(saveGratitudeBtn, 'Save Gratitude');
             setTimeout(() => {
@@ -5754,9 +6306,34 @@
             }, 800);
         });
 
+        // Panels toggle handler
+        const panelsToggleBtn = document.getElementById('panels-toggle-btn');
+        if (panelsToggleBtn) {
+            panelsToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = appContainer.classList.toggle('panels-hidden');
+                panelsToggleBtn.classList.toggle('active', !isHidden);
+                panelsToggleBtn.title = isHidden ? 'Show priorities & gratitude' : 'Hide priorities & gratitude';
+
+                // Update streak indicator visibility
+                const streakIndicator = document.getElementById('streak-indicator');
+                if (streakIndicator) {
+                    streakIndicator.style.display = isHidden ? 'none' : '';
+                }
+
+                if (!isHidden) {
+                    updatePrioritiesCollapsedPreview();
+                    updateGratitudeCollapsedPreview();
+                }
+            });
+        }
+
         // Initialize three-panel layout
         setupSectionClickHandlers();
         updateAdaptiveUI();
+
+        // Initialize streak badges on main screen
+        updateStreakBadges();
 
         // Initialize mode slider positions based on current mode
         function initializeModeSliders() {
@@ -6464,6 +7041,7 @@
             appContainer.style.display = 'none';
             document.querySelector('.session-counter').style.display = 'none';
             if (mainDashboardBtn) mainDashboardBtn.classList.add('hide');
+            if (panelsToggleBtn) panelsToggleBtn.style.display = 'none';
             renderDashboard();
         }
 
@@ -6472,6 +7050,7 @@
             appContainer.style.display = '';
             document.querySelector('.session-counter').style.display = '';
             if (mainDashboardBtn) mainDashboardBtn.classList.remove('hide');
+            if (panelsToggleBtn) panelsToggleBtn.style.display = '';
             // Return to main three-panel view
             collapseAllSections();
         }
@@ -6817,83 +7396,8 @@
         }
 
         // ==========================================
-        // ANIMATED NUMBER COUNT-UP
+        // DASHBOARD STATS (values shown immediately)
         // ==========================================
-
-        function animateNumber(element, target, duration = 800) {
-            if (!element) return;
-
-            const start = 0;
-            const startTime = performance.now();
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                // Ease out cubic
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(start + (target - start) * eased);
-
-                // Handle percentage values
-                if (element.textContent.includes('%')) {
-                    element.textContent = current + '%';
-                } else {
-                    element.textContent = current;
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            }
-
-            element.classList.add('counting');
-            requestAnimationFrame(update);
-
-            setTimeout(() => {
-                element.classList.remove('counting');
-            }, duration);
-        }
-
-        // Override the dashboard stats update to use animations
-        const originalUpdateDashboardStats = typeof updateDashboardStats === 'function' ? updateDashboardStats : null;
-
-        // Wrap updateDashboardStats to add animations
-        function animatedUpdateDashboardStats() {
-            const daysActiveEl = document.getElementById('days-active');
-            const todaySessionsEl = document.getElementById('today-sessions');
-            const totalSessionsEl = document.getElementById('total-sessions');
-            const priorityPercentEl = document.getElementById('priority-percent');
-            const gratitudeStreakEl = document.getElementById('gratitude-streak');
-
-            // Get current values before update
-            const oldDays = parseInt(daysActiveEl?.textContent) || 0;
-            const oldToday = parseInt(todaySessionsEl?.textContent) || 0;
-            const oldTotal = parseInt(totalSessionsEl?.textContent) || 0;
-
-            // Calculate new values
-            const stats = calculateStats(currentViewMode);
-
-            // Animate if values changed
-            if (daysActiveEl && stats.daysActive !== oldDays) {
-                animateNumber(daysActiveEl, stats.daysActive);
-            } else if (daysActiveEl) {
-                daysActiveEl.textContent = stats.daysActive;
-            }
-
-            if (todaySessionsEl && stats.todaySessions !== oldToday) {
-                animateNumber(todaySessionsEl, stats.todaySessions);
-            } else if (todaySessionsEl) {
-                todaySessionsEl.textContent = stats.todaySessions;
-            }
-
-            if (totalSessionsEl && stats.totalSessions !== oldTotal) {
-                animateNumber(totalSessionsEl, stats.totalSessions);
-            } else if (totalSessionsEl) {
-                totalSessionsEl.textContent = stats.totalSessions;
-            }
-
-            // Render river in dashboard
-            renderRiver('dashboard-river');
-        }
 
         // ==========================================
         // INTEGRATION: Update existing functions
