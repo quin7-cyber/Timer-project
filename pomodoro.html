@@ -463,7 +463,7 @@
             font-family: var(--font-body);
             font-size: 0.75rem;
             font-weight: 400;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             z-index: 10;
         }
@@ -905,6 +905,28 @@
             display: none;
         }
 
+        .quick-start-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            background: var(--surface-glass-light);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            padding-left: 2px;
+        }
+
+        .quick-start-btn:hover {
+            background: var(--surface-glass-hover);
+            color: var(--text-primary);
+            transform: scale(1.1);
+        }
+
         /* Mode switcher in collapsed timer — explicit sizing instead of scale */
         .section-collapsed .mode-switcher {
             padding: 0.15rem;
@@ -1057,7 +1079,7 @@
         }
 
         /* Hide main dashboard button when a section is expanded */
-        .app-container.has-expanded ~ #main-dashboard-btn {
+        .app-container.has-expanded ~ .top-nav-right #main-dashboard-btn {
             display: none;
         }
 
@@ -1257,7 +1279,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 2rem;
+            margin-top: 1.25rem;
             transition: var(--transition-slow);
         }
 
@@ -1304,7 +1326,7 @@
         /* Action button container - unified positioning */
         .action-buttons {
             position: relative;
-            margin-top: 4rem;
+            margin-top: 2.5rem;
             height: 52px;
             display: flex;
             justify-content: center;
@@ -1403,7 +1425,7 @@
             }
 
             .action-buttons {
-                margin-top: 3rem;
+                margin-top: 2rem;
                 height: 46px;
             }
 
@@ -1582,34 +1604,57 @@
             }
         }
 
-        /* Dashboard Button */
-        .dashboard-btn {
+        /* Top Nav — Right-side button group */
+        .top-nav-right {
             position: fixed;
             top: 2rem;
             right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        /* Shared base for top nav buttons (PANELS, STATS) */
+        .top-nav-btn {
             padding: 0.6rem 1.2rem;
             font-family: var(--font-body);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 400;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             background: var(--surface-glass-light);
-            border: 1px solid var(--border-medium);
+            border: 1px solid var(--border-subtle);
             border-radius: var(--radius-pill);
             cursor: pointer;
             transition: var(--transition-base);
             backdrop-filter: var(--blur-md);
-            color: var(--text-body);
-            z-index: 10;
+            color: var(--text-secondary);
         }
 
-        .dashboard-btn:hover {
+        .top-nav-btn:hover {
             background: var(--surface-glass-hover);
-            transform: translateY(-1px) scale(1.02);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+            transform: translateY(-1px);
         }
 
-        .dashboard-btn.hide {
+        /* Quiet variant for secondary controls (sound toggle) */
+        .top-nav-btn--quiet {
+            padding: 0.5rem 0.85rem;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            border-color: transparent;
+            background: none;
+            backdrop-filter: none;
+        }
+
+        .top-nav-btn--quiet:hover {
+            background: var(--surface-glass-light);
+            color: var(--text-secondary);
+            border-color: var(--border-subtle);
+        }
+
+        .top-nav-btn.hide {
             opacity: 0;
             pointer-events: none;
         }
@@ -1717,6 +1762,10 @@
             gap: 1.5rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
+        }
+
+        .stats-cards.hide {
+            display: none;
         }
 
         .stat-card {
@@ -2115,6 +2164,109 @@
 
         .gratitude-dashboard.hide {
             display: none;
+        }
+
+        .weekly-dashboard {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .weekly-dashboard.hide {
+            display: none;
+        }
+
+        .weekly-summary {
+            background: var(--surface-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .weekly-summary-sentence {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .weekly-delta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: var(--tracking-wide);
+            text-transform: uppercase;
+        }
+
+        .weekly-delta.positive { color: var(--text-secondary); }
+
+        .weekly-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .weekly-stat-item {
+            background: var(--surface-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .weekly-stat-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .weekly-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: var(--tracking-wide);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .weekly-day-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 80px;
+            gap: 0.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .weekly-day-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .weekly-day-bar-fill {
+            width: 100%;
+            max-width: 32px;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            background: var(--text-secondary);
+            opacity: 0.6;
+            min-height: 2px;
+            transition: height 0.3s ease;
+        }
+
+        .weekly-day-bar-fill.today {
+            opacity: 1;
+        }
+
+        .weekly-day-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: var(--tracking-wide);
         }
 
         .gratitude-streak-badge {
@@ -3014,11 +3166,9 @@
                 padding: 1.5rem;
             }
 
-            .dashboard-btn {
-                top: 1.5rem;
-                left: 1.5rem;
-                padding: 0.5rem 1rem;
-                font-size: 0.7rem;
+            .top-nav-right {
+                right: 1.5rem;
+                gap: 0.4rem;
             }
 
             .dashboard-back-btn {
@@ -3056,9 +3206,19 @@
         }
 
         @media (max-width: 480px) {
-            .dashboard-btn {
+            .top-nav-right {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .panels-toggle-btn {
                 top: 1rem;
                 left: 1rem;
+            }
+
+            .top-nav-btn {
+                padding: 0.5rem 0.85rem;
+                font-size: 0.7rem;
             }
 
             .dashboard-back-btn {
@@ -3162,7 +3322,7 @@
         .set-priorities-btn:active,
         .save-gratitude-btn:active,
         .edit-priorities-btn:active,
-        .dashboard-btn:active,
+        .top-nav-btn:active,
         .dashboard-back-btn:active,
         .clear-data-btn:active,
         .view-option:active,
@@ -3298,6 +3458,426 @@
             font-size: 1rem;
             color: var(--text-secondary);
             letter-spacing: 0.05em;
+        }
+
+        /* Ceremony reflection (intent + outcome) */
+        .ceremony-intent {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-body);
+            margin-bottom: 1.25rem;
+            font-style: italic;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ceremony-milestone {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .ceremony-outcome-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .ceremony-outcome-btn {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-medium);
+            background: var(--surface-glass-light);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .ceremony-outcome-btn:hover {
+            background: var(--surface-glass-hover);
+            transform: translateY(-1px);
+        }
+
+        .ceremony-outcome-btn.selected {
+            background: rgba(var(--accent-nature), 0.2);
+            border-color: rgba(var(--accent-nature), 0.4);
+            color: var(--text-emphasis);
+        }
+
+        .ceremony-rest-btn {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            padding: 0.6rem 2rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+            background: var(--surface-glass-medium);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-top: 0.5rem;
+        }
+
+        .ceremony-rest-btn:hover {
+            background: var(--surface-glass-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Session Focus Disclosure */
+        .session-focus-disclosure {
+            margin: 0.75rem auto 0;
+            max-width: 320px;
+            text-align: center;
+            transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+        }
+
+        .session-focus-disclosure.hide {
+            opacity: 0;
+            max-height: 0;
+            margin: 0 auto;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .session-focus-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem 0;
+            letter-spacing: 0.03em;
+            transition: var(--transition-fast);
+        }
+
+        .session-focus-trigger:hover {
+            color: var(--text-secondary);
+        }
+
+        .session-focus-chevron {
+            display: inline-block;
+            font-size: 0.6rem;
+            transition: transform 0.3s ease;
+        }
+
+        .session-focus-disclosure.open .session-focus-chevron {
+            transform: rotate(180deg);
+        }
+
+        .session-focus-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+
+        .session-focus-disclosure.open .session-focus-body {
+            max-height: 160px;
+            opacity: 1;
+            margin-top: 0.5rem;
+        }
+
+        .session-focus-priorities {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .priority-pill {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 400;
+            padding: 0.3rem 0.65rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .priority-pill:hover {
+            background: var(--surface-glass-light);
+        }
+
+        .priority-pill.selected {
+            background: rgba(var(--accent-nature), 0.15);
+            border-color: rgba(var(--accent-nature), 0.25);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Session Intent — progressive disclosure */
+        .session-focus-intent {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+
+        .session-focus-disclosure.has-priority .session-focus-intent {
+            max-height: 80px;
+            opacity: 1;
+            margin-top: 0.6rem;
+        }
+
+        .session-focus-input {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            padding: 0.4rem 0.5rem;
+            border-radius: var(--radius-sm, 4px);
+            border: 1px solid transparent;
+            border-bottom: 1px solid var(--border-subtle);
+            background: none;
+            color: var(--text-primary);
+            width: 100%;
+            text-align: center;
+            transition: var(--transition-fast);
+            outline: none;
+        }
+
+        .session-focus-input:focus {
+            border-bottom-color: rgba(var(--accent-nature), 0.4);
+            background: none;
+        }
+
+        .session-focus-input::placeholder {
+            color: var(--text-faint);
+        }
+
+        .session-focus-hint {
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            color: var(--text-faint);
+            margin-top: 0.3rem;
+        }
+
+        /* Priority session count badge in collapsed view */
+        .collapsed-priority-sessions {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--text-faint);
+            margin-left: 0.35rem;
+        }
+
+        /* Priority session count in expanded view */
+        .expanded-priority-sessions {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-left: auto;
+            padding-left: 0.5rem;
+            white-space: nowrap;
+        }
+
+        /* Keyboard Shortcut Hint */
+        .shortcut-hint-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            background: var(--surface-glass-light);
+            backdrop-filter: var(--blur-sm);
+            color: var(--text-faint);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shortcut-hint-btn:hover {
+            background: var(--surface-glass-hover);
+            color: var(--text-secondary);
+        }
+
+        .shortcut-hint {
+            position: fixed;
+            bottom: 4rem;
+            right: 1.5rem;
+            background: var(--surface-glass-solid);
+            backdrop-filter: var(--blur-xl);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .shortcut-hint.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .shortcut-hint-title {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+
+        .shortcut-row {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .shortcut-row kbd {
+            display: inline-block;
+            min-width: 22px;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-medium);
+            background: var(--surface-glass-light);
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        /* Guided Breathing */
+        .breath-guide {
+            text-align: center;
+            margin-top: 1.5rem;
+            transition: opacity 0.5s ease;
+        }
+
+        .breath-guide.hide {
+            display: none;
+        }
+
+        .breath-guide-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            transition: opacity 0.8s ease;
+            min-height: 2rem;
+        }
+
+        .breath-guide-toggle {
+            margin-top: 0.75rem;
+        }
+
+        .breath-toggle-btn {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+            background: var(--surface-glass-light);
+            color: var(--text-faint);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .breath-toggle-btn:hover {
+            background: var(--surface-glass-hover);
+            color: var(--text-secondary);
+        }
+
+        .breath-toggle-btn.active {
+            background: rgba(var(--accent-rest), 0.15);
+            border-color: rgba(var(--accent-rest), 0.3);
+            color: var(--text-secondary);
+        }
+
+        @keyframes breatheScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.015); }
+        }
+
+        .breath-guide.breathing-in .breath-guide-text {
+            animation: breatheScale 4s ease-in-out;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .breath-guide.breathing-in .breath-guide-text {
+                animation: none;
+            }
+        }
+
+        /* Focus Streak Indicator */
+        .focus-streak {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            margin-top: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .focus-streak.visible {
+            opacity: 1;
+        }
+
+        .focus-streak-count {
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 480px) {
+            .priority-pill {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+                max-width: 140px;
+            }
+
+            .session-focus-trigger {
+                font-size: 0.7rem;
+            }
+
+            .session-focus-input {
+                font-size: 0.75rem;
+            }
+
+            .ceremony-outcome-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .shortcut-hint-btn {
+                display: none;
+            }
         }
 
         /* Water drop animation */
@@ -3625,7 +4205,6 @@
         /* Secondary Button - Support Actions */
         .stop-button,
         .edit-priorities-btn,
-        .dashboard-btn,
         .dashboard-back-btn,
         .clear-data-btn {
             padding: 0.85rem 2rem;
@@ -4273,9 +4852,12 @@
                     <span class="mini-session-count" id="mini-session-count"></span>
                 </div>
                 <div class="timer-collapsed-display">
-                    <div>
-                        <div class="mini-timer" id="mini-timer">25:00</div>
-                        <div class="mini-timer-status" id="mini-timer-status">Ready</div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <button class="quick-start-btn" id="quick-start-btn" title="Quick start">&#9654;</button>
+                        <div>
+                            <div class="mini-timer" id="mini-timer">25:00</div>
+                            <div class="mini-timer-status" id="mini-timer-status">Ready</div>
+                        </div>
                     </div>
                     <div class="mode-switcher" style="margin-bottom: 0;">
                         <div class="mode-slider"></div>
@@ -4346,6 +4928,23 @@
                         <button class="duration-option selected" data-duration="25">25</button>
                         <span class="duration-label">min</span>
                     </div>
+
+                    <!-- Session Focus Disclosure -->
+                    <div class="session-focus-disclosure hide" id="session-focus-disclosure">
+                        <button class="session-focus-trigger" id="session-focus-trigger">
+                            <span class="session-focus-trigger-text" id="session-focus-trigger-text">Link to a priority</span>
+                            <span class="session-focus-chevron">&#9662;</span>
+                        </button>
+                        <div class="session-focus-body" id="session-focus-body">
+                            <div class="session-focus-priorities" id="session-focus-priorities"></div>
+                            <div class="session-focus-intent">
+                                <input type="text" class="session-focus-input" id="session-intent-input"
+                                       placeholder="What specifically will you accomplish?" maxlength="80">
+                                <div class="session-focus-hint">Shown at session end for reflection</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="action-buttons">
                         <button class="timer-btn timer-btn--primary start-button">Begin</button>
                         <button class="timer-btn rest-button hide">Start Rest</button>
@@ -4354,6 +4953,14 @@
                     </div>
 
                     <button class="stop-button">Reset</button>
+
+                    <!-- Guided Breathing (shown during rest) -->
+                    <div class="breath-guide hide" id="breath-guide">
+                        <div class="breath-guide-text" id="breath-guide-text">Breathe in...</div>
+                        <div class="breath-guide-toggle">
+                            <button class="breath-toggle-btn" id="breath-toggle-btn">Guided</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4404,12 +5011,46 @@
         <div class="counter-value" id="session-count">0</div>
     </div>
 
+    <!-- Focus streak indicator -->
+    <div class="focus-streak" id="focus-streak"></div>
+
     <!-- Elegant streak indicator -->
     <div class="streak-indicator" id="streak-indicator" style="display: none;"></div>
 
-    <!-- Session Completion Ceremony (disabled - using subtle glow instead) -->
-    <div class="completion-ceremony" id="completion-ceremony" style="display: none;"></div>
+    <!-- Session Completion Ceremony -->
+    <div class="completion-ceremony" id="completion-ceremony">
+        <div class="ceremony-content">
+            <div class="ceremony-icon">
+                <svg viewBox="0 0 80 80">
+                    <circle class="ceremony-circle" cx="40" cy="40" r="36"/>
+                    <polyline class="ceremony-checkmark" points="24,42 34,52 56,30"/>
+                </svg>
+            </div>
+            <div class="ceremony-message" id="ceremony-message">Session Complete</div>
+            <div class="ceremony-milestone" id="ceremony-milestone"></div>
+            <div class="ceremony-intent" id="ceremony-intent"></div>
+            <div class="ceremony-stat" id="ceremony-stat"></div>
+            <div class="ceremony-outcome-buttons" id="ceremony-outcome-buttons">
+                <button class="ceremony-outcome-btn" data-outcome="complete">Complete</button>
+                <button class="ceremony-outcome-btn" data-outcome="partial">Partial</button>
+                <button class="ceremony-outcome-btn" data-outcome="no">Didn't finish</button>
+            </div>
+            <button class="ceremony-rest-btn" id="ceremony-rest-btn">Start Rest</button>
+        </div>
+    </div>
     <div class="water-drop" id="water-drop" style="display: none;"></div>
+
+    <!-- Keyboard Shortcut Hint -->
+    <button class="shortcut-hint-btn" id="shortcut-hint-toggle" title="Keyboard shortcuts (?)">?</button>
+    <div class="shortcut-hint" id="shortcut-hint">
+        <div class="shortcut-hint-title">Keyboard Shortcuts</div>
+        <div class="shortcut-row"><kbd>Space</kbd> Start / Stop</div>
+        <div class="shortcut-row"><kbd>R</kbd> Start Rest</div>
+        <div class="shortcut-row"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> Duration (15/20/25)</div>
+        <div class="shortcut-row"><kbd>S</kbd> Stats</div>
+        <div class="shortcut-row"><kbd>Esc</kbd> Reset / Back</div>
+        <div class="shortcut-row"><kbd>?</kbd> Toggle this</div>
+    </div>
 
     <!-- River Tooltip -->
     <div class="river-tooltip" id="river-tooltip">
@@ -4428,6 +5069,7 @@
                 <button class="view-option" data-view="youtube">Quinlan Travels</button>
                 <button class="view-option" data-view="priorities">Priorities</button>
                 <button class="view-option" data-view="gratitude">Gratitude</button>
+                <button class="view-option" data-view="weekly">Weekly</button>
             </div>
         </div>
 
@@ -4513,11 +5155,19 @@
             </div>
         </div>
 
+        <div class="weekly-dashboard hide" id="weekly-dashboard">
+            <div class="weekly-summary" id="weekly-summary"></div>
+            <div class="weekly-breakdown" id="weekly-breakdown"></div>
+        </div>
+
         <button class="clear-data-btn">Clear All Data</button>
     </div>
 
-    <!-- Dashboard button (shown in main view) -->
-    <button class="dashboard-btn" id="main-dashboard-btn" style="position: fixed; top: 2rem; right: 2rem; left: auto;">Stats</button>
+    <!-- Top-right nav group -->
+    <div class="top-nav-right" id="top-nav-right">
+        <button class="top-nav-btn top-nav-btn--quiet" id="sound-toggle-btn" title="Toggle sounds"></button>
+        <button class="top-nav-btn" id="main-dashboard-btn">Stats</button>
+    </div>
 
     <script>
         // Timer state
@@ -4552,6 +5202,10 @@
 
         // Session setup state
         let currentProject = '';
+        let selectedPriorityIndex = -1; // -1 = skip, 0-2 = priority index
+        let currentSessionIntent = ''; // Intent text for current session
+        let lastSessionEndTime = 0; // For focus streak tracking
+        let focusStreak = 0; // Consecutive sessions without long break
 
         // YouTube timer duration (in seconds) - all phases use 20 minutes
         const YOUTUBE_SESSION_DURATION = 20 * 60;
@@ -4607,6 +5261,13 @@
         // Mode switchers (both collapsed and expanded have them)
         const allModeOptions = document.querySelectorAll('.mode-option');
         const allModeSliders = document.querySelectorAll('.mode-slider');
+
+        // Priority linker and session intent elements
+        const sessionFocusDisclosure = document.getElementById('session-focus-disclosure');
+        const sessionFocusTrigger = document.getElementById('session-focus-trigger');
+        const sessionFocusTriggerText = document.getElementById('session-focus-trigger-text');
+        const sessionFocusPriorities = document.getElementById('session-focus-priorities');
+        const sessionIntentInput = document.getElementById('session-intent-input');
 
         // Request notification permission on load
         if ('Notification' in window && Notification.permission === 'default') {
@@ -4723,15 +5384,19 @@
                 const percentage = Math.round((completed / total) * 100);
                 prioritiesStatus.textContent = completed === total ? `${total}/${total} ✓` : `${completed}/${total}`;
 
+                const sessionCounts = getSessionsPerPriority();
                 let html = `
                     <div class="collapsed-priorities-view">
                         <div class="collapsed-priority-list">
-                            ${todayData.priorities.map(p => `
+                            ${todayData.priorities.map((p, i) => {
+                                const count = sessionCounts[i] || 0;
+                                const sessionsLabel = count > 0 ? `<span class="collapsed-priority-sessions">${count} session${count !== 1 ? 's' : ''}</span>` : '';
+                                return `
                                 <div class="collapsed-priority-item ${p.completed ? 'completed' : ''}">
                                     <span class="collapsed-priority-bullet">${p.completed ? '✓' : '•'}</span>
-                                    <span class="collapsed-priority-text">${p.text}</span>
-                                </div>
-                            `).join('')}
+                                    <span class="collapsed-priority-text">${p.text}</span>${sessionsLabel}
+                                </div>`;
+                            }).join('')}
                         </div>
                         <div class="priorities-progress-container">
                             <div class="priorities-progress-bar">
@@ -4746,6 +5411,92 @@
 
                 html += `</div>`;
                 prioritiesCollapsedContent.innerHTML = html;
+            }
+        }
+
+        // Get session counts per priority index for today
+        function getSessionsPerPriority() {
+            const data = loadSessionData();
+            const today = getTodayDateKey();
+            const dayData = data.sessions[today];
+            if (!dayData || !dayData.sessionLog) return {};
+
+            const counts = {};
+            dayData.sessionLog.forEach(entry => {
+                if (entry.priorityIndex >= 0) {
+                    counts[entry.priorityIndex] = (counts[entry.priorityIndex] || 0) + 1;
+                }
+            });
+            return counts;
+        }
+
+        // Update the priority linker pills in the timer pre-session UI
+        function updateSessionFocusCard() {
+            if (!sessionFocusDisclosure || !sessionFocusPriorities) return;
+
+            const todayData = getTodayPriorities();
+
+            if (!todayData || currentMode !== 'pomodoro') {
+                sessionFocusDisclosure.classList.add('hide');
+                return;
+            }
+
+            sessionFocusDisclosure.classList.remove('hide');
+            sessionFocusDisclosure.classList.remove('has-priority');
+            const sessionCounts = getSessionsPerPriority();
+
+            let html = '';
+            todayData.priorities.forEach((p, i) => {
+                const count = sessionCounts[i] || 0;
+                const countLabel = count > 0 ? ` (${count})` : '';
+                const selected = selectedPriorityIndex === i ? ' selected' : '';
+                const truncatedText = p.text.length > 25 ? p.text.substring(0, 25) + '…' : p.text;
+                html += `<button class="priority-pill${selected}" data-priority="${i}" title="${p.text}">${truncatedText}${countLabel}</button>`;
+            });
+
+            sessionFocusPriorities.innerHTML = html;
+
+            // Restore has-priority state and trigger text if a priority is selected
+            if (selectedPriorityIndex >= 0 && todayData.priorities[selectedPriorityIndex]) {
+                sessionFocusDisclosure.classList.add('has-priority');
+                if (sessionFocusTriggerText) {
+                    sessionFocusTriggerText.textContent = todayData.priorities[selectedPriorityIndex].text;
+                }
+            } else {
+                if (sessionFocusTriggerText) {
+                    sessionFocusTriggerText.textContent = 'Link to a priority';
+                }
+            }
+
+            // Add click handlers — toggle selection
+            sessionFocusPriorities.querySelectorAll('.priority-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const idx = parseInt(pill.dataset.priority);
+                    if (selectedPriorityIndex === idx) {
+                        // Deselect
+                        selectedPriorityIndex = -1;
+                        pill.classList.remove('selected');
+                        sessionFocusDisclosure.classList.remove('has-priority');
+                        if (sessionFocusTriggerText) sessionFocusTriggerText.textContent = 'Link to a priority';
+                    } else {
+                        // Select
+                        selectedPriorityIndex = idx;
+                        sessionFocusPriorities.querySelectorAll('.priority-pill').forEach(p => p.classList.remove('selected'));
+                        pill.classList.add('selected');
+                        sessionFocusDisclosure.classList.add('has-priority');
+                        const todayPriorities = getTodayPriorities();
+                        if (sessionFocusTriggerText && todayPriorities && todayPriorities.priorities[idx]) {
+                            sessionFocusTriggerText.textContent = todayPriorities.priorities[idx].text;
+                        }
+                    }
+                });
+            });
+
+            // Trigger toggle handler
+            if (sessionFocusTrigger) {
+                sessionFocusTrigger.onclick = () => {
+                    sessionFocusDisclosure.classList.toggle('open');
+                };
             }
         }
 
@@ -4777,14 +5528,18 @@
                     html += `<div class="expanded-all-complete">All priorities complete! Great work!</div>`;
                 }
 
-                html += todayData.priorities.map((p, i) => `
+                const sessionCounts = getSessionsPerPriority();
+                html += todayData.priorities.map((p, i) => {
+                    const count = sessionCounts[i] || 0;
+                    const sessionsLabel = count > 0 ? `<span class="expanded-priority-sessions">${count} session${count !== 1 ? 's' : ''}</span>` : '';
+                    return `
                     <label class="expanded-priority-row ${p.completed ? 'completed' : ''}" data-index="${i}">
                         <input type="checkbox" class="expanded-priority-checkbox" ${p.completed ? 'checked' : ''}>
                         <span class="expanded-priority-checkmark"></span>
                         <span class="expanded-priority-number">${i + 1}</span>
-                        <span class="expanded-priority-text">${p.text}</span>
+                        <span class="expanded-priority-text">${p.text}</span>${sessionsLabel}
                     </label>
-                `).join('');
+                `; }).join('');
 
                 expandedList.innerHTML = html;
             }
@@ -5135,16 +5890,31 @@
             // Update progress ring
             updateProgressRing();
 
+            // "Almost there" sound cue at 60 seconds
+            if (remainingSeconds === 60 && isWorkSession && typeof playAlmostThereCue === 'function') {
+                playAlmostThereCue();
+            }
+
             if (remainingSeconds <= 0) {
                 clearInterval(timerInterval);
                 isRunning = false;
 
                 if (currentMode === 'pomodoro') {
                     if (isWorkSession) {
-                        // Work session completed - trigger completion glow first
+                        // Work session completed - trigger completion glow and chime
                         triggerCompletionGlow();
+                        if (typeof playCompletionChime === 'function') playCompletionChime();
 
                         showNotification('Work Complete!', 'Great job! Ready for a 5-minute break?');
+
+                        // Track focus streak
+                        if (lastSessionEndTime && (Date.now() - lastSessionEndTime) < 15 * 60 * 1000) {
+                            focusStreak++;
+                        } else {
+                            focusStreak = 1;
+                        }
+                        lastSessionEndTime = Date.now();
+                        if (typeof updateFocusStreakDisplay === 'function') updateFocusStreakDisplay();
 
                         // Increment session count when work session completes
                         sessionCount++;
@@ -5161,9 +5931,16 @@
                             updateRiverSegment();
                         }
 
-                        // Show rest button
-                        restButton.classList.remove('hide');
+                        // Show completion ceremony with rest button (instead of bare rest button)
                         stopButton.classList.remove('visible');
+                        showCompletionCeremony({
+                            showRestButton: true,
+                            showOutcome: true,
+                            onRestClick: () => {
+                                dismissCeremony();
+                                startRestTimer();
+                            }
+                        });
 
                         // Keep session context visible during rest
                         // Update adaptive UI
@@ -5173,6 +5950,10 @@
                     } else {
                         // Rest session completed - reset to duration selection
                         showNotification('Rest Complete!', 'Ready for another work session?');
+                        if (typeof playRestEndTone === 'function') playRestEndTone();
+
+                        // Stop guided breathing
+                        if (typeof stopBreathGuide === 'function') stopBreathGuide();
 
                         // Reset to initial state (duration selection)
                         isWorkSession = true;
@@ -5194,6 +5975,15 @@
                         workButton.classList.add('hide');
                         stopButton.classList.remove('visible');
 
+                        // Restore session focus disclosure for next session
+                        selectedPriorityIndex = -1;
+                        if (sessionFocusDisclosure) {
+                            sessionFocusDisclosure.classList.remove('has-priority');
+                            sessionFocusDisclosure.classList.remove('open');
+                        }
+                        updateSessionFocusCard();
+                        if (sessionIntentInput) sessionIntentInput.value = '';
+
                         // Update adaptive UI
                         if (typeof updateAdaptiveUI === 'function') {
                             updateAdaptiveUI();
@@ -5201,11 +5991,22 @@
                     }
                 } else {
                     // YouTube Creator mode - session completed
-                    // Trigger completion glow first
+                    // Trigger completion glow and chime
                     triggerCompletionGlow();
+                    if (typeof playCompletionChime === 'function') playCompletionChime();
 
                     if (!sessionRecorded) {
                         sessionRecorded = true;
+
+                        // Track focus streak
+                        if (lastSessionEndTime && (Date.now() - lastSessionEndTime) < 15 * 60 * 1000) {
+                            focusStreak++;
+                        } else {
+                            focusStreak = 1;
+                        }
+                        lastSessionEndTime = Date.now();
+                        if (typeof updateFocusStreakDisplay === 'function') updateFocusStreakDisplay();
+
                         sessionCount++;
                         if (sessionCountEl) {
                             sessionCountEl.textContent = sessionCount;
@@ -5226,6 +6027,9 @@
                         updateRiverSegment();
                     }
 
+                    // Show ceremony (auto-dismiss for YouTube mode)
+                    showCompletionCeremony({ showRestButton: false, showOutcome: true });
+
                     // Reset to ready state
                     sessionLabelEl.textContent = phaseLabel;
                     sessionLabelEl.classList.remove('breathing');
@@ -5241,6 +6045,16 @@
                     hideSessionContext();
                     startYoutubeBtn.classList.remove('hide');
                     stopButton.classList.remove('visible');
+
+                    // Restore session focus disclosure
+                    selectedPriorityIndex = -1;
+                    if (sessionFocusDisclosure) {
+                        sessionFocusDisclosure.classList.remove('has-priority');
+                        sessionFocusDisclosure.classList.remove('open');
+                    }
+                    updateSessionFocusCard();
+                    if (sessionIntentInput) sessionIntentInput.value = '';
+
                     // Update adaptive UI
                     if (typeof updateAdaptiveUI === 'function') {
                         updateAdaptiveUI();
@@ -5252,11 +6066,21 @@
         // Start timer
         function startTimer() {
             if (!isRunning) {
+                // Capture intent before hiding UI
+                currentSessionIntent = sessionIntentInput ? sessionIntentInput.value.trim() : '';
+
                 isRunning = true;
                 startButton.classList.add('hide');
                 durationSelector.classList.add('hide');
                 stopButton.classList.add('visible');
                 restButton.classList.add('hide');
+
+                // Hide session focus disclosure during session
+                if (sessionFocusDisclosure) {
+                    sessionFocusDisclosure.classList.add('hide');
+                    sessionFocusDisclosure.classList.remove('open');
+                    sessionFocusDisclosure.classList.remove('has-priority');
+                }
 
                 // Trigger cinematic focus mode entry
                 triggerCinematicFocusEntry();
@@ -5323,6 +6147,9 @@
             }
 
             // Keep session context visible during rest
+
+            // Start guided breathing
+            if (typeof startBreathGuide === 'function') startBreathGuide();
 
             // Start the timer
             isRunning = true;
@@ -5392,6 +6219,9 @@
             clearInterval(timerInterval);
             isRunning = false;
 
+            // Stop guided breathing if active
+            if (typeof stopBreathGuide === 'function') stopBreathGuide();
+
             // Exit focus mode and remove cinematic classes
             exitCinematicFocusMode();
 
@@ -5445,6 +6275,16 @@
 
             stopButton.classList.remove('visible');
 
+            // Restore session focus disclosure
+            selectedPriorityIndex = -1;
+            if (sessionFocusDisclosure) {
+                sessionFocusDisclosure.classList.remove('has-priority');
+                sessionFocusDisclosure.classList.remove('open');
+            }
+            updateSessionFocusCard();
+            if (sessionIntentInput) sessionIntentInput.value = '';
+            currentSessionIntent = '';
+
             // Update adaptive UI for priorities/gratitude panels
             if (typeof updateAdaptiveUI === 'function') {
                 updateAdaptiveUI();
@@ -5454,6 +6294,7 @@
         // YouTube: Start session timer
         function startYoutubeTimer() {
             if (!isRunning) {
+                currentSessionIntent = sessionIntentInput ? sessionIntentInput.value.trim() : '';
                 sessionRecorded = false;  // Reset guard flag
                 isRunning = true;
                 youtubePhase = phaseSelect.value || 'idea';
@@ -5565,6 +6406,9 @@
             }
 
             updateDisplay();
+
+            // Update priority linker for new mode
+            updateSessionFocusCard();
 
             // Update adaptive UI for priorities/gratitude panels
             if (typeof updateAdaptiveUI === 'function') {
@@ -5913,13 +6757,13 @@
             };
         }
 
-        // Storage instances (session storage added later after STORAGE_KEY is defined)
+        // Storage instances
         const projectStorage = createStorage(PROJECTS_STORAGE_KEY, { version: 1, projects: { work: [], quinlan: [] }, introLines: {}, projectSessions: {} });
         const priorityStorage = createStorage(PRIORITIES_STORAGE_KEY, { version: 1, days: {}, stats: { totalDaysSet: 0, totalCompleted: 0, currentStreak: 0 } });
         const gratitudeStorage = createStorage(GRATITUDE_STORAGE_KEY, { version: 1, entries: {}, stats: { totalDaysRecorded: 0, currentStreak: 0 } });
         const riverStorage = createStorage(RIVER_STORAGE_KEY, { version: 1, segments: [] });
         const preferencesStorage = createStorage('pomodoro_preferences', { version: 1, lastDuration: 25 });
-        // Note: sessionDataStorage is created later after STORAGE_KEY is defined
+        const sessionDataStorage = createStorage('pomodoro_session_data', { version: 1, sessions: {} });
 
         // Initialize saved preferences (Quick Start Memory)
         function initializeSavedPreferences() {
@@ -6266,6 +7110,7 @@
             // Switch to complete mode and update collapsed preview
             updateExpandedPrioritiesView();
             updatePrioritiesCollapsedPreview();
+            updateSessionFocusCard();
         });
 
         // Edit priorities button handler
@@ -6359,11 +7204,10 @@
         const STORAGE_KEY = 'pomodoro_session_data';
         const DATA_VERSION = 1;
 
-        // Session data storage instance
-        const sessionDataStorage = createStorage(STORAGE_KEY, { version: DATA_VERSION, sessions: {} });
+        // sessionDataStorage is created earlier with other storage instances
 
         // Dashboard DOM elements
-        const dashboardBtn = document.querySelector('.dashboard-btn');
+        const dashboardBtn = document.getElementById('main-dashboard-btn');
         const dashboardView = document.querySelector('.dashboard-view');
         const dashboardBackBtn = document.querySelector('.dashboard-back-btn');
         const timerContainer = document.querySelector('.timer-container');
@@ -6507,7 +7351,25 @@
                 data.sessions[today].youtube[projectKey][phaseId]++;
             }
 
+            // Record to session log (for priority linking, intents, and timeline)
+            if (!data.sessions[today].sessionLog) {
+                data.sessions[today].sessionLog = [];
+            }
+            data.sessions[today].sessionLog.push({
+                mode: mode,
+                priorityIndex: selectedPriorityIndex,
+                intent: currentSessionIntent || '',
+                outcome: null, // Filled in by reflection ceremony
+                timestamp: Date.now(),
+                phase: mode === 'youtube' ? phaseId : null,
+                project: mode === 'youtube' ? (currentProject || null) : null
+            });
+
             saveSessionData(data);
+
+            // Update priority displays after recording
+            updatePrioritiesCollapsedPreview();
+            updateSessionFocusCard();
         }
 
         // Get sessions for a date range (returns array of { date, pomodoro, youtube })
@@ -6899,11 +7761,25 @@
             if (days.length === 0) {
                 prioritiesHistory.innerHTML = '<div class="gratitude-empty-message">No priorities recorded yet</div>';
             } else {
+                // Get session data for showing sessions per priority
+                const sessionData = loadSessionData();
+
                 prioritiesHistory.innerHTML = days.map(([dateKey, dayData]) => {
                     const date = new Date(dateKey);
                     const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
                     const completed = dayData.priorities.filter(p => p.completed).length;
                     const total = dayData.priorities.length;
+
+                    // Get session counts per priority for this day
+                    const daySessions = sessionData.sessions[dateKey];
+                    const daySessionCounts = {};
+                    if (daySessions && daySessions.sessionLog) {
+                        daySessions.sessionLog.forEach(entry => {
+                            if (entry.priorityIndex >= 0) {
+                                daySessionCounts[entry.priorityIndex] = (daySessionCounts[entry.priorityIndex] || 0) + 1;
+                            }
+                        });
+                    }
 
                     return `
                         <div class="priority-day-card">
@@ -6911,12 +7787,15 @@
                                 <span>${dateStr}</span>
                                 <span class="priority-day-completion">${completed}/${total}</span>
                             </div>
-                            ${dayData.priorities.map(p => `
+                            ${dayData.priorities.map((p, i) => {
+                                const count = daySessionCounts[i] || 0;
+                                const sessionsLabel = count > 0 ? `<span class="expanded-priority-sessions">${count} session${count !== 1 ? 's' : ''}</span>` : '';
+                                return `
                                 <div class="priority-history-item ${p.completed ? 'completed' : ''}">
                                     <div class="priority-history-check"></div>
-                                    <span>${p.text}</span>
-                                </div>
-                            `).join('')}
+                                    <span>${p.text}</span>${sessionsLabel}
+                                </div>`;
+                            }).join('')}
                         </div>
                     `;
                 }).join('');
@@ -6957,13 +7836,165 @@
             }
         }
 
+        // Weekly review summary
+        const weeklyDashboard = document.getElementById('weekly-dashboard');
+        const weeklySummaryEl = document.getElementById('weekly-summary');
+        const weeklyBreakdownEl = document.getElementById('weekly-breakdown');
+
+        function getWeekDateRange(offsetWeeks) {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0=Sun
+            const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + mondayOffset + (offsetWeeks * 7));
+            monday.setHours(0, 0, 0, 0);
+
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+
+            const dates = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                dates.push(d.toLocaleDateString('sv'));
+            }
+            return dates;
+        }
+
+        function getWeeklyStats(dates) {
+            const sessionData = loadSessionData();
+            const priorityData = loadPriorities();
+            let totalSessions = 0;
+            let totalMinutes = 0;
+            let prioritiesSet = 0;
+            let prioritiesCompleted = 0;
+            let bestDay = { date: '', sessions: 0 };
+            const dailySessions = [];
+
+            for (const date of dates) {
+                const dayData = sessionData.sessions[date];
+                let daySessions = 0;
+
+                if (dayData) {
+                    daySessions += dayData.pomodoro || 0;
+                    if (dayData.youtube) {
+                        for (const proj of Object.values(dayData.youtube)) {
+                            if (typeof proj === 'object' && proj !== null) {
+                                daySessions += Object.values(proj).reduce((s, v) => s + (typeof v === 'number' ? v : 0), 0);
+                            }
+                        }
+                    }
+                }
+
+                totalSessions += daySessions;
+                dailySessions.push(daySessions);
+
+                if (daySessions > bestDay.sessions) {
+                    bestDay = { date, sessions: daySessions };
+                }
+
+                // Priority stats
+                const dayPriorities = priorityData.days[date];
+                if (dayPriorities && dayPriorities.priorities) {
+                    prioritiesSet += dayPriorities.priorities.length;
+                    prioritiesCompleted += dayPriorities.priorities.filter(p => p.completed).length;
+                }
+            }
+
+            // Estimate minutes (25 min per pomodoro session average)
+            totalMinutes = totalSessions * 25;
+
+            return {
+                totalSessions,
+                totalMinutes,
+                totalHours: (totalMinutes / 60).toFixed(1),
+                prioritiesSet,
+                prioritiesCompleted,
+                priorityPct: prioritiesSet > 0 ? Math.round((prioritiesCompleted / prioritiesSet) * 100) : 0,
+                bestDay,
+                dailySessions
+            };
+        }
+
+        function renderWeeklyDashboard() {
+            const thisWeek = getWeekDateRange(0);
+            const lastWeek = getWeekDateRange(-1);
+            const stats = getWeeklyStats(thisWeek);
+            const prevStats = getWeeklyStats(lastWeek);
+
+            // Summary sentence
+            const hours = stats.totalHours;
+            const sessions = stats.totalSessions;
+            const pctText = stats.prioritiesSet > 0 ? `, completing ${stats.priorityPct}% of your priorities` : '';
+
+            let sentence = '';
+            if (sessions === 0) {
+                sentence = 'No sessions this week yet. Start your first one!';
+            } else {
+                sentence = `You focused for ${hours} hours across ${sessions} session${sessions !== 1 ? 's' : ''}${pctText}.`;
+            }
+
+            // Week-over-week delta
+            const delta = stats.totalSessions - prevStats.totalSessions;
+            const deltaText = delta > 0 ? `+${delta} vs last week` : delta < 0 ? `${delta} vs last week` : 'Same as last week';
+            const deltaClass = delta > 0 ? 'positive' : '';
+
+            weeklySummaryEl.innerHTML = `
+                <div class="weekly-summary-sentence">${sentence}</div>
+                <div class="weekly-delta ${deltaClass}">${deltaText}</div>
+            `;
+
+            // Stat grid
+            const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const today = new Date().getDay();
+            const todayIndex = today === 0 ? 6 : today - 1; // Mon=0, Sun=6
+            const maxSessions = Math.max(...stats.dailySessions, 1);
+
+            let bestDayName = '';
+            if (stats.bestDay.date) {
+                const d = new Date(stats.bestDay.date);
+                bestDayName = dayNames[d.getDay() === 0 ? 6 : d.getDay() - 1];
+            }
+
+            weeklyBreakdownEl.innerHTML = `
+                <div class="weekly-stat-grid">
+                    <div class="weekly-stat-item">
+                        <div class="weekly-stat-value">${stats.totalSessions}</div>
+                        <div class="weekly-stat-label">Sessions</div>
+                    </div>
+                    <div class="weekly-stat-item">
+                        <div class="weekly-stat-value">${stats.totalHours}h</div>
+                        <div class="weekly-stat-label">Focus Time</div>
+                    </div>
+                    <div class="weekly-stat-item">
+                        <div class="weekly-stat-value">${stats.priorityPct}%</div>
+                        <div class="weekly-stat-label">Priorities Done</div>
+                    </div>
+                    <div class="weekly-stat-item">
+                        <div class="weekly-stat-value">${bestDayName || '—'}</div>
+                        <div class="weekly-stat-label">Best Day</div>
+                    </div>
+                </div>
+                <div class="weekly-day-bars">
+                    ${stats.dailySessions.map((count, i) => `
+                        <div class="weekly-day-bar">
+                            <div class="weekly-day-bar-fill ${i === todayIndex ? 'today' : ''}" style="height: ${Math.max(2, (count / maxSessions) * 60)}px"></div>
+                            <div class="weekly-day-label">${dayNames[i]}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
         // Render the entire dashboard
         function renderDashboard() {
             // Hide all view-specific sections first
             projectSummary.classList.add('hide');
             prioritiesDashboard.classList.add('hide');
             gratitudeDashboard.classList.add('hide');
+            weeklyDashboard.classList.add('hide');
             chartContainer.classList.remove('hide');
+            document.querySelector('.stats-cards').classList.remove('hide');
 
             // Get river container
             const riverContainer = document.getElementById('dashboard-river-container');
@@ -7006,6 +8037,15 @@
                 totalSessionsEl.textContent = Object.keys(gratitudeData.entries).length;
 
                 renderGratitudeDashboard();
+            } else if (currentViewMode === 'weekly') {
+                // Weekly review view
+                chartContainer.classList.add('hide');
+                weeklyDashboard.classList.remove('hide');
+                if (riverContainer) riverContainer.classList.add('hide');
+                document.querySelector('.stats-cards').classList.add('hide');
+
+                renderWeeklyDashboard();
+                return; // Skip stat card updates below
             } else {
                 // Session-based views (combined, pomodoro, youtube)
                 const stats = calculateStats(currentViewMode);
@@ -7068,11 +8108,9 @@
         // ==========================================
 
         // Dashboard buttons (main button and inside timer section)
-        document.querySelectorAll('.dashboard-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showDashboard();
-            });
+        document.getElementById('main-dashboard-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showDashboard();
         });
         dashboardBackBtn.addEventListener('click', hideDashboard);
         clearDataBtn.addEventListener('click', clearAllData);
@@ -7097,6 +8135,29 @@
         // Initialize session count from stored data
         sessionCount = getTodaySessionCount();
         if (sessionCountEl) sessionCountEl.textContent = sessionCount;
+
+        // Initialize priority linker
+        updateSessionFocusCard();
+
+        // Quick start from collapsed timer
+        const quickStartBtn = document.getElementById('quick-start-btn');
+        if (quickStartBtn) {
+            quickStartBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Don't trigger section expand
+                // Expand timer section
+                expandSection('timer');
+                // Start timer after a brief delay for expansion animation
+                setTimeout(() => {
+                    if (!isRunning) {
+                        if (currentMode === 'pomodoro') {
+                            startTimer();
+                        } else {
+                            startYoutubeTimer();
+                        }
+                    }
+                }, 150);
+            });
+        }
 
         // Update time-of-day emphasis every minute
         trackedIntervals.push(setInterval(() => {
@@ -7351,25 +8412,133 @@
 
         const completionCeremony = document.getElementById('completion-ceremony');
         const ceremonyStat = document.getElementById('ceremony-stat');
+        const ceremonyIntent = document.getElementById('ceremony-intent');
+        const ceremonyMilestone = document.getElementById('ceremony-milestone');
+        const ceremonyMessage = document.getElementById('ceremony-message');
+        const ceremonyOutcomeButtons = document.getElementById('ceremony-outcome-buttons');
+        const ceremonyRestBtn = document.getElementById('ceremony-rest-btn');
         const waterDrop = document.getElementById('water-drop');
 
-        function showCompletionCeremony() {
-            // Update the stat text
+        // Milestone messages
+        const MILESTONE_MESSAGES = {
+            1: 'First session. The hardest one.',
+            3: "Third session. You're in a groove.",
+            5: 'Five sessions. Deep work.',
+            8: 'Eight. Extraordinary day.',
+            10: 'Ten sessions. Remarkable.',
+            15: 'Fifteen. Unstoppable.'
+        };
+
+        function getMilestoneMessage(count) {
+            // Find the highest milestone <= count
+            let message = '';
+            for (const [threshold, msg] of Object.entries(MILESTONE_MESSAGES)) {
+                if (count >= parseInt(threshold)) {
+                    message = msg;
+                }
+            }
+            return message;
+        }
+
+        function showCompletionCeremony(options = {}) {
+            const { showRestButton = false, showOutcome = true, onRestClick = null } = options;
+
+            // Update stat text
             const todayCount = getTodaySessionCount();
             ceremonyStat.textContent = todayCount === 1
                 ? "That's 1 session today"
                 : `That's ${todayCount} sessions today`;
 
+            // Show milestone message if applicable
+            const milestone = getMilestoneMessage(todayCount);
+            if (ceremonyMilestone) {
+                ceremonyMilestone.textContent = milestone;
+                ceremonyMilestone.style.display = milestone ? 'block' : 'none';
+            }
+
+            // Show intent if one was set
+            if (ceremonyIntent) {
+                if (currentSessionIntent) {
+                    ceremonyIntent.textContent = `"${currentSessionIntent}"`;
+                    ceremonyIntent.style.display = 'block';
+                } else {
+                    ceremonyIntent.style.display = 'none';
+                }
+            }
+
+            // Show/hide outcome buttons based on whether there's an intent
+            if (ceremonyOutcomeButtons) {
+                ceremonyOutcomeButtons.style.display = (showOutcome && currentSessionIntent) ? 'flex' : 'none';
+                // Reset selection state
+                ceremonyOutcomeButtons.querySelectorAll('.ceremony-outcome-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+
+            // Show/hide rest button
+            if (ceremonyRestBtn) {
+                ceremonyRestBtn.style.display = showRestButton ? 'block' : 'none';
+                ceremonyRestBtn.textContent = 'Start Rest';
+                // Set up rest button click handler
+                const newRestBtn = ceremonyRestBtn.cloneNode(true);
+                ceremonyRestBtn.parentNode.replaceChild(newRestBtn, ceremonyRestBtn);
+                // Update reference
+                const freshRestBtn = document.getElementById('ceremony-rest-btn');
+                if (freshRestBtn && onRestClick) {
+                    freshRestBtn.addEventListener('click', () => {
+                        completionCeremony.classList.remove('visible');
+                        onRestClick();
+                    });
+                }
+            }
+
+            // Set up outcome button handlers
+            if (ceremonyOutcomeButtons) {
+                ceremonyOutcomeButtons.querySelectorAll('.ceremony-outcome-btn').forEach(btn => {
+                    const newBtn = btn.cloneNode(true);
+                    btn.parentNode.replaceChild(newBtn, btn);
+                });
+                document.getElementById('ceremony-outcome-buttons').querySelectorAll('.ceremony-outcome-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const outcome = btn.dataset.outcome;
+                        // Update the last session log entry with this outcome
+                        const data = loadSessionData();
+                        const today = getTodayDateKey();
+                        if (data.sessions[today] && data.sessions[today].sessionLog && data.sessions[today].sessionLog.length > 0) {
+                            data.sessions[today].sessionLog[data.sessions[today].sessionLog.length - 1].outcome = outcome;
+                            saveSessionData(data);
+                        }
+                        // Visual feedback
+                        document.getElementById('ceremony-outcome-buttons').querySelectorAll('.ceremony-outcome-btn').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                    });
+                });
+            }
+
             // Show the ceremony
             completionCeremony.classList.add('visible');
 
-            // Auto-hide after 2.5 seconds
-            setTimeout(() => {
-                completionCeremony.classList.remove('visible');
+            // Auto-dismiss if no rest button
+            if (!showRestButton) {
+                const delay = currentSessionIntent ? 4000 : 2500;
+                setTimeout(() => {
+                    if (completionCeremony.classList.contains('visible')) {
+                        completionCeremony.classList.remove('visible');
+                        triggerWaterDrop();
+                        currentSessionIntent = '';
+                        if (sessionIntentInput) sessionIntentInput.value = '';
+                    }
+                }, delay);
+            }
+        }
 
-                // Trigger water drop animation
-                triggerWaterDrop();
-            }, 2500);
+        function dismissCeremony() {
+            completionCeremony.classList.remove('visible');
+            triggerWaterDrop();
+
+            // Reset intent for next session
+            currentSessionIntent = '';
+            if (sessionIntentInput) sessionIntentInput.value = '';
         }
 
         function triggerWaterDrop() {
@@ -7420,6 +8589,273 @@
 
         // Initialize river on page load
         updateRiverSegment();
+
+        // ==========================================
+        // KEYBOARD SHORTCUTS
+        // ==========================================
+
+        // ==========================================
+        // GUIDED BREATHING
+        // ==========================================
+        let breathGuide, breathGuideText, breathToggleBtn;
+        let breathInterval = null;
+        let breathGuideActive = false;
+
+        try {
+            breathGuide = document.getElementById('breath-guide');
+            breathGuideText = document.getElementById('breath-guide-text');
+            breathToggleBtn = document.getElementById('breath-toggle-btn');
+            const breathPref = preferencesStorage.load();
+            breathGuideActive = breathPref.breathGuide !== false;
+        } catch (e) {
+            console.error('Breath guide init error:', e);
+        }
+
+        function startBreathGuide() {
+            if (!breathGuide || !breathGuideText) return;
+            breathGuide.classList.remove('hide');
+
+            if (breathGuideActive) {
+                breathToggleBtn.classList.add('active');
+                breathToggleBtn.textContent = 'Guided';
+                runBreathCycle();
+            } else {
+                breathToggleBtn.classList.remove('active');
+                breathToggleBtn.textContent = 'Timer only';
+                breathGuideText.textContent = '';
+            }
+        }
+
+        function runBreathCycle() {
+            if (breathInterval) clearInterval(breathInterval);
+
+            let phase = 0; // 0 = breathe in, 1 = breathe out
+            const phases = ['Breathe in...', 'Breathe out...'];
+            const durations = [4000, 4000]; // 4s in, 4s out
+
+            breathGuideText.textContent = phases[0];
+            breathGuide.classList.add('breathing-in');
+
+            breathInterval = setInterval(() => {
+                phase = (phase + 1) % 2;
+                breathGuideText.textContent = phases[phase];
+                if (phase === 0) {
+                    breathGuide.classList.add('breathing-in');
+                } else {
+                    breathGuide.classList.remove('breathing-in');
+                }
+            }, durations[phase]);
+
+            trackedIntervals.push(breathInterval);
+        }
+
+        function stopBreathGuide() {
+            if (breathInterval) {
+                clearInterval(breathInterval);
+                breathInterval = null;
+            }
+            if (breathGuide) {
+                breathGuide.classList.add('hide');
+                breathGuide.classList.remove('breathing-in');
+            }
+        }
+
+        if (breathToggleBtn) {
+            breathToggleBtn.addEventListener('click', () => {
+                breathGuideActive = !breathGuideActive;
+                // Save preference
+                const prefs = preferencesStorage.load();
+                prefs.breathGuide = breathGuideActive;
+                preferencesStorage.save(prefs);
+
+                if (breathGuideActive) {
+                    breathToggleBtn.classList.add('active');
+                    breathToggleBtn.textContent = 'Guided';
+                    runBreathCycle();
+                } else {
+                    breathToggleBtn.classList.remove('active');
+                    breathToggleBtn.textContent = 'Timer only';
+                    breathGuideText.textContent = '';
+                    if (breathInterval) {
+                        clearInterval(breathInterval);
+                        breathInterval = null;
+                    }
+                    breathGuide.classList.remove('breathing-in');
+                }
+            });
+        }
+
+        // ==========================================
+        // SOUND DESIGN (Web Audio API)
+        // ==========================================
+
+        let audioCtx = null;
+        let soundEnabled = false;
+
+        // Load sound preference
+        const soundPref = preferencesStorage.load();
+        soundEnabled = soundPref.soundEnabled === true; // Default off
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playTone(frequency, duration, gain = 0.12, type = 'sine') {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+                gainNode.gain.setValueAtTime(gain, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {
+                // Silently fail if audio context not available
+            }
+        }
+
+        function playCompletionChime() {
+            if (!soundEnabled) return;
+            // Ascending pair: C5 (523Hz) then E5 (659Hz)
+            playTone(523, 0.25, 0.12);
+            setTimeout(() => playTone(659, 0.35, 0.12), 150);
+        }
+
+        function playRestEndTone() {
+            if (!soundEnabled) return;
+            // Gentle bell-like tone: G5 (784Hz)
+            playTone(784, 0.4, 0.1, 'triangle');
+        }
+
+        function playAlmostThereCue() {
+            if (!soundEnabled) return;
+            // Soft single tone: A4 (440Hz)
+            playTone(440, 0.2, 0.08);
+        }
+
+        // Sound toggle button
+        const soundToggleBtn = document.getElementById('sound-toggle-btn');
+        if (soundToggleBtn) soundToggleBtn.textContent = soundEnabled ? 'Sound on' : 'Sound off';
+
+        if (soundToggleBtn) {
+            soundToggleBtn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                soundToggleBtn.textContent = soundEnabled ? 'Sound on' : 'Sound off';
+                // Save preference
+                const prefs = preferencesStorage.load();
+                prefs.soundEnabled = soundEnabled;
+                preferencesStorage.save(prefs);
+                // Play a test chime when enabling
+                if (soundEnabled) playTone(523, 0.15, 0.08);
+            });
+        }
+
+        // Focus streak display
+        const focusStreakEl = document.getElementById('focus-streak');
+        function updateFocusStreakDisplay() {
+            if (!focusStreakEl) return;
+            if (focusStreak > 1) {
+                focusStreakEl.innerHTML = `<span class="focus-streak-count">${focusStreak}</span> session streak`;
+                focusStreakEl.classList.add('visible');
+                // Animate
+                focusStreakEl.style.animation = 'none';
+                focusStreakEl.offsetHeight;
+                focusStreakEl.style.animation = 'countBump 0.4s ease-out';
+            } else {
+                focusStreakEl.classList.remove('visible');
+            }
+        }
+
+        // Shortcut hint toggle button
+        const shortcutHintToggle = document.getElementById('shortcut-hint-toggle');
+        if (shortcutHintToggle) {
+            shortcutHintToggle.addEventListener('click', () => {
+                const hint = document.getElementById('shortcut-hint');
+                if (hint) hint.classList.toggle('visible');
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            // Don't fire in input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+
+            // Don't fire if ceremony is visible
+            if (completionCeremony && completionCeremony.classList.contains('visible')) return;
+
+            const dashboardVisible = dashboardViewEl && !dashboardViewEl.classList.contains('hide');
+
+            switch (e.key) {
+                case ' ': // Space - start/stop
+                    e.preventDefault();
+                    if (dashboardVisible) return;
+                    if (isRunning) {
+                        stopTimer();
+                    } else if (currentMode === 'pomodoro') {
+                        // Expand timer if collapsed
+                        if (expandedSection !== 'timer') expandSection('timer');
+                        startTimer();
+                    } else {
+                        if (expandedSection !== 'timer') expandSection('timer');
+                        startYoutubeTimer();
+                    }
+                    break;
+                case 'r': // R - start rest
+                    if (dashboardVisible) return;
+                    if (!isRunning && restButton && !restButton.classList.contains('hide')) {
+                        startRestTimer();
+                    }
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                    if (dashboardVisible || isRunning) return;
+                    if (currentMode === 'pomodoro') {
+                        const durations = { '1': 15, '2': 20, '3': 25 };
+                        const dur = durations[e.key];
+                        workDuration = dur;
+                        remainingSeconds = dur * 60;
+                        updateDisplay();
+                        durationOptions.forEach(opt => {
+                            opt.classList.toggle('selected', parseInt(opt.dataset.duration) === dur);
+                        });
+                    }
+                    break;
+                case 'Escape':
+                    if (completionCeremony && completionCeremony.classList.contains('visible')) {
+                        dismissCeremony();
+                    } else if (dashboardVisible) {
+                        hideDashboard();
+                    } else if (isRunning) {
+                        stopTimer();
+                    } else if (expandedSection) {
+                        collapseAllSections();
+                    }
+                    break;
+                case 's':
+                    if (dashboardVisible) {
+                        hideDashboard();
+                    } else if (!isRunning) {
+                        showDashboard();
+                    }
+                    break;
+                case '?':
+                    // Toggle shortcut hint
+                    const hint = document.getElementById('shortcut-hint');
+                    if (hint) hint.classList.toggle('visible');
+                    break;
+            }
+        });
 
         // ==========================================
         // CLEANUP ON PAGE UNLOAD
