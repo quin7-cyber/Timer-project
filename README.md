@@ -7,28 +7,28 @@ A beautiful, minimal Pomodoro timer with two modes: **Work** (traditional Pomodo
 ### Timer Modes
 
 **Work Mode**
-- Flexible work durations: 25, 45, or 60 minutes
+- Flexible work durations: 15, 20, or 25 minutes
 - 5-minute rest periods
 - Traditional Pomodoro workflow
 
 **Quinlan Travels Mode**
-- 20-minute editing sessions
-- 2-minute intro work sessions
+- 20-minute sessions per production phase
+- 8 video phases: Idea, Outline, Script, Edit, Retention pass, Intro build, Packaging, Upload
 - Project and session tracking
 - Saved intro lines per project
 
 ### Visual Design
 
 - Animated gradient backgrounds that shift based on time of day (morning, afternoon, evening)
-- Floating particle effects
+- Subtle floating particle effects
 - Smooth transitions between work and rest states
-- Breathing animation during active sessions
+- Breathing animation and progress ring during active sessions
 
 ### Session Tracking
 
 - Tracks completed sessions per day
 - Separate tracking for Work and Quinlan Travels modes
-- Project-level session counts for Quinlan Travels
+- Project-level session counts with phase breakdown
 - All data persisted in localStorage
 
 ### Dashboard & Stats
@@ -36,30 +36,47 @@ A beautiful, minimal Pomodoro timer with two modes: **Work** (traditional Pomodo
 - Days active count
 - Today's sessions
 - Total sessions (all-time)
-- Visual chart showing session history over the past 14 days
-- Filter by mode: Combined, Work only, or Quinlan Travels only
+- Visual chart showing session history over the past 30 days
+- Filter by mode: Combined, Work only, Quinlan Travels only, Priorities, or Gratitude
 - Project breakdown for Quinlan Travels sessions
+- Progress River visualization showing 30-day consistency
+
+### Opt-in Panels (hidden by default)
+
+Click the menu icon (top-left) to reveal:
+
+- **Priorities** — Set and track 3 daily priorities with completion progress
+- **Gratitude Journal** — Record 3 daily gratitude items with streak tracking
+
+These panels highlight based on time of day (priorities in the morning, gratitude in the evening) and have their own dashboard views.
 
 ### Other Features
 
 - Browser notifications when sessions complete
-- Session context display (current project and next action)
+- Session context display (current project and phase)
 - Project autocomplete from history
-- Single HTML file - no build process or dependencies
+- Keyboard accessible
+- Responsive design (mobile, tablet, desktop)
+- Single HTML file — no build process or dependencies
 
 ## Usage
 
 1. Open `pomodoro.html` in a web browser
 2. Select your mode (Work or Quinlan Travels)
-3. For Work mode: choose duration (25/45/60 min) and click Start
-4. For Quinlan Travels: enter project name, then click "Start Editing" or "Start Intro"
-5. Click the stats icon (top right) to view your session history
+3. For Work mode: choose duration and click Begin
+4. For Quinlan Travels: enter project name, select phase, then click Start
+5. Click "Stats" (top right) to view your session history
+6. Click the menu icon (top left) to show/hide Priorities and Gratitude panels
 
 ## Data Storage
 
-All session data is stored in the browser's localStorage:
-- `pomodoro-session-data` - Daily session counts
-- `pomodoro-projects` - Project lists and intro lines
+All data is stored in the browser's localStorage:
+- `pomodoro_session_data` — Daily session counts
+- `pomodoro_projects` — Project lists and intro lines
+- `pomodoro_priorities` — Daily priority tracking
+- `pomodoro_gratitude` — Gratitude journal entries
+- `pomodoro_river` — Progress river visualization data
+- `pomodoro_preferences` — Saved duration preferences
 
 ## Tech Stack
 
